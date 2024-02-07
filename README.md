@@ -1,5 +1,7 @@
 # Lab-Supporting-System
- Portal for Data Visualisation of the LSS Project
+ Portal for Data Visualisation of the Laboratory Supporting System Project (LSS)
+ LSS  is an intervention project supported by the Centers for Disease Control and Prevention (CDC), Global Fund, and President's Emergency Plan For AIDS Relief ( PEPFAR)  to support laboratories in Zimbabwe in Testing of Viral Load (VL), Early Infant Diagnosis (EID), efficiency in Integrated Specimen Transportation (IST), Improving in Clinical Laboratory Interfacing
+ 
 
  ## URL
  https://brtilssme.net/
@@ -8,7 +10,7 @@
 
  <ul>
  <li> <a href="https://echarts.apache.org/en/index.html"> Echarts </a> </li>
- <li> </li><a href="https://www.highcharts.com/demo"> Highcharts </a>  </li>
+ <li> <a href="https://www.highcharts.com/demo"> Highcharts </a>  </li>
  </ul>
 
 
@@ -21,8 +23,8 @@
 
  ### Databases Used 
 <ul>
- <li>  SQLite </li>
- <li> MS SQL  </li>
+ <li>  Microsoft SQL Server (Ms SQL) </li>
+ <li> SQL Lite  </li>
  </ul>
 
 
