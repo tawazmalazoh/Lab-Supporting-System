@@ -3,7 +3,8 @@
 
 <<<<<<< Updated upstream
 
- ## Visualisation  Libraries Used
+ ## URL
+ https://brtilssme.net/
 =======
  # Visualisation  Libraries Used
 >>>>>>> Stashed changes
@@ -13,11 +14,23 @@
  </ul>
 
 <<<<<<< Updated upstream
-### Ajax usage for interactiveness 
+### Programming Languages
+<ul>
+ <li>  Python - Django Framework </li>
+ <li> Javascript and Ajax  </li>
+ <li> HTML and CSS  </li>
+ </ul>
+
+ ### Databases Used 
+<ul>
+ <li>  SQLite </li>
+ <li> MS SQL  </li>
+ </ul>
+
+
 ### How the Portal looks like 
 =======
-# Ajax usage for interactiveness 
-# How the Portal looks like 
+
 >>>>>>> Login pages
 <img src="images/images/LogIn.png " width="800" height="450">
 
