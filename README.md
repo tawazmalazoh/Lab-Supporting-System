@@ -1,19 +1,17 @@
 # Lab-Supporting-System
  Portal for Data Visualisation of the LSS Project
 
-<<<<<<< Updated upstream
-
  ## URL
  https://brtilssme.net/
 =======
- # Visualisation  Libraries Used
->>>>>>> Stashed changes
+ ### Visualisation  Libraries Used
+
  <ul>
  <li> <a href="https://echarts.apache.org/en/index.html"> Echarts </a> </li>
  <li> </li><a href="https://www.highcharts.com/demo"> Highcharts </a>  </li>
  </ul>
 
-<<<<<<< Updated upstream
+
 ### Programming Languages
 <ul>
  <li>  Python - Django Framework </li>
@@ -58,7 +56,6 @@
 
 >>>>>>>> Exploring the files
 <img src="images/images/folder Explorer.png " width="800" height="450">
-
 
 
 =======
