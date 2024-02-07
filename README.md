@@ -1,16 +1,15 @@
 # Lab-Supporting-System
  Portal for Data Visualisation of the LSS Project
-# Lab-Supporting-System
- Portal for Data Visualisation of the LSS Project
 
- # Visualisation  Libraries Used
+
+ ## Visualisation  Libraries Used
  <ul>
  <li> <a href="https://echarts.apache.org/en/index.html"> Echarts </a> </li>
  <li> </li><a href="https://www.highcharts.com/demo"> Highcharts </a>  </li>
  </ul>
 
-# Ajax usage for interactiveness 
-# How the Portal looks like 
+### Ajax usage for interactiveness 
+### How the Portal looks like 
 
 <img src="images/images/Admin Home.png " width="100" height="100">
 <img src="images/images/Admin Edit panel2.png " width="100" height="100">
