@@ -29,7 +29,7 @@
 <img src="images/images/Upload Home.png " width="800" height="450">
 
 >>>>>>>>>> Analytics Dashboards
-<img src="images/images/supply chain.png "  width="800" height="450">
+<img src="images/images/supply_chain.png "  width="800" height="450">
 <img src="images/images/IST Analytics1.png " width="800" height="450">
 <img src="images/images/IST Analytics2.png " width="800" height="450">
 <img src="images/images/IST Analytics3.png " width="800" height="450">
