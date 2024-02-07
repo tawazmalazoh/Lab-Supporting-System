@@ -20,7 +20,7 @@
 # How the Portal looks like 
 >>>>>>> Stashed changes
 
-<img src="images/images/Admin Home.png " width="400" height="800">
+<img src="images/images/Admin Home.png " width="300" height="800">
 <img src="images/images/Admin Edit panel2.png " width="100" height="100">
 <img src="images/images/Admin Editing Panel.png " width="100" height="100">
 <img src="images/images/Admin Home.png " width="100" height="100">
