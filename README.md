@@ -20,30 +20,32 @@
 # How the Portal looks like 
 >>>>>>> Login pages
 <img src="images/images/LogIn.png " width="800" height="450">
-<img src="images/images/secondLogin.png " width="800" height="450">
+
+
+>>>>>>>> Home Pages
+>>>>>>>> for Admin Staff
+<img src="images/images/Admin Home.png " width="800" height="450">
+>>>>>>>> for Provincial Staff uploads
 <img src="images/images/Upload Home.png " width="800" height="450">
 
-
-<<<<<<< Home Page
-<img src="images/images/Admin Home.png " width="800" height="450">
-
-<<<<<<< Analytics Dashboards
+>>>>>>>>>> Analytics Dashboards
 <img src="images/images/supply chain.png "  width="800" height="450">
 <img src="images/images/IST Analytics1.png " width="800" height="450">
 <img src="images/images/IST Analytics2.png " width="800" height="450">
 <img src="images/images/IST Analytics3.png " width="800" height="450">
 
-<<<<<<<<<< Editing live or direct in database
+>>>>>>> Editing live or direct in database
+<img src="images/images/secondLogin.png " width="800" height="450">
 <img src="images/images/Admin Edit panel2.png " width="800" height="450">
 <img src="images/images/Admin Editing Panel.png " width="800" height="450">
 
-<<<<<<<<<<  Scripting and Auto Generation of Excel and Word
+
+>>>>>>>>>>  Scripting and Auto Generation of Excel and Word
 <img src="images/images/Generating files.png " width="800" height="450">
 
-
-
+>>>>>>>> Exploring the files
 <img src="images/images/folder Explorer.png " width="800" height="450">
-<img src="images/images/menu.png" width="800" height="450">
+
 
 
 =======
