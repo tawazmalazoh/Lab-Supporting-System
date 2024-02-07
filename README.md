@@ -1,4 +1,4 @@
-# Lab-Supporting-System
+# Lab-Supporting-System   (Django Framework)
  Portal for Data Visualisation of the Laboratory Supporting System Project (LSS)
  LSS  is an intervention project supported by the Centers for Disease Control and Prevention (CDC), Global Fund, and President's Emergency Plan For AIDS Relief ( PEPFAR)  to support laboratories in Zimbabwe in Testing of Viral Load (VL), Early Infant Diagnosis (EID), efficiency in Integrated Specimen Transportation (IST), Improving in Clinical Laboratory Interfacing
  
