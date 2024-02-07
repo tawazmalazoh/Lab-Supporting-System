@@ -1,0 +1,842 @@
+{% extends "base.html" %} 
+{% load static %} 
+{% load custom_filters %}
+{% load crispy_forms_tags %} 
+{% block content %}
+
+  <!-- SECTION FOR THE CONTENT SCRIPTS -->
+
+  <!--  -- E Charts-->
+  <script src="https://cdn.jsdelivr.net/npm/echarts@5.2.1/dist/echarts.min.js"></script>
+
+<!-- start Data Table libraries  -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/jquery.dataTables.min.css"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.datatables.net/v/bs4-4.6.0/jq-3.7.0/jszip-3.10.1/dt-1.13.5/af-2.6.0/b-2.4.1/b-colvis-2.4.1/b-html5-2.4.1/b-print-2.4.1/cr-1.7.0/date-1.5.1/fc-4.3.0/fh-3.4.0/kt-2.10.0/r-2.5.0/rg-1.4.0/rr-1.4.1/sc-2.2.0/sb-1.5.0/sp-2.2.0/sl-1.7.0/sr-1.3.0/datatables.min.css" rel="stylesheet">
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+<script src="https://cdn.datatables.net/v/bs4-4.6.0/jq-3.7.0/jszip-3.10.1/dt-1.13.5/af-2.6.0/b-2.4.1/b-colvis-2.4.1/b-html5-2.4.1/b-print-2.4.1/cr-1.7.0/date-1.5.1/fc-4.3.0/fh-3.4.0/kt-2.10.0/r-2.5.0/rg-1.4.0/rr-1.4.1/sc-2.2.0/sb-1.5.0/sp-2.2.0/sl-1.7.0/sr-1.3.0/datatables.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/js/bootstrap.min.js"></script>
+<!-- end Datatable -->
+ 
+<script>
+  var jQuery_3_6_0 = $.noConflict(true);
+  </script>
+  
+
+<!-- these are libraries for MULTIPLE SELECT -->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.css" />
+<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script> -->
+<script src="{% static 'assets/js/jquery.min.js'%}"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.bundle.min.js"></script>
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script>
+<!-- end of libraries for multiple select -->
+<script>
+  var jQuery_2_1_1 = $.noConflict(true);
+  </script>
+
+
+
+<script type="text/javascript">
+  window.onload = function() {
+      document.body.style.zoom = "90%";
+  }
+</script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+<script src=" {% static 'assets/js/echarts.min.js'%}"></script>
+
+
+
+<style>
+    .display td, .display th {
+        border-right: 1px solid #ddd; /* Right border for each cell */
+    }
+    .display th, .display td {
+        border-bottom: 1px solid #ddd; /* Bottom border for each cell */
+    }
+    .display tr:last-child td {
+        border-bottom: none; /* Remove bottom border for the last row */
+    }
+    .display thead th:last-child, .display tbody td:last-child {
+        border-right: none; /* Remove right border for the last column */
+    }
+
+    .wrap-comments {
+    word-wrap: break-word; 
+    max-width: 1600px; /* or whatever maximum width you want */
+     }
+
+        .hide-element {
+        display: none;
+    }
+
+      .bg-none {
+          background-color: #f3f3f3; /* or any color you'd like */
+      }
+
+
+          /* Targeting the 2nd, 3rd, and 4th columns of the table */
+    #AgeOldestsample td:nth-child(2),
+    #AgeOldestsample td:nth-child(3),
+    #AgeOldestsample td:nth-child(4) {
+        width: 100px; /* Or whatever width you prefer */
+    }
+
+
+          /* Define the rotation animation */
+      @keyframes rotate {
+          from { transform: rotate(0deg); }
+          to { transform: rotate(360deg); }
+      }
+
+      /* Apply the animation to the loading element */
+      .loading {
+          animation: rotate 1.5s linear infinite;
+      }
+
+
+      
+/* 7. Targeting the table using class "displayx" */
+.displayx {
+    /* 6. Enabling horizontal scrolling for the table */
+    overflow-x: auto;
+    display: block; /* This makes the table behave like a block element so overflow works */
+}
+
+.hidden-cell {
+        visibility: hidden;
+    }
+
+.displayx th, .displayx td {
+    /* 4. Borders for th and td */
+    border: 1px solid #ddd;
+    border-bottom: 1px solid #ddd; /* Bottom border for each cell */
+
+    /* 3. Ensuring accurate alignment */
+    vertical-align: top;
+    text-align: left;
+
+    /* 5. Text wrapping and sizing for th and td */
+    width: auto; /* Or whatever width you desire */
+    max-width: auto;
+    word-wrap: break-word;
+    white-space: normal;
+    overflow: hidden;
+    text-overflow: ellipsis; /* This will add "..." if the content is longer than the width */
+
+    /* Generic padding for better appearance */
+    padding: 8px 10px;
+}
+
+.displayx th {
+    /* 1. Grayish background for the <th> */
+    background-color: #f2f2f2;
+
+    /* 5. Text wrapping for th */
+    word-wrap: break-word;
+}
+
+.displayx tr:nth-child(odd) {
+    /* 2. Alternative colors for rows */
+    background-color: #f9f9f9;
+}
+
+.displayx tr:nth-child(even) {
+    background-color: #e9e9e9;
+}
+
+ /* Add this block of CSS to your stylesheet or inside a <style> tag in the HTML */
+  .accordion-button:hover {
+    background-color: lightgray; border: none; /* Change this color to the desired light color */
+  }
+
+
+.badge.bg-danger.badge-number {
+    font-size: 16px; /* Adjust this value to your desired size */
+}
+
+</style>
+
+
+
+
+
+
+<div class="pagetitle">
+  {% with now|time_of_day as greeting %}
+    <h1>Dashboard : :{{ user.first_name }} {{ user.last_name }}{{ user.laboratory }}</h1>
+    {% endwith %}
+   
+    <nav>
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="#">Home</a></li>
+        <li class="breadcrumb-item active">Dashboard</li>
+      </ol>
+    </nav>
+  </div><!-- End Page Title -->
+
+  <section class="section dashboard">
+    <div class="row">
+
+      <!-- Left side columns -->
+      <div class="col-lg-8">
+        <div class="row">
+
+          <!-- Sales Card -->
+          <div class="col-xxl-4">
+            <div class="card info-card sales-card">
+
+
+              <div class="card-body">
+                <h5 class="card-title">Received  <span>| this week                  
+                </span></h5>
+
+                <div class="d-flex align-items-center">
+                  <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                    <i class="bx bxs-archive"></i>
+                  </div>
+                  <div class="ps-3">
+                    {% for result in data %}
+                    {% if result.query_name == 'Homepage_received' %}
+                    {% for row in result.query_data %}
+                    <h6> {{ row.total_received }} </h6>
+                    {% endfor %}
+                    {% endif %}
+                    {% endfor %}
+                  
+                  <span class="text-danger small pt-1 fw-bold">
+                    {% for result in data %}
+                    {% if result.query_name == 'Homepage_received' %}
+                    {% for row in result.query_data %}
+                     {{ row.perce_achievement }} 
+                    {% endfor %}
+                    {% endif %}
+                    {% endfor %}
+
+
+
+                  </span> <span class="text-muted small pt-2 ps-1">%age achievement receiving</span>
+
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div><!-- End Sales Card -->
+
+          <!-- Revenue Card -->
+          <div class="col-xxl-4 ">
+            
+              <div class="card info-card customers-card">
+
+
+              <div class="card-body">
+                <h5 class="card-title">Total Patients Run <span>| 
+                </span></h5>
+
+                <div class="d-flex align-items-center">
+                  <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                    <i class="bx bx-task-x"></i>
+                  </div>
+                  <div class="ps-3">
+                    {% for result in data %}
+                    {% if result.query_name == 'weekly_Dashboard_sampleRUN' %}
+                    {% for row in result.query_data %}
+                    <h6> {{ row.total_patients_run }} </h6>
+                    {% endfor %}
+                    {% endif %}
+                    {% endfor %}
+                    
+
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div><!-- End Revenue Card -->
+
+          <!-- Customers Card -->
+          <div class="col-xxl-4 ">
+
+            
+            <div class="card info-card revenue-card">
+
+
+              <div class="card-body">
+                <h5 class="card-title">%age Achievement<span>| testing <br>
+                 </span></h5>
+
+                <div class="d-flex align-items-center">
+                  <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                    <i class="bx bxs-cctv"></i>
+                  </div>
+                  <div class="ps-3">
+                    {% for result in data %}
+                    {% if result.query_name == 'weekly_Dashboard_sampleRUN' %}
+                    {% for row in result.query_data %}
+                    <h6> {{ row.perc|floatformat:1 }}%</h6>
+                    {% endfor %}
+                    {% endif %}
+                    {% endfor %}
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+          </div><!-- End Customers Card -->
+
+          <!-- Reports -->
+          <div class="col-12">
+            <div class="card">
+
+
+
+              <div class="card-body">
+                <h5 class="card-title">Specimens Resolved vs UnResolved <span>/Weekly</span></h5>
+
+                <!-- Line Chart -->
+                <div id="reportsChart"></div>
+
+              
+                <!-- End Line Chart -->
+
+              </div>
+
+            </div>
+          </div><!-- End Reports -->
+
+    
+     
+      <!-- Table to show by lab --> 
+          <table width="100%" id="unresolved_missing" class="displayx table-responsive">
+            <thead>
+                <tr>
+                    {% for header in headers_unresolved %}
+                        <th>{{ header }}</th>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for result in data %}
+                    {% if result.query_name == 'lab_unresolved' %}
+                        {% for row in result.query_data %}
+                            <tr>
+                                {% for header in headers_unresolved %}
+                                    {% with cell_value=row|get_item:header %}
+                                        {% if cell_value == None or cell_value == 0 %}
+                                            <td style="background-color: rgb(55, 54, 54)7, 86, 86);"></td>
+                                        {% else %}
+                                            <td>{{ cell_value }}</td>
+                                        {% endif %}
+                                    {% endwith %}
+                                {% endfor %}
+                            </tr>
+                        {% endfor %}
+                    {% endif %}
+                {% endfor %}
+            </tbody>
+        </table>        
+      <!-- end of the table -->
+
+     
+      
+
+          <!-- Recent Sales -->
+          <div class="col-12">
+            <div class="card recent-sales overflow-auto">
+
+
+              <div class="card-body">
+                <h5 class="card-title">REAGENTS STOCK <span>| Expiaries and Dates</span></h5>
+                
+                <table width="100%" id="reagents_exp" class="displayx table-responsive">
+                  <thead>
+                      <tr>
+                          <th>LAB</th>
+                          <th>Platform</th>
+                          <th>Test Type</th>
+                          <th>Stocks Tests</th>
+                          <th>Unused Reagents</th>
+                          <th>Days Until Expiary</th>
+                          <th>Reagents to be Consumed</th>
+                          <th>Days of Stock</th>
+                          <th>Kits Expiary Dates</th>
+                          <th>Reagent Stock on hand </th>
+                          <th>8Hr Capacity </th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                  {% for result in data %}
+                      {% if result.query_name == 'reagents_stock_expiaries' %}
+                          {% for row in result.query_data %}
+                              <tr>
+                                  <td>{{ row.lab }}</td>
+                                  <td>{{ row.Platform_Roche_Abbott_Hologic_BMX }}</td>
+                                  <td>{{ row.Test_Type }}</td>
+                                  <td>{{ row.stock_tests }}</td>                                 
+                                  <td {% if row.unused_reagents <= 0 %}style="background-color: red;"{% endif %}>{{ row.unused_reagents }}</td>
+                                  <td>{{ row.DaysUntilExpiry }}</td>
+                                  <td>{{ row.reagents_tobe_consumed }}</td>
+                                  <td>{{ row.days_of_stock }}</td>
+                                  <td>{{ row.Reagent_tests_kits_available_Expiry_Date }}</td>
+                                  <td>{{ row.Reagent_tests_kits_Stock_on_hand }}</td>
+                                  <td>{{ row.capacity8hrs }}</td>
+                              </tr>
+                          {% endfor %}
+                      {% endif %}
+                  {% endfor %}
+                  </tbody>
+              </table>
+
+              </div>
+
+            </div>
+          </div><!-- End Recent Sales -->
+
+
+
+
+
+
+          
+
+          <!-- Top Selling -->
+          <div class="col-12">
+            <div class="card top-selling overflow-auto">
+
+              <div class="card-body pb-0">
+                <h5 class="card-title">Failure Rates <span>| per platform</span></h5>
+
+                <div id="failureChart"  style="width: 100%; height: 500px"></div>       
+
+
+              </div>
+
+            </div>
+          </div><!-- End Top Selling -->
+
+        </div>
+      </div><!-- End Left side columns -->
+
+      <!-- Right side columns -->
+      <div class="col-lg-4">
+        <!-- Recent Activity -->
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Weekly  Reports <span>| Received</span></h5>
+
+            <style>
+              .activity {
+                  display: flex;
+                  flex-wrap: wrap;
+              }
+          
+              .activity-item {
+                  width: 50%; /* Adjust the width as needed */
+                  box-sizing: border-box; /* Include padding and border in width calculation */
+              }
+          </style>
+         <div class="activity">
+    {% for processed_lab in processed_labs %}
+    <div class="activity-item">
+        <div class="activite-label"></div>
+        
+        {% if processed_lab.exists %}
+            <i class='bi bi-check2-square activity-badge text-success align-self-start' style="font-size: 24px;"></i> {{ processed_lab.alias }}
+        {% else %}
+            <i class='bi bi-file-x activity-badge text-secondary align-self-start' style="font-size: 24px;"></i> {{ processed_lab.alias }}
+        {% endif %}
+        
+        <div class="activity-content" style="text-align: left;"></div>
+    </div>
+    {% endfor %}
+
+
+    <span class="badge bg-danger badge-number">
+     {% for result in data %}
+    {% if result.query_name == 'count_dups' %}
+        {% for row in result.query_data %}
+            <!-- {% if row.dups > 0 %} -->
+                    {{ row.dups }}
+                <!-- {% endif %} -->
+            {% endfor %}
+      {% endif %}
+    {% endfor %}
+    </span>
+
+  </div>
+<br><br>
+
+<figure>  
+  <figcaption class="blockquote-footer">
+      <cite title="Source Title" style="color: black;"><strong>IST SUBMISSIONS</strong></cite>
+  </figcaption>
+</figure> 
+<div class="col-lg-12">
+    <div class="card">
+      <div class="card-body">
+    <div class="activity">        
+        {% for submitted in processed_province %}
+        <div class="activity-item">
+            <div class="activite-label"></div>
+            
+            {% if submitted.exists %}
+                <i class='bi bi-check2-square activity-badge text-success align-self-start' style="font-size: 24px;"></i> {{ submitted.name }}
+            {% else %}
+                <i class='bi bi-file-x activity-badge text-secondary align-self-start' style="font-size: 24px;"></i> {{ submitted.name }}
+            {% endif %}
+            
+            <div class="activity-content" style="text-align: left;"></div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div> 
+</div>
+
+      
+    
+    
+
+
+    
+      
+      
+        
+          
+        
+        
+
+
+
+          </div>          
+        </div><!-- End Recent Activity -->  
+        
+        
+        <div class="col-lg-12">
+          <!-- Recent Activity -->
+          <div class="card">
+            <div class="card-body">
+
+            
+              <h5 class="card-title">   <i class="bi bi-cart3" style="font-size: 2em;"></i><span style="margin-left: 2em;"></span>Stock Outs Alerts <span>| This week</span></h5>
+              <span class="text-success small pt-1 fw-bold">#</span> <span class="text-muted small pt-2 ps-1">The difference between <strong></strong>Reagent tests kits received on loan vs Reagent tests kits Stock on hand </span>
+
+              <table width="100%" id="stockout" class="display table-responsive">
+                <thead>
+                    <tr>
+                        <th>LAB</th>
+                        <th>Platform</th>
+                        <th>Test Type</th>
+                        <th>Stocks at hand</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for result in data %}
+                    {% if result.query_name == 'Stockout_alert' %}
+                        {% for row in result.query_data %}
+                            <tr>
+                                <td>{{ row.Name_of_Lab }}</td>
+                                <td>{{ row.Platform_Roche_Abbott_Hologic_BMX }}</td>
+                                <td>{{ row.Test_Type }}</td>
+                                <td {% if row.Stocks <= 2 %}style="background-color: red;"{% endif %}>{{ row.Stocks }}</td>
+                            </tr>
+                        {% endfor %}
+                    {% endif %}
+                {% endfor %}
+                </tbody>
+            </table>
+            
+
+  
+              </div>
+              </div>
+              </div>
+
+
+
+
+
+      </div><!-- End Right side columns -->
+
+
+
+      
+
+    </div>
+  </section>
+
+  <script>
+    jQuery_3_6_0(document).ready(function () {
+        jQuery_3_6_0(".displayx").DataTable({
+            dom: 'Bfrtip',
+            pageLength: 5 , // Display 50 rows by default
+            buttons: [
+                'copy', 'csv', 'excel', 'pdf', 'print'
+            ]
+        });
+    });
+    </script>
+
+
+  <script> 
+
+    var chartDom = document.getElementById('resolved');
+    var myChart = echarts.init(chartDom);
+    let dyta = {{ sankey_data|safe }};
+    let rinks = {{ sankey_links|safe }};
+
+
+    option = {
+  series: [
+    {
+      type: 'sankey',
+      layout: 'none',
+      emphasis: {
+        focus: 'adjacency'
+      },
+      
+   
+      data: dyta,
+
+      links: rinks,
+
+
+      lineStyle: {
+        color: 'source',
+        curveness: 0.5
+      },
+      label: {
+        show: true,
+        position: 'right',
+        formatter: '{b}\t '
+      }
+    }
+  ]
+};
+option && myChart.setOption(option);
+     
+
+
+</script>
+
+
+<script>
+
+                  document.addEventListener("DOMContentLoaded", () => {
+
+
+                                    
+                    var cliTrendDates = [ 
+                                        {% for result in data %}
+                                                  {% if result.query_name == 'CLI_Unresolved_Resolved' %}
+                                                      {% for row in result.query_data %}
+                                                      '{{ row.date }}',
+                                                      {% endfor %}
+                                                  {% endif %}
+                                              {% endfor %}
+
+                                            ];
+                    
+                    var seriesResolvedDict = {};
+                                  {% for result in data %}
+                                    {% if result.query_name == 'CLI_Unresolved_Resolved' %}
+                                        {% for row in result.query_data %}
+                                        seriesResolvedDict['{{ row.date }}'] = '{{ row.resolved }}';
+                                        {% endfor %}
+                                    {% endif %}
+                                  {% endfor %}
+
+                    
+                    var seriesResolved =cliTrendDates.map(function(re) {
+                                return seriesResolvedDict[re];
+                            });
+
+                    //------------------------------------------->        
+
+                    var seriesUnResolvedDict = {};
+                                  {% for result in data %}
+                                    {% if result.query_name == 'CLI_Unresolved_Resolved' %}
+                                        {% for row in result.query_data %}
+                                        seriesUnResolvedDict['{{ row.date }}'] = '{{ row.unresolved }}';
+                                        {% endfor %}
+                                    {% endif %}
+                                  {% endfor %}
+
+                    
+                    var seriesUnResolved =cliTrendDates.map(function(ure) {
+                                return seriesUnResolvedDict[ure];
+                            });
+
+     
+                      new ApexCharts(document.querySelector("#reportsChart"), {
+                          series: [{
+                              name: 'Resolved',
+                              data: seriesResolved
+                          }, {
+                              name: 'Unresolved',
+                              data: seriesUnResolved
+                          }],
+                          chart: {
+                              height: 350,
+                              type: 'area',
+                              toolbar: {
+                                  show: true,
+                                  download: true
+                              },
+                          },
+                          markers: {
+                                size: 5,
+                                colors: ['red', 'green', 'blue'],
+                                strokeColors: '#f8f8f8',
+                                strokeWidth: 2,
+                                strokeOpacity: 0.9,
+                                fillOpacity: 1,
+                                discrete: [],
+                                shape: 'circle', // shape can be 'circle', 'square'
+                                radius: 2,
+                                offsetX: 0,
+                                offsetY: 0
+                              },
+                          colors: ['#2eca6a', '#ff771d'],
+                          fill: {
+                              type: "gradient",
+                              gradient: {
+                                  shadeIntensity: 1,
+                                  opacityFrom: 0.3,
+                                  opacityTo: 0.4,
+                                  stops: [0, 90, 100]
+                              }
+                          },
+                          dataLabels: {
+                              enabled: true
+                          },
+                          stroke: {
+                              curve: 'smooth',
+                              width: 2
+                          },
+                          xaxis: {
+                              type: 'datetime',
+                              categories: cliTrendDates
+                          },
+                          tooltip: {
+                              x: {
+                                format: 'MMMM dd, yyyy'
+                              },
+                          }
+                      }).render();
+                  });
+    
+              
+
+</script>
+
+<script>
+  var chartDom = document.getElementById('failureChart');
+  var myChart = echarts.init(chartDom);
+  
+  setTimeout(function () {
+    var option = {
+      legend: {},
+      tooltip: {
+        trigger: 'axis',
+        showContent: false
+      },
+      toolbox: {
+        feature: {
+            dataView: {show: true, readOnly: false},
+            magicType: {show: true, type: ['line', 'bar']},
+            restore: {show: true},
+            saveAsImage: {show: true}
+        }
+    },
+      dataset: {
+        source: [
+          ['Platform', {% for date in uniqueDates %} '{{ date }}', {% endfor %}],
+          {% for result in data %}
+            {% if result.query_name == 'failure_rate_monthly' %}
+                {% for platform in uniquePlatforms %}
+                    ['{{ platform }}',
+                    {% for date in uniqueDates %}
+                        '{{ result.query_data|get_value_from_list:platform|extract_value:date }}',
+                    {% endfor %}
+                    ],
+                {% endfor %}
+            {% endif %}
+          {% endfor %}
+        ]
+      },
+      xAxis: { type: 'category' },
+      yAxis: { gridIndex: 0 },
+      grid: { top: '55%' },
+      series: [
+          { 
+              type: 'line', 
+              name: 'BMX',
+              smooth: true, 
+              seriesLayoutBy: 'row',
+              markLine: {
+                  silent: true,
+                  data: [{
+                      yAxis: 5,
+                      lineStyle: {
+                          type: 'dotted',
+                          color: 'grey'
+                      },
+                      label: {
+                          show: false
+                      }
+                  }]
+              }
+          },
+          { type: 'line', name: 'Hologic Panther' , smooth: true, seriesLayoutBy: 'row' },
+          { type: 'line', name: 'Abbott', smooth: true, seriesLayoutBy: 'row' },
+          { type: 'line', name: 'Roche CAPCTM', smooth: true, seriesLayoutBy: 'row' },
+          { type: 'line', name: 'Roche Cobbas' , smooth: true, seriesLayoutBy: 'row' },
+          {
+              type: 'pie',
+              id: 'pie',
+              radius: '30%',
+              center: ['50%', '25%'],
+              label: {
+                formatter: '{b}: {@{{ most_recent_date }}}  ({d}%)'
+              },
+              encode: {
+                itemName: 'platform',
+                value: '{{ most_recent_date }}',
+                tooltip: '{{ most_recent_date }}'
+              }
+          }
+      ]
+    };
+  
+    myChart.on('updateAxisPointer', function (event) {
+      const xAxisInfo = event.axesInfo[0];
+      if (xAxisInfo) {
+        const dimension = xAxisInfo.value + 1;
+        myChart.setOption({
+          series: {
+            id: 'pie',
+            label: {
+              formatter: '{b}: {@[' + dimension + ']} ({d}%)'
+            },
+            encode: {
+              value: dimension,
+              tooltip: dimension
+            }
+          }
+        });
+      }
+    });
+    
+    myChart.setOption(option);
+  });
+  
+  </script>
+  
+  {% endblock content %}

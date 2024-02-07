@@ -1,0 +1,1757 @@
+{% extends "base.html" %} 
+{% load static %} 
+{% load crispy_forms_tags %} 
+{% load custom_filters %}
+{% block content %}
+
+  <!-- SECTION FOR THE CONTENT SCRIPTS -->
+
+  <!--  -- E Charts-->
+  <script src="https://cdn.jsdelivr.net/npm/echarts@5.2.1/dist/echarts.min.js"></script>
+
+<!-- start Data Table libraries  -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/jquery.dataTables.min.css"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.datatables.net/v/bs4-4.6.0/jq-3.7.0/jszip-3.10.1/dt-1.13.5/af-2.6.0/b-2.4.1/b-colvis-2.4.1/b-html5-2.4.1/b-print-2.4.1/cr-1.7.0/date-1.5.1/fc-4.3.0/fh-3.4.0/kt-2.10.0/r-2.5.0/rg-1.4.0/rr-1.4.1/sc-2.2.0/sb-1.5.0/sp-2.2.0/sl-1.7.0/sr-1.3.0/datatables.min.css" rel="stylesheet">
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+<script src="https://cdn.datatables.net/v/bs4-4.6.0/jq-3.7.0/jszip-3.10.1/dt-1.13.5/af-2.6.0/b-2.4.1/b-colvis-2.4.1/b-html5-2.4.1/b-print-2.4.1/cr-1.7.0/date-1.5.1/fc-4.3.0/fh-3.4.0/kt-2.10.0/r-2.5.0/rg-1.4.0/rr-1.4.1/sc-2.2.0/sb-1.5.0/sp-2.2.0/sl-1.7.0/sr-1.3.0/datatables.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/js/bootstrap.min.js"></script>
+<!-- end Datatable -->
+ 
+<script>
+  var jQuery_3_6_0 = $.noConflict(true);
+  </script>
+  
+
+<!-- these are libraries for MULTIPLE SELECT -->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.css" />
+<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script> -->
+<script src="{% static 'assets/js/jquery.min.js'%}"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.bundle.min.js"></script>
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script>
+ <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+<!-- end of libraries for multiple select -->
+<script>
+  var jQuery_2_1_1 = $.noConflict(true);
+  </script>
+
+<!-- SweetAlert2 stylesheet -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
+
+
+<script type="text/javascript">
+  window.onload = function() {
+      document.body.style.zoom = "90%";
+  }
+</script>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+<script src=" {% static 'assets/js/echarts.min.js'%}"></script>
+<!-- Highcharts -->
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
+<script src="https://code.highcharts.com/modules/export-data.js"></script>
+<script src="https://code.highcharts.com/modules/accessibility.js"></script>
+<script src="https://code.highcharts.com/modules/pictorial.js"></script>
+<!--  -->
+
+
+<style>
+
+    /* Common properties for td and th */
+    .disp td, .disp th {
+        border-right: 1px solid #ddd; /* Right border for each cell */
+        font-size: 0.8em; /* Reduced font size for all cells */
+        text-align: center; /* Horizontally center the content */
+        vertical-align: middle; /* Vertically center the content */
+    }
+    
+    .disp th, .disp td {
+        border-bottom: 1px solid #ddd; /* Bottom border for each cell */
+    }
+    
+    /* Specific properties for th */
+    .disp th {
+        font-weight: normal; /* Headers are not bold */
+        padding: 10px; /* Space around headers */
+        /* border-right and font-size are already defined above, no need to repeat */
+    }
+    
+    /* Adjusting for the last-child specifics */
+    .disp tr:last-child td {
+        border-bottom: none; /* Remove bottom border for the last row */
+    }
+    
+    .disp thead th:last-child, .disp tbody td:last-child {
+        border-right: none; /* Remove right border for the last column */
+    }
+    
+    
+
+
+
+
+    
+    .display td, .display th {
+        border-right: 1px solid #ddd; /* Right border for each cell */
+        font-size: 0.9em; /* Reduced font size for all cells */
+    }
+    .display th, .display td {
+        border-bottom: 1px solid #ddd; /* Bottom border for each cell */
+    }
+    .display tr:last-child td {
+        border-bottom: none; /* Remove bottom border for the last row */
+    }
+    .display thead th:last-child, .display tbody td:last-child {
+        border-right: none; /* Remove right border for the last column */
+    }
+
+    .wrap-comments {
+    word-wrap: break-word; 
+    max-width: 1600px; /* or whatever maximum width you want */
+     }
+
+        .hide-element {
+        display: none;
+    }
+
+      .bg-none {
+          background-color: #f3f3f3; /* or any color you'd like */
+      }
+
+
+          /* Targeting the 2nd, 3rd, and 4th columns of the table */
+    #AgeOldestsample td:nth-child(2),
+    #AgeOldestsample td:nth-child(3),
+    #AgeOldestsample td:nth-child(4) {
+        width: 100px; /* Or whatever width you prefer */
+    }
+
+
+          /* Define the rotation animation */
+      @keyframes rotate {
+          from { transform: rotate(0deg); }
+          to { transform: rotate(360deg); }
+      }
+
+      /* Apply the animation to the loading element */
+      .loading {
+          animation: rotate 1.5s linear infinite;
+      }
+
+ /* Style for the button */
+ button {
+            background-color: #e0e0e0; /* Light gray background */
+            color: #a0a0a0; /* Faint text color */
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: 0.3s; /* Transition effect for hover */
+        }
+
+        button:hover {
+            background-color: #c0c0c0; /* Slightly darker gray for hover */
+        }
+
+        i.bi {
+            margin-right: 5px; /* Spacing between the icon and the text */
+        }
+
+        @keyframes rotate {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .rotate-icon {
+            animation: rotate 2s linear infinite;
+        }
+
+
+        #submitsync.active {
+        background-color: rgb(147, 147, 245) !important;
+        border-color: rgb(147, 147, 245) !important;
+        font-weight: bold;
+        color: black;
+        }
+
+/* loader for spinning */
+    .loader {
+    border: 16px solid #f3f3f3;
+    /* Light grey */
+    border-top: 16px solid #3498db;
+    /* Blue */
+    border-radius: 50%;
+    width: 120px;
+    height: 120px;
+    animation: spin 2s linear infinite;
+  }
+
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+
+
+  .province-cell {
+    cursor: pointer;
+    text-decoration: underline;
+    color: blue;  // or any other color to indicate it's a link
+}
+
+.province-cell:hover {
+    background-color: #f5f5f5;  // light gray background on hover
+}
+
+.highcharts-figure,
+.highcharts-data-table table {
+    min-width: 310px;
+    max-width: 800px;
+    margin: 1em auto;
+}
+
+#container {
+    height: 400px;
+}
+
+.highcharts-data-table table {
+    font-family: Verdana, sans-serif;
+    border-collapse: collapse;
+    border: 1px solid #ebebeb;
+    margin: 10px auto;
+    text-align: center;
+    width: 100%;
+    max-width: 500px;
+}
+
+.highcharts-data-table caption {
+    padding: 1em 0;
+    font-size: 1.2em;
+    color: #555;
+}
+
+.highcharts-data-table th {
+    font-weight: 600;
+    padding: 0.5em;
+}
+
+.highcharts-data-table td,
+.highcharts-data-table th,
+.highcharts-data-table caption {
+    padding: 0.5em;
+}
+
+.highcharts-data-table thead tr,
+.highcharts-data-table tr:nth-child(even) {
+    background: #f8f8f8;
+}
+
+.highcharts-data-table tr:hover {
+    background: #f1f7ff;
+}
+
+
+
+</style>
+
+
+
+<div class="modal fade" id="provinceModal" tabindex="-1" role="dialog" aria-labelledby="provinceModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="provinceModalLabel">Province Details</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- Data will be populated here dynamically -->
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- This is the section we are to put the spinning -->
+
+<div id="spinner" class="loader" style="display:none;"></div>
+<!-- end of spinning code -->
+
+
+
+
+<form method="post" enctype="multipart/form-data" id="sync-form"></form>
+{% csrf_token %}  
+<div class="row">  
+    <div class="col-lg-6">       
+         
+               <!-- <button class="btn btn-primary" type="button" disabled>
+                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                Loading...
+              </button> -->
+
+
+    </div>
+    <!-- style="font-size: 2rem;" -->
+    <div class="col-lg-6">
+        <nav>
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item"><i class="bi bi-pc-display-horizontal"  ></i></li>
+              <li class="breadcrumb-item"><a href="#">Last uploaded  date: </a></li>
+              <li class="breadcrumb-item ">{{last_Uploaded_date}}</li>
+            </ol>
+        </nav>
+         
+    </div>
+   
+
+
+    {% for message in messages %}
+    <div class="alert {{ message.tags }} alert-dismissible fade show" role="alert">
+    <i class="bi bi-exclamation-octagon me-1"></i>
+    {{ message|safe }} <br>      
+     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% endfor %}    
+</div>
+</form>
+
+
+<!-- lets put the filters -->
+{% load crispy_forms_tags %}
+<form method="POST">
+    {% csrf_token %}
+
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="alert border-primary alert-dismissible fade show" role="alert">
+                    <div class="row">
+
+                        <div class="col-lg-3" style="display: flex; align-items: center;">
+                            <i class="bi bi-book-" style="font-size: 4em;"></i>
+                            <span style="margin-left: 2em;">
+                                <strong>Apply the filter<br> <i>By default analysis is for this week</i></strong>
+                            </span>
+                        </div>
+
+
+                        <div class="col-lg-3">
+                            <label for="inputDate" style="font-weight: bold; font-family: Arial, sans-serif;">Start
+                                Date</label>
+                            <input type="date" id="startdate" name="startdate" class="form-control" required>
+                        </div>
+
+                        <div class="col-lg-3">
+                            <label for="inputDate" style="font-weight: bold; font-family: Arial, sans-serif;">End
+                                Date</label>
+                            <input type="date" id="enddate" name="enddate" class="form-control" required>
+                        </div>
+
+                        <div class="col-lg-3">
+                            <label for="inputDate"
+                                style="font-weight: bold; font-family: Arial, sans-serif;">.</label><br>
+                            <button  id="submitfilterx" name="submitfilterx" class="btn btn-primary"
+                                style="font-size: 20px; ">Submit</button>
+
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<!-- end of filters -->
+
+
+<div class="row">  
+    <div class="col-lg-4">  
+        <div class="card">
+            <div class="card-body">
+
+    <span class="text-success small pt-1 fw-bold" style="font-size: 20px;"> 
+        {% for result in data %}
+        {% if result.query_name == 'ist_getbike_functionality' %}
+            {% for row in result.query_data %}
+            {{ row|get_item:"functional_bikes"|default:"" }}
+
+            {% endfor %}
+        {% endif %}
+    {% endfor %}</span>
+    
+    Functional Bikes
+          
+    Over 
+    <span class="text-success small pt-1 fw-bold" style="font-size: 20px;">
+         {% for result in data %}
+    {% if result.query_name == 'ist_getbike_functionality' %}
+        {% for row in result.query_data %}
+        {{ row|get_item:"numweeks"|default:"" }}
+        {% endfor %}
+    {% endif %}
+    {% endfor %}
+ </span>  weeks. This translate to 
+
+                   
+    <span class="text-success small pt-1 fw-bold" style="font-size: 20px;">
+         {% for result in data %}
+        {% if result.query_name == 'ist_getbike_functionality' %}
+            {% for row in result.query_data %}
+            {{ row|get_item:"bike_functionality"|default:"" }} %
+            {% endfor %}
+        {% endif %} 
+    {% endfor %} 
+</span> Bike Functionality.
+
+A total of 
+<span class="text-success small pt-1 fw-bold" style="font-size: 20px;">
+{% for result in data %}
+{% if result.query_name == 'ist_getbike_functionality' %}
+    {% for row in result.query_data %}
+    {{ row|get_item:"relief_riders"|default:"" }} 
+    {% endfor %}
+{% endif %} 
+{% endfor %}   </span>  Relief Riders where engaged , averting 
+
+<span class="text-danger small pt-1 fw-bold" style="font-size: 20px;">
+    {% for result in data %}
+    {% if result.query_name == 'ist_getbike_functionality' %}
+        {% for row in result.query_data %}
+        {{ row|get_item:"relief_actual_vst"|default:"" }} 
+        {% endfor %}
+    {% endif %} 
+    {% endfor %}   </span> 👌 missed pick-up visits from a total of  
+    
+<span class="text-danger small pt-1 fw-bold" style="font-size: 20px;">
+    {% for result in data %}
+    {% if result.query_name == 'ist_getbike_functionality' %}
+        {% for row in result.query_data %}
+        {{ row|get_item:"total_missed_pickups"|default:"" }} 
+        {% endfor %}
+    {% endif %} 
+    {% endfor %} </span>  Missed Pick-ups 🎠 <br><br>
+        
+                
+   
+    <figure>
+     
+        <figcaption class="blockquote-footer">
+          We encorporated the holidays in our analysis, 
+          <br>If working week days=5 , Bikes with 4 & 5 days = functional.
+          <br>If  working week days=4 , Bikes with 3 , 4 & 5 days =functional.
+          <br>If  working week days=3 , Bikes with 2, 3 , 4 & 5 days = functional.
+       
+        </figcaption>
+      </figure>          
+
+             
+
+
+            </div>
+        </div>  
+
+    </div>
+    <!-- -->
+    <div class="col-lg-8">  
+
+
+        <div class="row">
+            <div class="col-12">
+
+        <div class="card">
+            <div class="card-body">
+
+                <div id="rxnnonfunxn"  style="width: 100%;height: 200px"></div>
+                <figure>
+                    <blockquote class="blockquote">
+                      NON BIKE FUNCTIONALITY REASONS.
+                    </blockquote>
+                    
+                  </figure>
+<script>
+
+var chartDom = document.getElementById('rxnnonfunxn');
+var myChart = echarts.init(chartDom);
+var option;
+
+var Bike_breakdown_int = [
+          {% for result in data %}
+            {% if result.query_name == 'ist_getRxns_nonfunctional' %}
+                {% for row in result.query_data %}
+                {{ row|get_item:"Bike_breakdown"|default:0| to_int }} 
+                {% endfor %}
+            {% endif %}
+        {% endfor %}];
+var Bike_breakdown=Bike_breakdown_int[0]
+
+    
+
+
+
+
+var Maintanance_service_int = [ 
+    {% for result in data %}
+                {% if result.query_name == 'ist_getRxns_nonfunctional' %}
+                    {% for row in result.query_data %}
+                    {{ row|get_item:"Maintanance_service"|default:0| to_int }} 
+                    {% endfor %}
+                {% endif %}
+            {% endfor %}];
+var Maintanance_service=Maintanance_service_int[0]
+    
+      
+var No_fuel_int = [
+        {% for result in data %}
+                    {% if result.query_name == 'ist_getRxns_nonfunctional' %}
+                        {% for row in result.query_data %}
+                        {{ row|get_item:"No_fuel"|default:0| to_int }} 
+                        {% endfor %}
+                    {% endif %}
+                {% endfor %}];
+var No_fuel=No_fuel_int[0]
+           
+
+var Sick_leave_int =  [
+            {% for result in data %}
+                        {% if result.query_name == 'ist_getRxns_nonfunctional' %}
+                            {% for row in result.query_data %}
+                            {{ row|get_item:"Sick_leave"|default:0| to_int }} 
+                            {% endfor %}
+                        {% endif %}
+                    {% endfor %} ];
+            
+var Sick_leave  =Sick_leave_int[0]            
+
+var Annual_leave_int =  [
+                {% for result in data %}
+                            {% if result.query_name == 'ist_getRxns_nonfunctional' %}
+                                {% for row in result.query_data %}
+                                {{ row|get_item:"Annual_leave"|default:0| to_int }} 
+                                {% endfor %}
+                            {% endif %}
+                        {% endfor %} ];
+var Annual_leave=Annual_leave_int[0]               
+                   
+    
+var Inclement_weather_int = [ 
+                {% for result in data %}
+                            {% if result.query_name == 'ist_getRxns_nonfunctional' %}
+                                {% for row in result.query_data %}
+                                {{ row|get_item:"Inclement_weather"|default:0| to_int }} 
+                                {% endfor %}
+                            {% endif %}
+                        {% endfor %} ];
+var Inclement_weather=Inclement_weather_int[0]               
+                    
+
+    
+var Accident_damage_int =  [
+                    {% for result in data %}
+                                {% if result.query_name == 'ist_getRxns_nonfunctional' %}
+                                    {% for row in result.query_data %}
+                                    {{ row|get_item:"Accident_damage"|default:0| to_int }} 
+                                    {% endfor %}
+                                {% endif %}
+                            {% endfor %} ];
+                    
+var Accident_damage=Accident_damage_int[0]                       
+
+var Clinical_issues_int = 
+                      [  {% for result in data %}
+                                    {% if result.query_name == 'ist_getRxns_nonfunctional' %}
+                                        {% for row in result.query_data %}
+                                        {{ row|get_item:"Clinical_issues"|default:0| to_int }} 
+                                        {% endfor %}
+                                    {% endif %}
+                                {% endfor %}];
+var Clinical_issues=Clinical_issues_int[0]
+                        
+                           
+var total = Bike_breakdown + Maintanance_service + No_fuel + Sick_leave + Annual_leave + Inclement_weather + Accident_damage + Clinical_issues;
+
+console.log("Total: " + total);
+
+
+option = {
+    tooltip: {
+      trigger: 'item'
+    },
+   
+    series: [
+      {
+        name: 'Riders who report',
+        type: 'pie',
+        radius: ['40%', '70%'],
+        center: ['50%', '70%'],
+        // adjust the start angle
+        startAngle: 180,
+        label: {
+          show: true,
+          formatter: function(param) {
+            // Use template literals for cleaner string formatting
+            return `${param.name} - ${param.value} (${param.percent.toFixed(2)}%)`;
+          }
+        },
+
+       
+        data: [
+          { value: Bike_breakdown, name: 'Bike breakdown' },
+          { value: Maintanance_service, name: 'Maintanance' },
+          { value: No_fuel, name: 'No fuel' },
+          { value: Sick_leave, name: 'Sick leave' },
+          { value: Annual_leave, name: 'Annual leave' },          
+         { value: Inclement_weather, name: 'Weather' },
+          { value: Accident_damage, name: 'Accident damage' },
+          { value: Clinical_issues, name: 'Clinical issues' },
+          
+          
+          {
+            // make an record to fill the bottom 50%
+            value: Bike_breakdown + Maintanance_service + No_fuel + Sick_leave + Annual_leave +Inclement_weather+Accident_damage+Clinical_issues,
+            itemStyle: {
+              // stop the chart from rendering this piece
+              color: 'none',
+              decal: {
+                symbol: 'none'
+              }
+            },
+            label: {
+              show: false
+            }
+          }
+        ]
+      }
+    ]
+  };
+
+option && myChart.setOption(option);
+
+
+                </script>
+
+                
+            </div>
+        </div>  
+
+
+
+
+    </div></div> <!-- end of 1 st row-->
+
+    <div class="row">
+        <div class="col-12">
+
+                      
+            <table width="100%" id="rxnsum" class="disp table-responsive">
+                <thead>
+                  <tr>
+                    <th>Bike_breakdown</th>
+                    <th>Maintanance_service</th>
+                    <th>No_fuel </th>
+                    <th>Sick_leave</th>
+                    <th>Annual_leave </th>
+                    <th>Inclement_weather </th>
+                    <th>Accident_damage</th>
+                    <th>Clinical_issues</th>
+             
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for result in data %}
+                      {% if result.query_name == 'ist_getRxns_Summing_all' %}
+                          {% for row in result.query_data %}
+                              <tr>
+                                  <td> ({{ row|get_item:"Bike_breakdown_count"|default:0 }} rdrs) {{ row|get_item:"Bike_breakdown"|default:0 }} days</td>
+                                  <td>({{ row|get_item:"Maintanance_service_count"|default:0 }} rdrs) {{ row|get_item:"Maintanance_service"|default:0 }} days</td>
+                                  <td>({{ row|get_item:"No_fuel_count"|default:0 }} r) {{ row|get_item:"No_fuel"|default:0 }} days  </td>
+                                  <td >({{ row|get_item:"Sick_leave_count"|default:0 }} r) {{ row|get_item:"Sick_leave"|default:0 }}  days  </td>
+                                  <td > ({{ row|get_item:"Annual_leave_count"|default:0 }} r) {{ row|get_item:"Annual_leave"|default:0 }} days </td>
+
+                                  <td > ({{ row|get_item:"Inclement_weather_count"|default:0 }} r) {{ row|get_item:"Inclement_weather"|default:0 }} days  </td>
+                                  <td > ({{ row|get_item:"Accident_damage_count"|default:0 }} r) {{ row|get_item:"Accident_damage"|default:0 }} days </td>
+
+                                  <td > ({{ row|get_item:"Clinical_issues"|default:0 }} r) {{ row|get_item:"Clinical_issues"|default:0 }} days </td>
+                     
+                              </tr>
+                          {% endfor %} 
+                      {% endif %}
+                  {% endfor %}
+                  </tbody>
+              </table>
+<hr>
+              <table width="100%" id="rxnsumcc" class="disp table-responsive">
+                <thead>
+                  <tr>
+                    <th>Bike_breakdown</th>
+                    <th>Maintanance_service</th>
+                    <th>No_fuel </th>
+                    <th>Sick_leave</th>
+                    <th>Annual_leave </th>
+                    <th>Inclement_weather </th>
+                    <th>Accident_damage</th>
+                    <th>Clinical_issues</th>
+             
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for result in data %}
+                      {% if result.query_name == 'GetDistricts_with_reasons' %}
+                          {% for row in result.query_data %}
+                              <tr>
+                                  <td> {{ row|get_item:"Bike_breakdown_districts"|default:0 }}  </td>
+                                  <td>{{ row|get_item:"Maintanance_service_districts"|default:0 }}  </td>
+                                  <td>{{ row|get_item:"No_fuel_districts"|default:0 }}  </td>
+                                  <td >{{ row|get_item:"Sick_leave_districts"|default:0 }}    </td>
+                                  <td > {{ row|get_item:"Annual_leave_districts"|default:0 }}   </td>
+
+                                  <td > {{ row|get_item:"Inclement_weather_districts"|default:0 }}    </td>
+                                  <td > {{ row|get_item:"Accident_damage_districts"|default:0 }}  </td>
+
+                                  <td > {{ row|get_item:"Clinical_issues_districts"|default:0 }}   </td>
+                     
+                              </tr>
+                          {% endfor %} 
+                      {% endif %}
+                  {% endfor %}
+                  </tbody>
+              </table>
+
+              <br>
+              <figure>               
+                <figcaption class="blockquote-footer">
+                  The count of (riders)  & total days they took per reason  in the IST 
+                </figcaption>
+              </figure>
+                                
+        </div>
+    </div>
+
+
+    </div>
+
+</div><!-- end of row-->
+
+<div class="col-lg-12">
+    <div class="card">
+        <hr>
+    </div>
+</div>
+
+
+<figure>
+    <blockquote class="blockquote">
+      <p>SPECIMENS and RESULTS TRANSPORTED.</p>
+    </blockquote>
+    <figcaption class="blockquote-footer">
+      These are specimens and results transported by   <cite title="Source Title">PERMANANT  RIDERS, RELIEF RIDERS and DRIVERS</cite>. On the Driver we just take those transported for the 1st time.
+    </figcaption>
+  </figure>
+
+
+
+  <div class="col-lg-12">
+  <div id="container"  style="width: 100%; height: 500px"></div>
+    <script> 
+        document.addEventListener('DOMContentLoaded', function () {           
+
+
+            var province = [ 
+            {% for result in data %}
+                        {% if result.query_name == 'ist_getspecimen_results' %}
+                            {% for row in result.query_data %}
+                            '{{ row|get_item:"Province_"|default:"" }}', 
+                            {% endfor %}
+                        {% endif %}
+                    {% endfor %}
+
+                ];
+        
+              var seriesvl_eid_samDict = {};
+                              {% for result in data %}
+                              {% if result.query_name == 'ist_getspecimen_results' %}
+                                  {% for row in result.query_data %}
+                                  seriesvl_eid_samDict['{{ row|get_item:"Province_"|default:"" }}'] = '{{ row.total_vl_eid_sam }}';
+                                  {% endfor %}
+                              {% endif %}
+                              {% endfor %}
+            
+              var seriesvl_eid_sam = province.map(function(o) {
+                                return parseInt(seriesvl_eid_samDict[o], 10) || 0; // The "|| 0" ensures you get a number even if the parse fails
+                            });
+
+             // Step 2: Use the reduce method to sum up the elements
+            var sumvleidsam = seriesvl_eid_sam.reduce(function(a, b) {
+                return a + b;
+            }, 0); // 0 is the initial value
+
+           // console.log(sumvleidsam);  // This will print the sum
+                           
+                            
+              
+         
+      //---------------------------------------------------------------->
+      var seriesvl_eid_resDict = {};
+                              {% for result in data %}
+                              {% if result.query_name == 'ist_getspecimen_results' %}
+                                  {% for row in result.query_data %}
+                                  seriesvl_eid_resDict['{{ row|get_item:"Province_"|default:"" }}'] = '{{ row.total_vl_eid_res }}';
+                                  {% endfor %}
+                              {% endif %}
+                              {% endfor %}
+
+              
+              var seriesvl_eid_res =province.map(function(o) {
+                    
+                          return parseInt(seriesvl_eid_resDict[o], 10) || 0;
+                      });
+
+            // Step 2: Use the reduce method to sum up the elements
+            var sumvleidres = seriesvl_eid_res.reduce(function(a, b) {
+                        return a + b;
+                    }, 0); // 0 is the initial value
+
+            //console.log(sumvleidres);
+      //---------------------------------------------------------------->
+
+            Highcharts.chart('container', {
+
+             
+
+
+                chart: {
+                    type: 'bar'
+                },
+                plotOptions: {
+                    bar: {
+                        borderRadius: '50%',
+                        dataLabels: {
+                            enabled: true
+                        },
+                        groupPadding: 0.1
+                    }
+                },
+                title: {
+                    text: 'Overal VL /EID Samples & Results Transported'
+                },
+                xAxis: {
+                    categories: province
+                },
+                yAxis: {
+                    title: {
+                        text: '# of Samples'
+                    }
+                },
+                series: [{
+                    name: `Samples (${sumvleidsam})`,
+                    data: seriesvl_eid_sam
+                }, {
+                    name: `Results (${sumvleidres})`,
+                    data: seriesvl_eid_res
+                }],
+            });
+        });
+    </script>
+
+</div>
+{% comment %} 
+            <table width="100%" id="SPECIMEN" class="display table-responsive">
+                <thead>
+                    <tr>
+                        {% for header in headers %}
+                            <th>{{ header }}</th>
+                        {% endfor %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for result in data %}
+                        {% if result.query_name == 'ist_getspecimen_results' %}
+                            {% for row in result.query_data %}
+                                <tr>
+                                    {% for header in headers %}
+                                        {% with cell_value=row|get_item:header %}
+                                            {% if cell_value == None or cell_value == 0 %}
+                                                <td class="province-cell" style="background-color: rgb(55, 54, 54)7, 86, 86);"></td>
+                                            {% else %}
+                                                <td class="province-cell">{{ cell_value }}</td>
+                                            {% endif %}
+                                        {% endwith %}
+                                    {% endfor %}
+                                </tr>
+                            {% endfor %}
+                        {% endif %}
+                    {% endfor %}
+                </tbody>
+            </table> {% endcomment %}
+
+
+
+
+            <div class="col-lg-12">
+                <div class="card">
+                    <hr>
+                </div>
+            </div>
+            
+               
+               
+                    <h5 class="card-title">SPECIMENS and RESULTS TRANSPORTED</h5>
+      
+                    <!-- Column Chart -->
+                    
+            
+                    <table width="100%" id="specimes" class="display table-responsive">
+                        <thead>
+                          <tr>
+                            <th>Province</th>
+                            <th>Total VL and EID Specimens</th>
+                            <th>Total VL and EID Results </th>
+                            <th>TB Specimens</th>
+                            <th>Results TB  </th>
+                            <th>VL Plasma & DBS </th>
+                            <th>EID  DBS </th>
+                            <th>HPV</th>
+                            <th>Results HPV </th>
+                            <th>Results VL Plasma & DBS </th>
+                            <th>Results EID  DBS </th>
+
+                            <th>VL Plasma</th>
+                            <th>Results VL Plasma</th>
+                            <th>VL DBS</th>
+                            <th>Results VL DBS</th>
+                                  
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {% for result in data %}
+                              {% if result.query_name == 'ist_getspecimen_results' %}
+                                  {% for row in result.query_data %}
+                                      <tr>
+                                          <td><strong>{{ row|get_item:"Province_"|default:"" }} </strong></td>
+                                          <td>{{ row|get_item:"total_vl_eid_sam"|default:"" }}</td>
+                                          <td> {{ row|get_item:"total_vl_eid_res"|default:"" }}   </td>
+                                          <td >{{ row|get_item:"Sputum_Culture_DR_NTBRL"|default:"" }}    </td>
+                                          <td > {{ row|get_item:"Sputum_Culture_DR_NTBRL_res"|default:"" }}  </td>
+
+                                          <td > {{ row|get_item:"VL_Plasma_DBS"|default:"" }}  </td>
+                                          <td > {{ row|get_item:"EID_Plasma_DBS"|default:"" }}  </td>
+
+                                          <td > {{ row|get_item:"HPV"|default:"" }}  </td>
+                                          <td > {{ row|get_item:"HPV_res"|default:"" }}  </td>
+
+                                          <td > {{ row|get_item:"VL_Plasma_DBS_res"|default:"" }}  </td>
+                                          <td > {{ row|get_item:"EID_Plasma_DBS_res"|default:"" }}  </td>
+
+                                            <td > {{ row|get_item:"vl_plasma_sam"|default:"" }}  </td>
+                                          <td > {{ row|get_item:"vl_plasma_res"|default:"" }}  </td>
+                                            <td > {{ row|get_item:"vl_dbs_sam"|default:"" }}  </td>
+                                          <td > {{ row|get_item:"vl_dbs_res"|default:"" }}  </td>
+
+
+                                      </tr>
+                                  {% endfor %}
+                              {% endif %}
+                          {% endfor %}
+                          </tbody>
+                      </table>
+                                        
+                    <!-- End Column Chart -->
+      
+               
+          
+         <div class="col-lg-12">
+            <div class="card">
+                <hr>
+            </div>
+        </div>
+
+
+        <div class="row"> 
+
+<!--Start another chart-->
+<div class="col-lg-6">
+    <div id="containerxx"  style="width: 100%; height: 500px"></div>
+      <script> 
+          document.addEventListener('DOMContentLoaded', function () {           
+  
+  
+              var provinc = [ 
+              {% for result in data %}
+                          {% if result.query_name == 'ist_getspecimen_results' %}
+                              {% for row in result.query_data %}
+                              '{{ row|get_item:"Province_"|default:"" }}', 
+                              {% endfor %}
+                          {% endif %}
+                      {% endfor %}
+  
+                  ];
+          
+                var seriesTB_samDict = {};
+                                {% for result in data %}
+                                {% if result.query_name == 'ist_getspecimen_results' %}
+                                    {% for row in result.query_data %}
+                                    seriesTB_samDict['{{ row|get_item:"Province_"|default:"" }}'] = '{{ row.Sputum_Culture_DR_NTBRL }}';
+                                    {% endfor %}
+                                {% endif %}
+                                {% endfor %}
+              
+                var seriesTB_sam = provinc.map(function(o) {
+                                  return parseInt(seriesTB_samDict[o], 10) || 0; // The "|| 0" ensures you get a number even if the parse fails
+                              });
+  
+               // Step 2: Use the reduce method to sum up the elements
+              var sumTB_sam = seriesTB_sam.reduce(function(a, b) {
+                  return a + b;
+              }, 0); // 0 is the initial value
+  
+             // console.log(sumvleidsam);  // This will print the sum
+                             
+                              
+                
+           
+        //---------------------------------------------------------------->
+        var seriesTB_resDict = {};
+                                {% for result in data %}
+                                {% if result.query_name == 'ist_getspecimen_results' %}
+                                    {% for row in result.query_data %}
+                                    seriesTB_resDict['{{ row|get_item:"Province_"|default:"" }}'] = '{{ row.Sputum_Culture_DR_NTBRL_res }}';
+                                    {% endfor %}
+                                {% endif %}
+                                {% endfor %}
+  
+                
+                var seriesTB_res =provinc.map(function(o) {
+                      
+                            return parseInt(seriesTB_resDict[o], 10) || 0;
+                        });
+  
+              // Step 2: Use the reduce method to sum up the elements
+              var sumTB_res = seriesTB_res.reduce(function(a, b) {
+                          return a + b;
+                      }, 0); // 0 is the initial value
+  
+            
+        //---------------------------------------------------------------->
+  
+        Highcharts.chart('containerxx', {
+      chart: {
+          type: 'column'
+      },
+      title: {
+          text: 'TB Samples & Results Transported',
+          align: 'left',
+      },
+      subtitle: {
+          text: 'Overal'
+      },
+      xAxis: {
+          categories: provinc,
+          crosshair: true,
+          labels: {
+            rotation: -45, // angles the labels -45 degrees
+            style: {
+                fontSize: '13px',
+                fontFamily: 'Verdana, sans-serif'
+            }
+        }
+      },
+      yAxis: {
+          min: 0,
+          title: {
+              text: '# Samples'
+          }
+      },
+      tooltip: {
+          headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+          pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+              '<td style="padding:0"><b>{point.y:.1f} </b></td></tr>',
+          footerFormat: '</table>',
+          shared: true,
+          useHTML: true
+      },
+      plotOptions: {
+          column: {
+              pointPadding: 0.2,
+              borderWidth: 0,
+              dataLabels: {
+                enabled: true
+            },
+          }
+      },
+
+     
+      colors: ['#7cb5ec', '#f7a35c'],  // Your array of colors
+      series: [ {
+          name: `TB Samples (${sumTB_sam})`,
+          data: seriesTB_sam
+  
+      }, {
+          name: `TB Results (${sumTB_res})`,
+          data: seriesTB_res
+  
+      }]
+  });
+  
+        });
+      </script>
+        </div>
+
+
+
+        <div class="col-lg-6">
+            <div id="bulb"  style="width: 100%; height: 500px"></div>
+              <script> 
+                  document.addEventListener('DOMContentLoaded', function () {  
+
+                    var sampleOtherValues = [
+                        {% for record in summary_list %}
+                            {{ record.sample_other|add:"0" }},
+                        {% endfor %}
+                        ];
+                    var samothervalues_int=sampleOtherValues[0];
+                    
+                    
+                    var samples_fbc = [
+                        {% for record in summary_list %}
+                            {{ record.samples_fbc|add:"0" }},
+                        {% endfor %}
+                        ];
+                    var samples_fbc_int=samples_fbc[0];
+                    
+                    
+                    var samples_cholera = [
+                        {% for record in summary_list %}
+                            {{ record.samples_cholera|add:"0" }},
+                        {% endfor %}
+                        ];
+                    var samples_cholera_int=samples_cholera[0];
+                    
+                    
+                    var samples_cd4 = [
+                        {% for record in summary_list %}
+                            {{ record.samples_cd4|add:"0" }},
+                        {% endfor %}
+                        ];
+                    var samples_cd_int=samples_cd4[0];
+                    
+                    var samples_malaria = [
+                        {% for record in summary_list %}
+                            {{ record.samples_malaria|add:"0" }},
+                        {% endfor %}
+                        ];
+                    var samples_malaria_int=samples_malaria[0];
+                    
+                    var samples_measles = [
+                        {% for record in summary_list %}
+                            {{ record.samples_measles|add:"0" }},
+                        {% endfor %}
+                        ];
+                    var samples_measles_int=samples_measles[0];
+                    //console.log(samples_measles_int,samples_malaria_int,samples_cd_int,samples_cholera_int,samples_fbc_int,samothervalues_int);
+                    
+        
+
+
+
+                    Highcharts.chart('bulb', {
+                        chart: {
+                            type: 'pictorial'
+                        },
+                    
+                        colors: ['#B0FDFE', '#E3FED4', '#F9F492', '#FAF269', '#FAE146', '#FDA003'],
+                    
+                        title: {
+                            text: 'Other Samples Transported'
+                        },
+                    
+                        subtitle: {
+                            text: 'Overal: ' +
+                              ' by rider / relief rider & driver'
+                        },
+                    
+                        accessibility: {
+                            screenReaderSection: {
+                                beforeChartFormat: '<{headingTagName}>{chartTitle}</{headingTagName}><p>{typeDescription}</p><p>{chartSubtitle}</p><p>{chartLongdesc}</p>'
+                            },
+                            point: {
+                                valueDescriptionFormat: '{value}.'
+                            },
+                            series: {
+                                descriptionFormat: ''
+                            },
+                            landmarkVerbosity: 'one'
+                        },
+                    
+                        xAxis: {
+                            visible: false,
+                            min: 0.2
+                        },
+                    
+                        yAxis: {
+                            visible: false
+                        },
+                    
+                        legend: {
+                            align: 'right',
+                            floating: true,
+                            itemMarginTop: 5,
+                            itemMarginBottom: 5,
+                            layout: 'vertical',
+                            margin: 0,
+                            padding: 0,
+                            verticalAlign: 'middle'
+                        },
+                    
+                        tooltip: {
+                            headerFormat: '# of',
+                            valueSuffix: ' '
+                        },
+                    
+                        plotOptions: {
+                            series: {
+                                pointPadding: 0,
+                                groupPadding: 0,
+                                borderWidth: 0,
+                                dataLabels: {
+                                    enabled: true,
+                                    align: 'center',
+                                    format: '{y} '
+                                },
+                                stacking: 'percent',
+                                paths: [{
+                                    definition: 'M480.15 0.510986V0.531986C316.002 0.531986 197.223 56.655 119.105 139.78C40.987 222.905 3.50699 332.801 0.884992 440.062C-1.74001 547.459 36.194 644.769 79.287 725.354C122.38 805.938 170.742 870.203 188.861 909.922C205.994 947.479 203.626 990.232 206.788 1033.17C209.95 1076.11 219.126 1119.48 260.261 1156.26C260.888 1156.83 261.679 1157.18 262.52 1157.27C262.639 1157.28 262.75 1157.28 262.87 1157.29L262.747 1173.69L274.021 1200.24C275.812 1214.45 275.053 1222.2 273.364 1229.45C261.44 1238.59 250.866 1253.57 283.323 1261.97V1283.88C249.425 1299.28 261.103 1315.14 283.323 1327.03L281.331 1342.96C249.673 1354.72 261.6 1377.5 282.645 1388.76V1403.36C256.094 1414.86 256.771 1436.12 283.323 1451.16V1473.73L349.035 1535.46L396.163 1582.58L397.498 1600.51H565.433V1585.91L619.193 1535.46C631.786 1531.75 660.881 1505.66 698.191 1468.41L702.729 1451.49L686.753 1440.38L687.226 1426.38C714.969 1420.61 718.256 1388.06 687.226 1382.78V1366.87C725.039 1359.03 715.965 1331.13 690.532 1325.04V1311.77C735.92 1292.94 715.774 1272.19 695.193 1267.29V1245.38C721.584 1240.94 721.209 1210.5 702.688 1201.19L711.107 1183.45L711.682 1162.54C713.198 1162.5 714.725 1162.46 716.241 1162.38C717.056 1162.36 717.845 1162.09 718.5 1161.6C754.295 1134.83 762.81 1094.37 765.299 1051.47C767.789 1008.58 764.577 962.629 775.69 923.173C788.878 876.344 833.216 822.264 875.654 750.885C918.093 679.505 958.46 590.459 963.133 472.719C967.812 354.836 929.374 236.776 848.507 148.143C767.638 59.511 644.344 0.516987 480.15 0.516987V0.510986Z'
+                                }]
+                            }
+                        },
+                        exporting: {
+                            showTable: true,
+                            style: 'font-weight: normal; font-size: 0.8em;'
+                        },
+                    
+                        series: [{
+                            name: 'Malaria',
+                            data: [samples_malaria_int]
+                        }, {
+                            name: 'Fbc',
+                            data: [samples_fbc_int]
+                        },
+                        {
+                            name: 'Other',
+                            data: [samothervalues_int]
+                        },
+                        {
+                            name: 'Measles',
+                            data: [samples_measles_int]
+                        },
+                        {
+                            name: 'Cholera',
+                            data: [samples_cholera_int]
+                        },
+                        {
+                            name: 'Cd4',
+                            data: [samples_cd_int]
+                        }
+                      
+                        ]
+                    });
+
+                });
+            </script>
+            <div class="row">
+
+                <div class="col-lg-3"></div>
+
+            <div class="col-lg-9">
+ <table width="100%" id="rxnsum" class="disp table-responsive">
+  <thead>
+    <tr>
+      <th>Results Malaria</th>
+      <th>Results Fbc</th>
+      <th>Results Other</th>
+      <th>Results Measles</th>
+      <th>Results Cholera</th>
+      <th>Results Cd4</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for record in summary_list %}
+    <tr>
+      <td>{{ record.results_malaria|default:"0" }}</td>
+      <td>{{ record.results_fbc|default:"0" }}</td>
+      <td>{{ record.result_other|default:"0" }}</td>
+      <td>{{ record.results_measles|default:"0" }}</td>
+      <td>{{ record.results_cholera|default:"0" }}</td>
+      <td>{{ record.results_cd4|default:"0" }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<br><br><br>
+
+</div>
+
+
+</div>
+
+
+
+
+        </div>
+    </div>
+
+
+
+
+        <div class="col-lg-12">
+            <div class="card">  <div class="card-body">
+                <br>
+                <figure>    
+                    <blockquote class="blockquote">
+                        <p>GLOBAL FUND   AGGREGATION.</p>
+                      </blockquote>               
+                    <figcaption class="blockquote-footer">
+                      Below is the table in which we are displaying the samples transported in Global Fund Districts and  those transported by drivers for the 1st time .
+                    </figcaption>
+                  </figure>
+            </div>
+        </div></div>
+
+
+
+        <table width="100%" id="fsamples" class="display table-responsive">
+          
+            <thead>
+                <tr>
+                    {% for header in headersGF %}
+                        <th>{{ header }}</th>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for result in data %}
+                    {% if result.query_name == 'ist_GFgetspecimen_results' %}
+                        {% for row in result.query_data %}
+                            <tr>
+                                {% for header in headersGF %}
+                                    {% with cell_value=row|get_item:header %}
+                                        {% if cell_value == None or cell_value == 0 %}
+                                            <td style="background-color: rgb(55, 54, 54)7, 86, 86);"></td>
+                                        {% else %}
+                                            <td>{{ cell_value }}</td>
+                                        {% endif %}
+                                    {% endwith %}
+                                {% endfor %}
+                            </tr>
+                        {% endfor %}
+                    {% endif %}
+                {% endfor %}
+            </tbody>
+        </table>
+        
+<br><br>
+<div class="col-lg-12">
+    <div class="card">
+        <hr>
+    </div>
+</div>
+
+        <div class="col-lg-12">
+            <div class="card">  <div class="card-body">
+                <br>
+                <figure>    
+                    <blockquote class="blockquote">
+                        <p>PEPFAR  AGGREGATION.</p>
+                      </blockquote>               
+                    <figcaption class="blockquote-footer">
+                      Below is the table in which we are displaying the samples transported in Global Fund Districts and  those transported by drivers for the 1st time .
+                    </figcaption>
+                  </figure>
+            </div>
+        </div></div>
+
+
+        
+        <table width="100%" id="pepfsamples" class="display table-responsive">
+          
+            <thead>
+                <tr>
+                    {% for header in headersGF %}
+                        <th>{{ header }}</th>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for result in data %}
+                    {% if result.query_name == 'ist_PEPFARgetspecimen_results' %}
+                        {% for row in result.query_data %}
+                            <tr>
+                                {% for header in headersGF %}
+                                    {% with cell_value=row|get_item:header %}
+                                        {% if cell_value == None or cell_value == 0 %}
+                                            <td style="background-color: rgb(55, 54, 54)7, 86, 86);"></td>
+                                        {% else %}
+                                            <td>{{ cell_value }}</td>
+                                        {% endif %}
+                                    {% endwith %}
+                                {% endfor %}
+                            </tr>
+                        {% endfor %}
+                    {% endif %}
+                {% endfor %}
+            </tbody>
+        </table>
+<br><br>
+<div class="col-lg-12">
+    <div class="card">
+        <hr>
+    </div>
+</div>
+
+        <figure>
+            <blockquote class="blockquote">
+              <p>DISTRICT LEVEL.</p>
+            </blockquote>
+            <figcaption class="blockquote-footer">
+              These are specimens and results transported by   <cite title="Source Title">PERMANANT  RIDERS, RELIEF RIDERS and DRIVERS</cite>. On the Driver we just take those transported for the 1st time.
+            </figcaption>
+          </figure>
+        
+
+<!----------------Table for districts ----------------------->
+<table width="100%" id="districts_specimens" class="display table-responsive">
+    <thead>
+
+        <tr>
+            <th colspan="2"></th>                                                
+            <th colspan="2" style="background-color: #c9eef3;text-align: center;">TOTALS</th>
+            <th colspan="2" style="background-color: #d5f4e6;text-align: center;">TB</th>
+            <th colspan="2" style="background-color: #f3f3d4;text-align: center;">VL & EID</th>
+            <th colspan="2" style="background-color: #dbfae0;text-align: center;">HPV</th>
+            <th colspan="2" style="background-color: #f2d9f4;text-align: center;">VL & EID results</th>
+
+        </tr>
+
+
+      <tr>
+        <th>Province</th>
+        <th>District</th>
+        <th>Total VL and EID Specimens</th>
+        <th>Total VL and EID Results </th>
+        <th>TB Specimens</th>
+        <th>Results TB  </th>
+        <th>VL Plasma & DBS </th>
+        <th>EID Plasma & DBS </th>
+        <th>HPV</th>
+        <th>Results HPV </th>
+        <th>Results VL Plasma & DBS </th>
+        <th>Results EID Plasma & DBS </th>
+              
+      </tr>
+    </thead>
+    <tbody>
+      {% for result in data %}
+          {% if result.query_name == 'DISTRICT_GetSpecimens_and_Results' %}
+              {% for row in result.query_data %}
+                  <tr>
+                      <td><strong>{{ row|get_item:"Province_"|default:"" }} </strong></td>
+                      <td>{{ row|get_item:"District_"|default:"" }} </td>
+                      <td>{{ row|get_item:"total_vl_eid_sam"|default:"" }}</td>
+                      <td> {{ row|get_item:"total_vl_eid_res"|default:"" }}   </td>
+                      <td >{{ row|get_item:"Sputum_Culture_DR_NTBRL"|default:"" }}    </td>
+                      <td > {{ row|get_item:"Sputum_Culture_DR_NTBRL_res"|default:"" }}  </td>
+
+                      <td > {{ row|get_item:"VL_Plasma_DBS"|default:"" }}  </td>
+                      <td > {{ row|get_item:"EID_Plasma_DBS"|default:"" }}  </td>
+
+                      <td > {{ row|get_item:"HPV"|default:"" }}  </td>
+                      <td > {{ row|get_item:"HPV_res"|default:"" }}  </td>
+
+                      <td > {{ row|get_item:"VL_Plasma_DBS_res"|default:"" }}  </td>
+                      <td > {{ row|get_item:"EID_Plasma_DBS_res"|default:"" }}  </td>
+                  </tr>
+              {% endfor %}
+          {% endif %}
+      {% endfor %}
+      </tbody>
+  </table>
+                    
+
+
+                     
+<br><hr><br>
+<div class="col-lg-12">
+    <div class="card">
+        <hr>
+    </div>
+</div>
+
+  <figure>
+    <blockquote class="blockquote">
+      <p>WEEK by WEEK  LEVEL.</p>
+    </blockquote>
+    <figcaption class="blockquote-footer">
+        USE FILTER TO INCREASE THE TIME SPAN <br>
+      These are specimens and results transported by   <cite title="Source Title">PERMANANT  RIDERS, RELIEF RIDERS and DRIVERS</cite>. On the Driver we just take those transported for the 1st time.
+    </figcaption>
+  </figure>
+
+  
+
+<!----------------Table for districts ----------------------->
+<table width="100%" id="wkly_specimens" class="display table-responsive">
+    <thead>
+
+        <tr>
+            <th colspan="1"></th>                                                
+            <th colspan="2" style="background-color: #c9eef3;text-align: center;">TOTALS</th>
+            <th colspan="2" style="background-color: #d5f4e6;text-align: center;">TB</th>
+            <th colspan="2" style="background-color: #f3f3d4;text-align: center;">VL & EID</th>
+            <th colspan="2" style="background-color: #dbfae0;text-align: center;">HPV</th>
+            <th colspan="2" style="background-color: #f2d9f4;text-align: center;">VL & EID results</th>
+
+        </tr>
+
+
+      <tr>
+        <th>Date</th>    
+        <th>Total VL and EID Specimens</th>
+        <th>Total VL and EID Results </th>
+        <th>TB Specimens</th>
+        <th>Results TB  </th>
+        <th>VL Plasma & DBS </th>
+        <th>EID Plasma & DBS </th>
+        <th>HPV</th>
+        <th>Results HPV </th>
+        <th>Results VL Plasma & DBS </th>
+        <th>Results EID Plasma & DBS </th>
+
+              
+      </tr>
+    </thead>
+    <tbody>
+      {% for result in data %}
+          {% if result.query_name == 'weekly_ist_transported' %}
+              {% for row in result.query_data %}
+                  <tr>
+                      <td><strong>{{ row|get_item:"month"|default:"" }} </strong></td>
+                  
+                      <td>{{ row|get_item:"total_vl_eid_sam"|default:0 }}</td>
+                      <td> {{ row|get_item:"total_vl_eid_res"|default:0 }}   </td>
+                      <td >{{ row|get_item:"Sputum_Culture_DR_NTBRL"|default:0 }}    </td>
+                      <td > {{ row|get_item:"Sputum_Culture_DR_NTBRL_res"|default:0 }}  </td>
+
+                      <td > {{ row|get_item:"VL_Plasma_DBS"|default:0 }}  </td>
+                      <td > {{ row|get_item:"EID_Plasma_DBS"|default:0 }}  </td>
+
+                      <td > {{ row|get_item:"HPV"|default:0 }}  </td>
+                      <td > {{ row|get_item:"HPV_res"|default:0 }}  </td>
+
+                      <td > {{ row|get_item:"VL_Plasma_DBS_res"|default:0 }}  </td>
+                      <td > {{ row|get_item:"EID_Plasma_DBS_res"|default:0 }}  </td>
+          
+                  </tr>
+              {% endfor %}
+          {% endif %}
+      {% endfor %}
+      </tbody>
+  </table>
+
+
+
+                       
+<br><hr><br>
+<div class="col-lg-12">
+    <div class="card">
+        <hr>
+    </div>
+</div>
+
+<figure>
+  <blockquote class="blockquote">
+    <p>MONTH by MONTH  LEVEL.</p>
+  </blockquote>
+  <figcaption class="blockquote-footer">
+    USE FILTER TO INCREASE THE TIME SPAN <br>
+    These are specimens and results transported by   <cite title="Source Title">PERMANANT  RIDERS, RELIEF RIDERS and DRIVERS</cite>. On the Driver we just take those transported for the 1st time.
+  </figcaption>
+</figure>
+<!----------------Table for districts ----------------------->
+<table width="100%" id="month_specv" class="display table-responsive">
+    <thead>
+
+        <tr>
+            <th colspan="1"></th>                                                
+            <th colspan="2" style="background-color: #c9eef3;text-align: center;">TOTALS</th>
+            <th colspan="2" style="background-color: #d5f4e6;text-align: center;">TB</th>
+            <th colspan="2" style="background-color: #f3f3d4;text-align: center;">VL & EID</th>
+            <th colspan="2" style="background-color: #dbfae0;text-align: center;">HPV</th>
+            <th colspan="2" style="background-color: #f2d9f4;text-align: center;">VL & EID results</th>
+
+        </tr>
+
+
+      <tr>
+        <th>Date</th>    
+        <th>Total VL and EID Specimens</th>
+        <th>Total VL and EID Results </th>
+        <th>TB Specimens</th>
+        <th>Results TB  </th>
+        <th>VL Plasma & DBS </th>
+        <th>EID Plasma & DBS </th>
+        <th>HPV</th>
+        <th>Results HPV </th>
+        <th>Results VL Plasma & DBS </th>
+        <th>Results EID Plasma & DBS </th>
+
+              
+      </tr>
+    </thead>
+    <tbody>
+      {% for result in data %}
+          {% if result.query_name == 'monthly_ist_transported' %}
+              {% for row in result.query_data %}
+                  <tr>
+                      <td><strong>{{ row|get_item:"month"|default:"" }} </strong></td>
+                  
+                      <td>{{ row|get_item:"total_vl_eid_sam"|default:0 }}</td>
+                      <td> {{ row|get_item:"total_vl_eid_res"|default:0 }}   </td>
+                      <td >{{ row|get_item:"Sputum_Culture_DR_NTBRL"|default:0 }}    </td>
+                      <td > {{ row|get_item:"Sputum_Culture_DR_NTBRL_res"|default:0 }}  </td>
+
+                      <td > {{ row|get_item:"VL_Plasma_DBS"|default:0 }}  </td>
+                      <td > {{ row|get_item:"EID_Plasma_DBS"|default:0 }}  </td>
+
+                      <td > {{ row|get_item:"HPV"|default:0 }}  </td>
+                      <td > {{ row|get_item:"HPV_res"|default:0 }}  </td>
+
+                      <td > {{ row|get_item:"VL_Plasma_DBS_res"|default:0 }}  </td>
+                      <td > {{ row|get_item:"EID_Plasma_DBS_res"|default:0 }}  </td>
+          
+                  </tr>
+              {% endfor %}
+          {% endif %}
+      {% endfor %}
+      </tbody>
+  </table>
+
+
+
+
+
+
+
+<script>
+jQuery_3_6_0(document).ready(function () {
+    jQuery_3_6_0(".display").DataTable({
+        dom: 'Bfrtip',
+        pageLength: 10 , // Display 50 rows by default
+        buttons: [
+            'copy', 'csv', 'excel', 'pdf', 'print'
+        ]
+    });
+});
+</script>
+              
+
+
+
+
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('#submitfilterx').on('click', function(e) {
+          // Add loading class and update button text
+            submitButton.prop('disabled', true).addClass('loading').html('Loading...');
+            var submitButton = $('#submitfilterx'); 
+            var startdateVal = $('#startdate').val();
+            var enddateVal = $('#enddate').val();
+    
+            var starting = new Date(startdateVal);
+            var ending = new Date(enddateVal);
+            var today = new Date();
+            today.setHours(0, 0, 0, 0);
+    
+            if (startdateVal == '' || enddateVal == '') {
+                $("#response-msg-container").html(`
+                    ...
+                `);
+                $("#startdate").focus();
+                return;
+            } else if (starting > today || ending > today) {
+                $("#response-msg-container").html(`
+                    ...
+                `);
+                $("#startdate").focus();
+                return;
+            } else if (starting > ending) {
+                $("#response-msg-container").html(`
+                Start date should not be greater than end date 
+                `);
+                $("#startdate").focus();
+                return;
+            } else if ((ending.getTime() - starting.getTime()) / (1000 * 3600 * 24) != 7) {
+                $("#response-msg-container").html(`
+                    ...
+                `);
+                $("#startdate").focus();
+                return;
+            } else if (starting.getDay() != 1 || ending.getDay() != 0) {
+                $("#response-msg-container").html(`
+                    ...
+                `);
+                $("#startdate").focus();
+                return;
+            } else {
+    
+              
+                $.ajax({
+                     type: 'POST', 
+                     type: "POST",
+                        url: '{% url 'IST_specimens_and_results' %}', 
+                        data: {
+                          startdate: startdate,
+                          enddate: enddate,
+                          csrfmiddlewaretoken: '{{ csrf_token }}', // Include the CSRF token in the data
+                        },
+                        success: function (response) {
+                        $('#response-msg-container').html('<div class="alert alert-error" role="alert">' + responsd + '</div>');
+    
+                        },
+                        error: function(error) {
+                              console.log(error);
+                            }
+    
+                            complete: function() {
+                        // Revert the button text and appearance after processing is complete
+                                            submitButton.prop('disabled', false).html('Submit');
+                                        }
+    
+    
+                }); // end of ajax 
+            }
+        });
+    });
+    
+    
+      </script>
+
+{% endblock content %}

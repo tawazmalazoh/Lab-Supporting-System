@@ -1,0 +1,605 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+  <title>LSS M and E Dashboard</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+ 
+
+  
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <!-- Favicons -->
+  <link href="{% static 'assets/img/favicon.png'%}" rel="icon">
+  <link href="{% static 'assets/img/apple-touch-icon.png'%}" rel="apple-touch-icon">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.gstatic.com" rel="preconnect">
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="{% static 'assets/vendor/bootstrap/css/bootstrap.min.css'%}" rel="stylesheet">
+  <link href="{% static 'assets/vendor/bootstrap-icons/bootstrap-icons.css'%}" rel="stylesheet">
+  <link href="{% static 'assets/vendor/boxicons/css/boxicons.min.css'%}" rel="stylesheet">
+  <link href="{% static 'assets/vendor/quill/quill.snow.css'%}" rel="stylesheet">
+  <link href="{% static 'assets/vendor/quill/quill.bubble.css'%}" rel="stylesheet">
+  <link href="{% static 'assets/vendor/remixicon/remixicon.css'%}" rel="stylesheet">
+  <link href="{% static 'assets/vendor/simple-datatables/style.css'%}" rel="stylesheet">
+
+  <!-- Template Main CSS File -->
+  <link href="{% static 'assets/css/style.css'%}" rel="stylesheet">
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+
+
+
+  <!-- DataTables CSS -->
+
+
+
+
+
+
+<style >
+
+  /* Style for the modal */
+.modali {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgba(0,0,0,0.4); /* Black with opacity */
+}
+
+/* Modal content box */
+.modali-content {
+    position: relative;
+    background-color: #fefefe;
+    margin: 10% auto; /* 15% from the top and centered */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 30%; /* Could be more or less, depending on screen size */
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+}
+
+/* Close button */
+.close-button {
+    color: #aaaaaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close-button:hover,
+.close-button:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* Styles for the text box */
+#adminPasswordInput {
+    display: block; /* To make it block level and take full width */
+    margin: 10px auto; /* Centering it and adding some margin on top and bottom */
+    width: 80%; /* Taking up 80% of the parent's width */
+    padding: 10px; /* Increasing its size by adding some padding */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Adding a shadow */
+}
+
+/* Styles for the button */
+button {
+    display: block; /* To make it block level */
+    margin: 10px auto; /* Centering it and adding some margin on top and bottom */
+    background-color: blue; /* Setting the background color to blue */
+    color: white; /* Changing the text color to white for better contrast */
+    padding: 10px 20px; /* Adding some padding to increase its size */
+    border: none; /* Removing the default border */
+    cursor: pointer; /* Making it obvious it's clickable */
+    transition: background-color 0.3s; /* Adding a transition for a hover effect */
+}
+
+button:hover {
+    background-color: darkblue; /* Changing the background color on hover for a subtle effect */
+}
+  </style>
+
+  
+</head>
+
+<body>
+
+  <div id="spinner" class="loader" style="display:none;"></div>
+
+
+
+<!----------------END Modal to collect Admin Password  -->
+<!-- Modal structure -->
+<div id="adminPasswordModal" class="modali">
+  <div class="modali-content">
+    <span class="close-button" onclick="closeModal()">&times;</span>
+    <h2>Admin Password</h2>
+    <input type="password" id="adminPasswordInput" placeholder="Enter Admin Password">
+    <p id="error-message" style="color: red;"></p> <!-- For displaying error messages -->
+    <div style="display: flex; align-items: center;">
+      <button onclick="verifyPassword()" style="margin-right: 20px;">Submit</button>
+      <input type="checkbox" id="chk" name="chk" style="transform: scale(1.5);">
+      <label for="chk" style="margin-left: 20px;">Show Password</label>
+  </div>
+</div>
+
+  <script>
+  const adminPasswordInput=document.getElementById("adminPasswordInput");
+  const chk=document.getElementById("chk");
+  chk.onchange=function(e) {
+    adminPasswordInput.type=chk.checked ? "text" : "password";
+
+  };
+
+  </script>
+</div>
+
+  <!-- ======= Header ======= -->
+  <header id="header" class="header fixed-top d-flex align-items-center">
+
+    <div class="d-flex align-items-center justify-content-between">
+      <a href="{% url 'BASE' %}" class="logo d-flex align-items-center">
+        <img src="{% static 'assets/img/logo.jpg'%}" alt="">
+        <span class="d-none d-lg-block">M and E </span>
+      </a>
+      <i class="bi bi-list toggle-sidebar-btn"></i>
+    </div><!-- End Logo -->
+
+    <div class="search-bar">
+      <form class="search-form d-flex align-items-center" method="POST" action="#">
+        <input type="text" name="query" placeholder="Search" title="Enter search keyword">
+        <button type="submit" title="Search"><i class="bi bi-search"></i></button>
+      </form>
+    </div><!-- End Search Bar -->
+
+    <nav class="header-nav ms-auto">
+      <ul class="d-flex align-items-center">
+
+        <li class="nav-item d-block d-lg-none">
+          <a class="nav-link nav-icon search-bar-toggle " href="#">
+            <i class="bi bi-search"></i>
+          </a>
+        </li><!-- End Search Icon-->
+
+        <li class="nav-item dropdown">
+
+          <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
+            <i class="bi bi-bell"></i>
+            <span class="badge bg-primary badge-number">             
+
+
+            </span>
+
+
+            
+          </a><!-- End Notification Icon -->
+
+          <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications">
+            <li class="dropdown-header">
+              <Nav></Nav>
+              <a href="#"><span class="badge rounded-pill bg-primary p-2 ms-2">View all</span></a>
+            </li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+
+            <li class="notification-item">
+              <i class="bi bi-clipboard-data"></i>
+              <div>
+                <h4> <a href="{% url 'Home_generate_excel' %}">Generate Weekly</a></h4>
+            
+              </div>
+            </li>
+
+
+            <li class="notification-item">
+              <i class="bi bi-exclamation-circle text-warning"></i>
+              <div>
+                <h4> <a href="{% url 'index_SIE' %}">SIE</a></h4>
+            
+              </div>
+            </li>
+
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+
+            <li class="dropdown-footer">
+              <a href="{% url 'weeklyNarrative_view' %}">weekly narative</a>
+            </li>
+
+          </ul><!-- End Notification Dropdown Items -->
+
+        </li><!-- End Notification Nav -->
+
+        <li class="nav-item dropdown">
+
+          <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
+            <i class="bi bi-chat-left-text"></i>
+            <span class="badge bg-success badge-number">
+
+              <!-- {% for result in data %}
+              {% if result.query_name == 'count_dups' %}
+              {% for row in result.query_data %}
+               {{ row.dups }} 
+              {% endfor %}
+              {% endif %}
+              {% endfor %} -->
+
+            </span>
+          </a><!-- End Messages Icon -->
+
+          <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow messages">
+            <li class="dropdown-header">
+              <!-- Duplicate Dashboards
+              <table width="100%" id="dsssh" >
+                <thead>
+                    <tr>
+                        <th>LAB</th>
+                        <th>dups</th>
+                 
+                    </tr>
+                </thead>
+                <tbody>
+                {% for result in data %}
+                    {% if result.query_name == 'count_dash' %}
+                        {% for row in result.query_data %}
+                            <tr>
+                                <td>{{ row.lab }}</td>
+                                <td>{{ row.dups }}</td>                            
+                            </tr>
+                        {% endfor %}
+                    {% endif %}
+                {% endfor %}
+                </tbody>
+            </table> -->
+              <a href="#"><span class="badge rounded-pill bg-primary p-2 ms-2">View all</span></a>
+            </li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+
+   
+            <li class="dropdown-footer">
+              <a href="#">Show all messages</a>
+            </li>
+
+          </ul><!-- End Messages Dropdown Items -->
+
+        </li><!-- End Messages Nav -->
+
+        <li class="nav-item dropdown pe-3">
+
+          <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
+            <img src="{% static 'assets/img/profile-img.png'%}" alt="Profile" class="rounded-circle">
+            <span class="d-none d-md-block dropdown-toggle ps-2">{{ user.username }}</span>
+          </a><!-- End Profile Iamge Icon -->
+
+          <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
+            <li class="dropdown-header">
+              <h6>{{ user.username }}</h6>
+              <span>--</span>
+            </li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+
+            <li>
+              <a class="dropdown-item d-flex align-items-center" href="#">
+                <i class="bi bi-person"></i>
+                <span>My Profile</span>
+              </a>
+            </li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+
+            <li>
+              <a class="dropdown-item d-flex align-items-center" href="#">
+                <i class="bi bi-gear"></i>
+                <span>Account Settings</span>
+              </a>
+            </li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+
+            <li>
+              <a class="dropdown-item d-flex align-items-center" href="{% url 'logout' %}">
+                <i class="bi bi-box-arrow-right"></i>
+                <span>Sign Out</span>
+              </a>
+            </li>
+
+          </ul><!-- End Profile Dropdown Items -->
+        </li><!-- End Profile Nav -->
+
+      </ul>
+    </nav><!-- End Icons Navigation -->
+
+  </header><!-- End Header -->
+
+  <!-- ======= Sidebar ======= -->
+  <aside id="sidebar" class="sidebar">
+
+    <ul class="sidebar-nav" id="sidebar-nav">
+
+      <li class="nav-item">
+        <a class="nav-link " href="{% url 'BASE' %}">
+          <i class="bi bi-grid"></i>
+          <span> Home </span>
+        </a>
+      </li><!-- End HOME Nav -->
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#components-navx" data-bs-toggle="collapse" href="#">
+          <i class="bx bxs-bug"></i><span>Administration</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="components-navx" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+
+          <li>
+            <a href="javascript:void(0);" onclick="showAdminPasswordModal();">
+                <i class="bi bi-circle"></i><span>Manage</span>
+            </a>
+        </li>       
+
+        </ul>
+      </li><!-- End VL Nav -->
+
+      
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-toggle="collapse" href="#forms-nav">
+            <i class="bi bi-journal-text"></i><span>IST</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="forms-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
+            <li>
+                <a href="{% url 'IST_specimens_and_results' %}">
+                    <i class="bi bi-circle"></i><span>Specimens/Results Transported </span>
+                </a>
+                <ul>
+                    <li><a href="{% url 'IST_specimens_and_results' %}"><i class="bi bi-prescription"></i><span>Overal Analysis</span></a></li>
+                    <li><a href="{% url 'relief_spec_and_res' %}"><i class="bi bi-prescription"></i><span>Relief Riders</span></a></li>
+                    <li><a href="{% url 'sample_rejections' %}"><i class="bi bi-prescription"></i><span>Spec Rejections</span></a></li>
+                </ul>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link collapsed" data-bs-toggle="collapse" href="#components-nav1f">
+                    <i class="ri-mac-line"></i><span>ODK Functionality</span><i class="bi bi-chevron-down ms-auto"></i>
+                </a>
+                <ul id="components-nav1f" class="nav-content collapse" data-bs-parent="#forms-nav">
+                  <ul>
+                    <li><a href="{% url 'odk_fxnProvince' %}" class="loading-link"><i class="bi bi-circle"></i><span>Province Level</span></a></li>
+                    <li><a href="{% url 'odk_fxn_view' %}" class="loading-link"><i class="bi bi-circle"></i><span>District Level</span></a></li>
+                    <li><a href="{% url 'ridersgranular' %}" class="loading-link"><i class="bi bi-circle"></i><span>Riders Granular</span></a></li>
+                    <li><a href="{% url 'odk_summaries' %}" class="loading-link"><i class="bi bi-circle"></i><span>ODK Summaries</span></a></li>
+                  </ul>
+                  </ul>
+            </li>
+
+
+            <li class="nav-item">
+              <a class="nav-link collapsed" data-bs-toggle="collapse" href="#components-nav1fx">
+                  <i class="ri-mac-line"></i><span>BIKE Functionality</span><i class="bi bi-chevron-down ms-auto"></i>
+              </a>
+              <ul id="components-nav1fx" class="nav-content collapse" data-bs-parent="#forms-nav">
+                <ul>
+                  <li><a href="{% url 'bike_function_view' %}" class="loading-link"><i class="bi bi-circle"></i><span>Overal Analysis</span></a></li>
+                 
+                </ul>
+                </ul>
+          </li>
+
+
+        </ul>
+    </li>
+    
+      <!-- End IST Nav -->
+
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-menu-button-wide"></i><span>CLI</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="components-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+          
+          <li> <a href="{% url 'overalTAT'  %}" > <i class="bi bi-circle"></i><span>Overal TAT by Specimen</span></a></li>  
+          <li> <a href="{% url 'provincelevelTAT'  %}" > <i class="bi bi-circle"></i><span>Province Level TAT</span></a></li>  
+          <li> <a href="#" > <i class="bi bi-circle"></i><span>TAT  per Facility by Specimen</span></a></li>
+          <li> <a href="#" > <i class="bi bi-circle"></i><span>TAT  per Month & Week</span></a></li>
+          <li> <a href="#" > <i class="bi bi-circle"></i><span>LIMS TAT</span></a></li>
+
+        </ul>
+      </li><!-- End CLI Nav -->
+
+      <li class="nav-item">        
+        <a class="nav-link collapsed" data-bs-target="#components-nav1x" data-bs-toggle="collapse" href="#">
+          <i class= "bx bxs-bong"></i><span>LSS</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="components-nav1x" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+
+          <li> <a href="{% url 'viral_load'  %}" > <i class="bi bi-prescription"></i><span>VL Received</span></a></li>  
+        </ul>
+      </li><!-- End odk Nav -->
+
+
+
+   
+
+
+
+<!-- End bike Nav -->
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#components-nav2x" data-bs-toggle="collapse" href="#">
+          <i class="bx bxl-steam"></i><span>LIMS SHIPMENT</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="components-nav2x" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+
+          <li> <a href="{% url 'shipments'  %}" > <i class="bi bi-circle"></i><span>Analysis </span></a></li>  
+
+
+        </ul>
+      </li><!-- End bike Nav -->
+
+
+
+    
+     
+
+     <!-- End Icons Nav -->
+
+      <li class="nav-heading">Analysis</li>
+
+      {% comment %} <li class="nav-item">
+        <a class="nav-link collapsed" href="{% url 'weeklyNarrative_view'%}">
+          <i class="bi bi-gem"></i>
+          <span>Weekly Narrative Analysis</span>
+        </a>
+      </li> {% endcomment %}
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="{% url 'Home_generate_excel'%}">
+          <i class="bi bi-gem"></i>
+          <span>Generate Weekly report</span>
+        </a>
+      </li>
+      
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="{% url 'Supply_chain_view'%}">
+          <i class="bi bi-gem"></i>
+          <span>Supply chain </span>
+        </a>
+      </li>
+      
+      
+      <!-- End Profile Page Nav -->
+
+      <li class="nav-item">
+        <a class="nav-link collapsed"  href="{% url 'admintools' %}">
+          <i class="bi bi-person"></i>
+          <span>M and E Tools</span>
+        </a>
+      </li><!-- End Profile Page Nav -->
+
+
+    </ul>
+
+  </aside><!-- End Sidebar-->
+  <main id="main" class="main">
+  {% block content %} {% endblock %}
+
+
+  </main><!-- End #main -->
+
+
+
+
+
+
+
+  <!-- ======= Footer ======= -->
+  <footer id="footer" class="footer">
+    <div class="copyright">
+      &copy; Copyright <strong><span>LSS</span></strong>. All Rights Reserved - DJANGO -
+    </div>
+    <div class="credits">
+      <!-- All the links in the footer should remain intact. -->
+      <!-- You can delete the links only if you purchased the pro version. -->
+      <!-- Licensing information: https://bootstrapmade.com/license/ -->
+      <!-- Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/ -->
+      powered by <a href="https://www.linkedin.com/in/tawandadadirai">Tawazmalazoh</a>
+    </div>
+  </footer><!-- End Footer -->
+
+  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+  <!-- Vendor JS Files -->
+  <script src="{% static 'assets/vendor/apexcharts/apexcharts.min.js'%}"></script>
+  <script src="{% static 'assets/vendor/bootstrap/js/bootstrap.bundle.min.js'%}"></script>
+  <script src="{% static 'assets/vendor/chart.js/chart.umd.js'%}"></script>
+  <script src="{% static 'assets/vendor/echarts/echarts.min.js'%}"></script>
+  <script src="{% static 'assets/vendor/quill/quill.min.js'%}"></script>
+  <script src="{% static 'assets/vendor/simple-datatables/simple-datatables.js'%}"></script>
+  <script src="{% static 'assets/vendor/tinymce/tinymce.min.js'%}"></script>
+  <script src="{% static 'assets/vendor/php-email-form/validate.js'%}"></script>
+
+  <!-- Template Main JS File -->
+  <script src="{% static 'assets/js/main.js'%}"></script>
+  <script src="{% static 'assets/js/custom.js'%}"></script>
+
+  <script>
+    function showAdminPasswordModal() {
+        document.getElementById('adminPasswordModal').style.display = 'block';
+        document.getElementById('adminPasswordInput').focus();
+    }
+    
+    function closeModal() {
+        document.getElementById('adminPasswordModal').style.display = 'none';
+    }
+    
+    function verifyPassword() {
+    var password = document.getElementById('adminPasswordInput').value;
+    var errorMessageElement = document.getElementById('error-message');
+    
+    if (password) {
+        // Use FormData to send data as form data instead of JSON
+        var formData = new FormData();
+        formData.append('password', password);
+
+        // AJAX request to verify password
+        fetch('/verify_admin_password/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'X-CSRFToken': getCookie('csrftoken')  // For CSRF token
+            },
+            body: new URLSearchParams(formData).toString() // Convert FormData to URL encoded string
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.is_valid) {
+                closeModal(); // Close the modal upon successful password verification
+                window.location.href = "{% url 'admin_manage' %}"; // Redirect to the admin_manage page
+            } else {
+                errorMessageElement.innerText = "Incorrect password!"; // Display error inside the modal
+            }
+        });
+    } else {
+        errorMessageElement.innerText = "Please enter a password!";
+    }
+}
+    
+    // Function to get CSRF token from cookies
+    function getCookie(name) {
+        var value = "; " + document.cookie;
+        var parts = value.split("; " + name + "=");
+        if (parts.length == 2) return parts.pop().split(";").shift();
+    }
+    </script>
+    
+
+</body>
+
+
+
+
+
+</html>

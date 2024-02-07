@@ -1,0 +1,847 @@
+{% extends "base.html" %} 
+{% load static %} 
+{% load crispy_forms_tags %} 
+{% load custom_filters %}
+{% block content %}
+
+  <!-- SECTION FOR THE CONTENT SCRIPTS -->
+
+  <!--  -- E Charts-->
+  <script src="https://cdn.jsdelivr.net/npm/echarts@5.2.1/dist/echarts.min.js"></script>
+
+<!-- start Data Table libraries  -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/jquery.dataTables.min.css"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.datatables.net/v/bs4-4.6.0/jq-3.7.0/jszip-3.10.1/dt-1.13.5/af-2.6.0/b-2.4.1/b-colvis-2.4.1/b-html5-2.4.1/b-print-2.4.1/cr-1.7.0/date-1.5.1/fc-4.3.0/fh-3.4.0/kt-2.10.0/r-2.5.0/rg-1.4.0/rr-1.4.1/sc-2.2.0/sb-1.5.0/sp-2.2.0/sl-1.7.0/sr-1.3.0/datatables.min.css" rel="stylesheet">
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+<script src="https://cdn.datatables.net/v/bs4-4.6.0/jq-3.7.0/jszip-3.10.1/dt-1.13.5/af-2.6.0/b-2.4.1/b-colvis-2.4.1/b-html5-2.4.1/b-print-2.4.1/cr-1.7.0/date-1.5.1/fc-4.3.0/fh-3.4.0/kt-2.10.0/r-2.5.0/rg-1.4.0/rr-1.4.1/sc-2.2.0/sb-1.5.0/sp-2.2.0/sl-1.7.0/sr-1.3.0/datatables.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/js/bootstrap.min.js"></script>
+<!-- end Datatable -->
+ 
+<script>
+  var jQuery_3_6_0 = $.noConflict(true);
+  </script>
+  
+
+<!-- these are libraries for MULTIPLE SELECT -->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.css" />
+<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script> -->
+<script src="{% static 'assets/js/jquery.min.js'%}"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.bundle.min.js"></script>
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script>
+<!-- end of libraries for multiple select -->
+<script>
+  var jQuery_2_1_1 = $.noConflict(true);
+  </script>
+
+
+
+<!-- Importing Gantt module -->
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  <script src="https://code.highcharts.com/highcharts.js"></script>
+  <script src="https://code.highcharts.com/modules/sankey.js"></script>
+  <script src="https://code.highcharts.com/modules/dependency-wheel.js"></script>
+  <script src="https://code.highcharts.com/modules/exporting.js"></script>
+  <script src="https://code.highcharts.com/modules/export-data.js"></script>
+  <script src="https://code.highcharts.com/modules/gantt.js"></script>
+  <script src="https://code.highcharts.com/gantt/highcharts-gantt.js"></script>
+  <script src="https://code.highcharts.com/gantt/modules/accessibility.js"></script>
+
+
+
+
+<script type="text/javascript">
+  window.onload = function() {
+      document.body.style.zoom = "90%";
+  }
+</script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+<script src=" {% static 'assets/js/echarts.min.js'%}"></script>
+
+
+
+<style>
+    .display td, .display th {
+        border-right: 1px solid #ddd; /* Right border for each cell */
+    }
+    .display th, .display td {
+        border-bottom: 1px solid #ddd; /* Bottom border for each cell */
+    }
+    .display tr:last-child td {
+        border-bottom: none; /* Remove bottom border for the last row */
+    }
+    .display thead th:last-child, .display tbody td:last-child {
+        border-right: none; /* Remove right border for the last column */
+    }
+
+    .wrap-comments {
+    word-wrap: break-word; 
+    max-width: 1600px; /* or whatever maximum width you want */
+     }
+
+        .hide-element {
+        display: none;
+    }
+
+
+
+
+</style>
+
+
+
+<section class="section">
+ 
+      {% load crispy_forms_tags %}
+                      <form  method="POST">
+                        {% csrf_token %}
+
+                    <div class="col-lg-12">
+                      <div class="card">
+                        <div class="card-body">
+                              <div class="alert border-primary alert-dismissible fade show" role="alert">
+                                <div class="row">
+
+                                <div class="col-lg-3" style="display: flex; align-items: center;">
+                                        <i class="" style="font-size: 4em;"></i>
+                                        <span style="margin-left: 2em;">
+                                            <strong>Apply the filter<br> <i></i></strong>
+                                        </span>
+                                    </div>
+
+                              
+                                  <div class="col-lg-3">
+                                    <label for="inputDate" style="font-weight: bold; font-family: Arial, sans-serif;">Start Date</label>
+                                    <input type="date" id="startdate" name="startdate" class="form-control" required>             
+                                  </div>
+
+                                  <div class="col-lg-3">
+                                    <label for="inputDate" style="font-weight: bold; font-family: Arial, sans-serif;">End Date</label>
+                                    <input type="date" id="enddate" name="enddate" class="form-control" required>                      
+                                  </div>
+
+                                  <div class="col-lg-3">
+                                    <label for="inputDate" style="font-weight: bold; font-family: Arial, sans-serif;">.</label><br>
+                                    <button id="submitfilter" name="submitfilter" class="btn btn-primary" style="font-size: 20px; ">Submit</button>
+
+                                  </div>
+                                  
+                                
+                                </div>
+                              
+                          </div>
+                          </div>    
+                      </div>
+                    </form>
+                </div>
+   
+
+      <!-- displaying the message alert -->
+          <div id="response-msg-container"></div>
+          {% for message in messages %}
+          <div class="alert {{ message.tags }} alert-dismissible fade show" role="alert">
+          <i class="bi bi-exclamation-octagon me-1"></i>
+          {{ message|safe }} <br>      
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+          {% endfor %}   
+
+
+
+
+
+
+          <div class="row">           
+            <figure>     
+              <p>PLASMA - AND - DBS REFERRAL PATH .</p>              
+              <figcaption class="blockquote-footer">
+                Maps the Refferal samples from One lab to the other lab
+              </figcaption>
+            </figure>
+                  <div class="col-lg-6">
+                    
+                    <div class="card">
+                      <div class="card-body">       
+
+                        <!-- Column Chart <div id="sampleReceivedChart" style="width: 100%; height: 700px"></div>-->
+                        <div id="supply_ref" style="min-height: 400px;" class="echart"></div>
+                     
+                            <script> 
+                              document.addEventListener('DOMContentLoaded', function () {   
+                                    // Original data
+                                    var data = {{ chart_data|safe }};
+
+                                    // Calculate totals for each "TO" node
+                                    var totals = {};
+                                    data.forEach(function(item) {
+                                        var to = item[1];
+                                        var weight = item[2];
+                                        totals[to] = (totals[to] || 0) + weight;
+                                    });
+
+                                    // Modify the data to include totals with each "TO" node
+                                    var modifiedData = data.map(function(item) {
+                                        var to = item[1];
+                                        var total = totals[to];
+                                        return [item[0], to + '(' + total + ')', item[2]];
+                                    });
+
+
+                                Highcharts.chart('supply_ref', {
+
+                                  title: {
+                                      text: 'PLASMA'
+                                  },
+                                  subtitle: {
+                                      text:
+                                    ''
+                                  },
+                                  accessibility: {
+                                      point: {
+                                          valueDescriptionFormat: '{index}. {point.from} to {point.to}, {point.weight}.'
+                                      }
+                                  },
+                                  tooltip: {
+                                      headerFormat: null,
+                                      pointFormat:
+                                    '{point.fromNode.name} \u2192 {point.toNode.name}: {point.weight:.2f} ',
+                                      nodeFormat: '{point.name}: {point.sum:.2f}'
+                                  },
+                                  series: [{
+                                      keys: ['from', 'to', 'weight'],
+                              
+                                      nodes: {{ nodes|safe }},
+                              
+                                      data:  modifiedData ,
+                                      type: 'sankey',
+                                      name: '',
+                                      dataLabels: {
+                                        enabled: true,
+                                        color: '#333',
+                                        style: {
+                                            textOutline: 'none'
+                                        },
+                                        formatter: function () {
+                                            return this.point.from + ' → ' + this.point.weight + ' → ' +this.point.to;
+                                        },
+                                        distance: 5
+                                    },
+                                  }]
+                              
+                              });
+                              
+
+
+
+                              });
+                          </script>
+
+                            <!-- End Column Chart -->
+
+                          </div>
+
+
+
+                        </div>
+                      </div>
+
+
+             
+                      <div class="col-lg-6">
+                       
+                        <div class="card">
+                          <div class="card-body"> 
+
+
+                              <!-- Column Chart <div id="sampleReceivedChart" style="width: 100%; height: 700px"></div>-->
+                        <div id="supply_dbs" style="min-height: 400px;" class="echart"></div>
+                                    
+                        <script> 
+                          document.addEventListener('DOMContentLoaded', function () {    
+                            var data = {{ dbs_chart_data|safe }};
+
+                            // Calculate totals for each "TO" node
+                            var totals = {};
+                            data.forEach(function(item) {
+                                var to = item[1];
+                                var weight = item[2];
+                                totals[to] = (totals[to] || 0) + weight;
+                            });
+
+                            // Modify the data to include totals with each "TO" node
+                            var modifiedData = data.map(function(item) {
+                                var to = item[1];
+                                var total = totals[to];
+                                return [item[0], to + '(' + total + ')', item[2]];
+                            });
+
+
+                        Highcharts.chart('supply_dbs', {
+
+                          title: {
+                              text: 'DBS'
+                          },
+                          subtitle: {
+                              text:
+                            ''
+                          },
+                          accessibility: {
+                              point: {
+                                  valueDescriptionFormat: '{index}. {point.from} to {point.to}, {point.weight}.'
+                              }
+                          },
+                          tooltip: {
+                              headerFormat: null,
+                              pointFormat:
+                            '{point.fromNode.name} \u2192 {point.toNode.name}: {point.weight:.2f} ',
+                              nodeFormat: '{point.name}: {point.sum:.2f}'
+                          },
+                          series: [{
+                              keys: ['from', 'to', 'weight'],
+                      
+                              nodes: {{ nodes|safe }},
+                      
+                              data:  modifiedData ,
+                              type: 'sankey',
+                              name: '',
+                              dataLabels: {
+                                enabled: true,
+                                color: '#333',
+                                style: {
+                                    textOutline: 'none'
+                                },
+                                formatter: function () {
+                                    return this.point.from + ' → ' + this.point.weight + ' → ' +this.point.to;
+                                },
+                                distance: 5
+                            },
+                          }]
+                      
+                      });
+                                    
+                          });
+                      </script>
+
+                                  
+                          
+                                    </div>
+                                  </div>
+                                </div>
+
+
+
+
+
+            </div>
+
+          
+            <div class="row"> 
+              <div class="col-lg-6">
+                
+                <figure>     
+                  <p><span style="color: red;"> <strong> VL </strong> </span> RECEIVED & REFERRED Samples  - Vs  - RUN SAMPLES .</p>              
+                  <figcaption class="blockquote-footer">
+                    This shows the samples being received and referred in connection to samples run - Relating to the flow of referrals
+                  </figcaption>
+                </figure>
+                <div class="card">
+                  <div class="card-body"> 
+
+                     <div id="rec_ref_run" style="min-height: 400px;" class="echart"></div> 
+            <script>                     
+              document.addEventListener('DOMContentLoaded', function () { 
+
+                Highcharts.chart('rec_ref_run', {
+                  chart: {
+                      type: 'column'
+                  },
+                  title: {
+                      text: ''
+                  },
+                  xAxis: {
+                      categories: {{ plasma_lab_series_list| safe }}
+                  },
+                  yAxis: [{
+                      min: 0,
+                      max: {{max_value|safe}}, // Example max value
+                     // tickInterval: 50, // Example tick interval
+                      title: {
+                          text: '# of samples'
+                      }
+                  }, {
+                      title: {
+                          text: '# of samples'
+                      },
+                      opposite: true,
+                      min: 0,
+                      max: {{max_value|safe}}, // Same max value as the first axis
+                      //tickInterval: 50, // Same tick interval as the first axis
+                  }],
+                  legend: {
+                      shadow: false
+                  },
+                  tooltip: {
+                      shared: true
+                  },
+                  plotOptions: {
+                      column: {
+                          stacking: 'normal',
+                          shadow: false,
+                          borderWidth: 0,
+                          groupPadding: 0.1,
+                          pointPadding: 0.1,
+                          dataLabels: {
+                              enabled: true,
+                              inside: true,
+                              formatter: function() {
+                                  return Highcharts.numberFormat(this.y, 1);
+                              }
+                          }
+                      }
+                  },
+                  series: [{
+                      name: 'Samples run',
+                      color: 'rgba(126,86,134,.9)',
+                      data:{{plasam_run_list|safe}},
+                      pointPadding: 0.1,
+                      pointPlacement: 0
+                  }, {
+                      name: 'Samples Referred',
+                      color: 'rgba(248,161,63,1)',
+                      data: {{plasma_reffered_list|safe}},
+                      tooltip: {
+                          valuePrefix: '',
+                          valueSuffix: ' '
+                      },
+                      pointPadding: 0.1,
+                      yAxis: 1,
+                      stack: 'Samples Referred'
+                  }, {
+                      name: 'Samples Received',
+                      color: 'rgba(186,60,61,.9)',
+                      data: {{plasma_received_list|safe}},
+                      tooltip: {
+                          valuePrefix: '',
+                          valueSuffix: ' '
+                      },
+                      pointPadding: 0.1,
+                      yAxis: 1,
+                      stack: 'Samples Referred'
+                  },
+                  {
+                    name: 'Carryover',
+                    color: 'rgba(214, 87, 182, 0.9)',
+                    data: {{plasam_carryover_list|safe}},
+                    tooltip: {
+                        valuePrefix: '',
+                        valueSuffix: ' '
+                    },
+                    pointPadding: 0.1,
+                    yAxis: 1,
+                    stack: 'Samples Referred'
+                }
+                  
+                  
+                  
+                  ]
+              });
+              
+
+              });
+            </script>
+
+          </div>
+        </div>
+      </div>
+
+
+
+
+
+
+      <div class="col-lg-6">
+                
+        <figure>     
+          <p><span style="color: red;"> <strong> DBS </strong> </span> RECEIVED & REFERRED Samples  - Vs  - RUN SAMPLES .</p>              
+          <figcaption class="blockquote-footer">
+            This shows the samples being received and referred in connection to samples run - Relating to the flow of referrals
+          </figcaption>
+        </figure>
+        <div class="card">
+          <div class="card-body"> 
+
+         
+          
+           
+
+            <div id="DBSrec_ref_run" style="min-height: 400px;" class="echart"></div> 
+    <script>                     
+      document.addEventListener('DOMContentLoaded', function () { 
+
+        Highcharts.chart('DBSrec_ref_run', {
+          chart: {
+              type: 'column'
+          },
+          title: {
+              text: ''
+          },
+          xAxis: {
+              categories: {{dbs_lab_series_list|safe}}
+          },
+          yAxis: [{
+              min: 0,
+              max: {{dbs_max_value|safe}}, // Example max value
+             // tickInterval: 50, // Example tick interval
+              title: {
+                  text: '# of samples'
+              }
+          }, {
+              title: {
+                  text: '# of samples'
+              },
+              opposite: true,
+              min: 0,
+              max: {{dbs_max_value|safe}}, // Same max value as the first axis
+              //tickInterval: 50, // Same tick interval as the first axis
+          }],
+          legend: {
+              shadow: false
+          },
+          tooltip: {
+              shared: true
+          },
+          plotOptions: {
+              column: {
+                  stacking: 'normal',
+                  shadow: false,
+                  borderWidth: 0,
+                  groupPadding: 0.1,
+                  pointPadding: 0.1,
+                  dataLabels: {
+                      enabled: true,
+                      inside: true,
+                      formatter: function() {
+                          return Highcharts.numberFormat(this.y, 1);
+                      }
+                  }
+              }
+          },
+          series: [{
+              name: 'Samples run',
+              color: 'rgba(126,86,134,.9)',
+              data: {{dbs_run_list|safe}},
+              pointPadding: 0.1,
+              pointPlacement: 0
+          }, {
+              name: 'Samples Referred',
+              color: 'rgba(248,161,63,1)',
+              data: {{dbs_reffered_list|safe}},
+              tooltip: {
+                  valuePrefix: '',
+                  valueSuffix: ' '
+              },
+              pointPadding: 0.1,
+              yAxis: 1,
+              stack: 'Samples Referred'
+          }, {
+              name: 'Samples Received',
+              color: 'rgba(186,60,61,.9)',
+              data: {{dbs_received_list|safe}},
+              tooltip: {
+                  valuePrefix: '',
+                  valueSuffix: ' '
+              },
+              pointPadding: 0.1,
+              yAxis: 1,
+              stack: 'Samples Referred'
+          },
+          {
+            name: 'Carryover',
+            color: 'rgba(214, 87, 182, 0.9)',
+            data: {{dbs_carryover_list|safe}},
+            tooltip: {
+                valuePrefix: '',
+                valueSuffix: ' '
+            },
+            pointPadding: 0.1,
+            yAxis: 1,
+            stack: 'Samples Referred'
+        }
+          
+          
+          
+          
+          
+          ]
+      });
+      
+
+      });
+    </script>
+
+  </div>
+</div>
+</div>
+
+
+    </div>
+
+
+
+
+                <div class='row'>                  
+                        <div class="col-lg-12">
+                                  
+                          <figure>     
+                            <p><span style="color: red;"> <strong> REAGENTS </strong> </span>STOCK & EXPIARY DATES .</p>              
+                            <figcaption class="blockquote-footer">
+                              This display the stock and reagents expiary dates
+                            </figcaption>
+                          </figure>
+                          <div class="card">
+                            <div class="card-body"> 
+
+                 <div id="xcontainer" style="min-height: 400px;" class="echart"></div> 
+
+                <script>
+                  document.addEventListener('DOMContentLoaded', function () { 
+                    const today = new Date(),
+                    day = 1000 * 60 * 60 * 26;
+          
+              today.setUTCHours(0);
+              today.setUTCMinutes(0);
+              today.setUTCSeconds(0);
+              today.setUTCMilliseconds(0);
+
+              Highcharts.ganttChart('xcontainer', {
+                title: {
+                    text: 'Reagent Test Kits Expiration and Stock Levels'
+                },
+                xAxis: {
+                    min: today.getTime(),
+                    max: today.getTime() + (365 * day), // Adjust as needed
+                    tickInterval: 30 * 24 * 3600 * 1000, // Roughly a month
+                    tickWidth: 1,
+                    tickColor: 'lightgray',
+                    labels: {
+                        formatter: function () {
+                            return this.isFirst ? Highcharts.dateFormat('%Y', this.value) : Highcharts.dateFormat('%b', this.value);
+                        }
+                    }
+                },
+                accessibility: {
+                    keyboardNavigation: {
+                        seriesNavigation: {
+                            mode: 'serialize'
+                        }
+                    },
+                    point: {
+                        descriptionFormatter: function (point) {
+                            return Highcharts.format(
+                                '{point.yCategory}. Start {point.x:%Y-%m-%d}, end {point.x2:%Y-%m-%d}.',
+                                { point }
+                            );
+                        }
+                    }
+                },
+                series: [{
+                    name: 'Reagents',
+                    data: {{sanitized_data_string|safe}}
+                    // Additional series configuration if needed
+                }],
+                plotOptions: {
+                    gantt: {
+                        series: {
+                            dataLabels: {
+                                enabled: true,
+                                style: {
+                                    fontSize: '5px' // Reducing the font size
+                                }
+                            }
+                        },
+                        levels: [{
+                            level: 1,
+                            levelIsConstant: false,
+                            dataLabels: {
+                                enabled: true
+                            },
+                            height: 1, // Making the bars thinner
+                            collapsed: true
+                        }, {
+                            level: 2,
+                            levelIsConstant: false,
+                            dataLabels: {
+                                enabled: true
+                            },
+                            height: 2, // Height for level 2 bars
+                            collapsed: true
+                        }]
+                        // Additional levels if needed
+                    }
+                },
+                responsive: {
+                    rules: [{
+                        condition: {
+                            maxWidth: 500
+                        },
+                        chartOptions: {
+                            chart: {
+                                height: 300
+                            },
+                            subtitle: {
+                                text: null
+                            },
+                            navigator: {
+                                enabled: false
+                            }
+                        }
+                    }]
+                },
+                scrollbar: {
+                    enabled: true
+                },
+                navigator: {
+                    enabled: true
+                },
+                exporting: {
+                    enabled: true,
+                    buttons: {
+                        contextButton: {
+                            menuItems: ['downloadPNG', 'downloadSVG', 'downloadPDF']
+                        }
+                    }
+                }
+                // Additional configuration as needed
+            });
+            
+
+
+                 
+                });
+                </script>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  </section>
+
+
+
+
+
+
+<script>
+  jQuery_3_6_0(document).ready(function () {
+      jQuery_3_6_0(".display").DataTable({
+          dom: 'Bfrtip',
+          pageLength: 50 , // Display 50 rows by default
+          buttons: [
+              'copy', 'csv', 'excel', 'pdf', 'print'
+          ]
+      });
+  });
+  </script>
+
+
+
+
+ 
+<script type="text/javascript">
+$(document).ready(function() {
+    $('#submitfilter').on('click', function(e) {
+      // Add loading class and update button text
+        submitButton.prop('disabled', true).addClass('loading').html('Loading...');
+        var submitButton = $('#submitfilter'); 
+        var startdateVal = $('#startdate').val();
+        var enddateVal = $('#enddate').val();
+
+        var starting = new Date(startdateVal);
+        var ending = new Date(enddateVal);
+        var today = new Date();
+        today.setHours(0, 0, 0, 0);
+
+        if (startdateVal == '' || enddateVal == '') {
+            $("#response-msg-container").html(`
+                ...
+            `);
+            $("#startdate").focus();
+            return;
+        } else if (starting > today || ending > today) {
+            $("#response-msg-container").html(`
+                ...
+            `);
+            $("#startdate").focus();
+            return;
+        } else if (starting > ending) {
+            $("#response-msg-container").html(`
+            Start date should not be greater than end date 
+            `);
+            $("#startdate").focus();
+            return;
+        } else if ((ending.getTime() - starting.getTime()) / (1000 * 3600 * 24) != 7) {
+            $("#response-msg-container").html(`
+                ...
+            `);
+            $("#startdate").focus();
+            return;
+        } else if (starting.getDay() != 1 || ending.getDay() != 0) {
+            $("#response-msg-container").html(`
+                ...
+            `);
+            $("#startdate").focus();
+            return;
+        } else {
+
+          
+            $.ajax({
+                 type: 'POST', 
+                 type: "POST",
+                    url: '{% url 'Supply_chain_view' %}', 
+                    data: {
+                      startdate: startdate,
+                      enddate: enddate,
+                      csrfmiddlewaretoken: '{{ csrf_token }}', // Include the CSRF token in the data
+                    },
+                    success: function (response) {
+                    $('#response-msg-container').html('<div class="alert alert-error" role="alert">' + responsd + '</div>');
+
+                    },
+                    error: function(error) {
+                          console.log(error);
+                        }
+
+                        complete: function() {
+                    // Revert the button text and appearance after processing is complete
+                                        submitButton.prop('disabled', false).html('Submit');
+                                    }
+
+
+            }); // end of ajax 
+        }
+    });
+});
+
+
+  </script>
+{% endblock content %}

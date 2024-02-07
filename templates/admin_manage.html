@@ -1,0 +1,2814 @@
+{% extends "base.html" %} 
+{% load static %} 
+{% load crispy_forms_tags %} 
+{% load custom_filters %}
+{% block content %}
+
+
+  <!--  -- E Charts-->
+  <script src="https://cdn.jsdelivr.net/npm/echarts@5.2.1/dist/echarts.min.js"></script>
+
+
+<!-- start Data Table libraries  -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/jquery.dataTables.min.css"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/css/bootstrap.min.css" rel="stylesheet">
+<!-- FixedColumns CSS -->
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/fixedcolumns/4.0.0/css/fixedColumns.dataTables.min.css">
+
+<link href="https://cdn.datatables.net/v/bs4-4.6.0/jq-3.7.0/jszip-3.10.1/dt-1.13.5/af-2.6.0/b-2.4.1/b-colvis-2.4.1/b-html5-2.4.1/b-print-2.4.1/cr-1.7.0/date-1.5.1/fc-4.3.0/fh-3.4.0/kt-2.10.0/r-2.5.0/rg-1.4.0/rr-1.4.1/sc-2.2.0/sb-1.5.0/sp-2.2.0/sl-1.7.0/sr-1.3.0/datatables.min.css" rel="stylesheet">
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+<script src="https://cdn.datatables.net/v/bs4-4.6.0/jq-3.7.0/jszip-3.10.1/dt-1.13.5/af-2.6.0/b-2.4.1/b-colvis-2.4.1/b-html5-2.4.1/b-print-2.4.1/cr-1.7.0/date-1.5.1/fc-4.3.0/fh-3.4.0/kt-2.10.0/r-2.5.0/rg-1.4.0/rr-1.4.1/sc-2.2.0/sb-1.5.0/sp-2.2.0/sl-1.7.0/sr-1.3.0/datatables.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/js/bootstrap.min.js"></script>
+<!-- FixedColumns JS -->
+<script type="text/javascript" src="https://cdn.datatables.net/fixedcolumns/4.0.0/js/dataTables.fixedColumns.min.js"></script>
+<!-- end Datatable -->
+ 
+<script>
+  var jQuery_3_6_0 = $.noConflict(true);
+  </script>
+  
+
+<!-- these are libraries for MULTIPLE SELECT -->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.css" />
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.bundle.min.js"></script>
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script>
+<!-- end of libraries for multiple select -->
+<script>
+  var jQuery_2_1_1 = $.noConflict(true);
+  </script>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
+<!-- Include the Rich Text Editor's Script -->
+<script src="https://cdn.tiny.cloud/1/kcgtex677wpktr7d6tlvifn2soj8bkym24wtsho5v1gb834m/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+
+
+
+
+
+<script src=" {% static 'assets/js/echarts.min.js'%}"></script>
+<script src="{% static 'assets/js/buttonActions.js'%}"></script>
+
+<style>
+  .tbl-container {
+      max-width: 100%;
+      overflow-x: scroll;
+  }
+  
+  .disp{
+      width: 100%;
+  }
+  .display td, .display th {
+        border-right: 1px solid #ddd; /* Right border for each cell */    
+        font-size: 0.8em; /* Reduced font size for all cells */
+        text-align: center; /* Horizontally center the content */
+        vertical-align: middle; /* Vertically center the content */
+    }
+    .display th, .display td {
+        border-bottom: 1px solid #ddd; /* Bottom border for each cell */
+        font-size: 0.8em; /* Reduced font size for all cells */
+        text-align: center; /* Horizontally center the content */
+        vertical-align: middle; /* Vertically center the content */
+    }
+    .display tr:last-child td {
+        border-bottom: none; /* Remove bottom border for the last row */
+        font-size: 0.8em; /* Reduced font size for all cells */
+        text-align: center; /* Horizontally center the content */
+        vertical-align: middle; /* Vertically center the content */
+    }
+    .display thead th:last-child, .display tbody td:last-child {
+        border-right: none; /* Remove right border for the last column */
+        font-size: 0.8em; /* Reduced font size for all cells */
+        text-align: center; /* Horizontally center the content */
+        vertical-align: middle; /* Vertically center the content */
+    }
+
+    .wrap-comments {
+    word-wrap: break-word; 
+    max-width: 1600px; /* or whatever maximum width you want */
+     }
+
+        .hide-element {
+        display: none;
+    }
+
+/* 7. Targeting the table using class "displayx" */
+.displayx {
+    /* 6. Enabling horizontal scrolling for the table */
+    overflow-x: auto;
+    display: block; /* This makes the table behave like a block element so overflow works */
+}
+
+.hidden-cell {
+        visibility: hidden;
+    }
+
+.displayx th, .displayx td {
+    /* 4. Borders for th and td */
+    border: 1px solid #ddd;
+    border-bottom: 1px solid #ddd; /* Bottom border for each cell */   
+    font-size: 0.8em; /* Reduced font size for all cells */
+    text-align: center; /* Horizontally center the content */
+    vertical-align: middle; /* Vertically center the content */
+    /* 3. Ensuring accurate alignment */
+    vertical-align: top;
+    text-align: left;
+
+    /* 5. Text wrapping and sizing for th and td */
+    width: auto; /* Or whatever width you desire */
+    max-width: auto;
+    word-wrap: break-word;
+    white-space: normal;
+    overflow: hidden;
+    text-overflow: ellipsis; /* This will add "..." if the content is longer than the width */
+
+    /* Generic padding for better appearance */
+    padding: 8px 10px;
+}
+
+.displayx th {
+    /* 1. Grayish background for the <th> */
+    background-color: #f2f2f2;
+
+    /* 5. Text wrapping for th */
+    word-wrap: break-word;
+}
+
+.displayx tr:nth-child(odd) {
+    /* 2. Alternative colors for rows */
+    background-color: #f9f9f9;
+}
+
+.displayx tr:nth-child(even) {
+    background-color: #e9e9e9;
+}
+
+ /* Add this block of CSS to your stylesheet or inside a <style> tag in the HTML */
+  .accordion-button:hover {
+    background-color: lightgray; border: none; /* Change this color to the desired light color */
+  }
+
+  .top-scrollbar {
+    overflow-x: auto;
+    overflow-y: hidden;
+    height: 16px; /* Or as needed */
+}
+
+
+  </style>
+
+  
+  
+  
+<!-----------start modal----------->
+<div class="modal fade" id="confirmModal" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Basic Modal</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+         Are you sure you want to delete this Weekly Dashboard entry?
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button id="confirmDelete" class="btn btn-primary">Confirm Deletion</button>
+        </div>
+      </div>
+    </div>
+    </div><!-- End Basic Modal-->
+
+
+
+
+
+<!--------start-->
+<section class="section">
+  <div class="row">
+    <div class="col-lg-12">
+
+  <div class="card"> <!--start card-->
+    <div class="card-body">
+      <h5 class="card-title">ADMINISTRATION SECTION</h5>
+     
+      <h6 class="card-subtitle mb-2 " style="color: rgb(94, 21, 21);">⚠️⚠️ Caution: You are making direct edits to the database in this section. Please exercise thorough diligence❗❗</h6>
+
+<!-- for Alerts -->
+      <div class="col-lg-12">
+        <div class="card">
+            <div class="card-body">
+              <h5 class="card-title"></h5>
+              {% for message in messages %}
+              <div class="alert {{ message.tags }} alert-dismissible fade show" role="alert">
+              <i class="bi bi-exclamation-octagon me-1"></i>
+              {{ message|safe }} <br>      
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+              </div>
+              {% endfor %}  
+               {% if msg %} {% autoescape off %} {{ msg }} {% endautoescape %} {% endif %}
+              <div id="msg"></div>
+              <p>
+           </div>                       
+       </div>          
+    </div>
+    <!-- end of alerts -->
+
+
+
+
+
+
+
+
+
+      <!-- Default Tabs -->
+      <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item" role="presentation">
+          <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="{{tab_state1}}">Weekly Dashboards</button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="{{tab_state2}}"> Dashboard Tables </button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact" type="button" role="tab" aria-controls="contact" aria-selected="{{tab_state3}}">IST FILES</button>
+        </li>
+      </ul>
+      <div class="tab-content pt-2" id="myTabContent">
+        <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab"> <!---start Home tab-->
+
+          
+          <table width="100%" id="dashboard_list" class="display table-responsive ">         
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Action</th>
+                    <th>Date OF Dashboard</th>
+                    <th>Laboratory</th>
+                  
+                    <th>Updated Date</th>
+                    
+                </tr>
+            </thead>
+            <tbody>
+                {% for result in data %}
+                    {% if result.query_name == 'Dash_LIST' %}
+                        {% for row in result.query_data %}
+                            <tr>
+                                <td>{{ forloop.counter }}</td>
+                                <td>
+                                  <!-- Call to action buttons -->
+                                  {% load crispy_forms_tags %}
+                                  <form  method="POST" >
+                                    {% csrf_token %}
+                                  <ul class="list-inline m-0">                
+                                      <li class="list-inline-item">
+                                        <button class="btn btn-danger btn-sm rounded-0 delete-btn" 
+                                        type="button" data-unique-key="{{ row|get_item:'unique_key'|default:'' }}" 
+                                        data-toggle="tooltip" data-placement="top" title="Delete">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                    
+                                      </li>                                      
+                                  </ul>
+                                  </form>
+                              </td>
+                              
+
+                                <td>{{ row.Date }}</td>
+                                <td>{{ row.LAB }}</td>
+                                <!-- <td class="hidden-cell">{{ row|get_item:"unique_key"|default:"" }}</td>
+                                <td class="hidden-cell">{{ row|get_item:"SourceFile"|default:"" }}</td> -->
+                                <td>{{ row|get_item:"Update_Date"|default:"" }}</td>
+                                
+
+                            </tr>
+                        {% endfor %}
+                    {% endif %}
+                {% endfor %}
+            </tbody>
+        </table>
+        
+      </div>
+
+          
+        </div><!---End home tab   -->
+
+        <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab"> <!-- start of second tab-->
+                
+          {% load crispy_forms_tags %}
+                      <form  method="POST" >
+                        {% csrf_token %}
+                      <div class="row mb-3">
+                        <label class="col-sm-2 col-form-label" for="ban"> <strong>Select Laboratory </strong></label>
+                        <div class="col-sm-8"> <!-- Adjusted from col-sm-10 to col-sm-8 -->
+                            <select class="form-select" id="labSelect"  name="labSelect" aria-label="Default select example">
+                                <option selected>Choose the lab to check</option>
+                                {% for result in data %}
+                                    {% if result.query_name == 'Dash_LIST' %}
+                                        {% for row in result.query_data %}
+                                            <option value="{{ row.LAB }}">{{ row.LAB }}</option>
+                                        {% endfor %}
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-sm-2"> <!-- New column for the submit button -->
+                            <button type="button" id="labsubmit" name ="labsubmit" class="btn btn-primary">Submit</button>
+                        </div>
+                    </div>
+                    </form>
+
+                
+
+                    <div class='row' id='reviewdiv' style='display:none;'>
+                        <div class="col-lg-4 text-lg-right">                   
+                            <input class="form-check-input" type="checkbox" id="gridCheck2">
+                            <label class="form-check-label" for="gridCheck2">Tick to review:</label>
+                        </div>
+                        <div class="col-lg-4" id='labDiv'>Lab:</div> 
+                        <div class="col-lg-4" id='timeDiv'>Time:</div>
+                    
+                        <span class="badge bg-warning text-dark">
+                            <i class="bi bi-exclamation-triangle me-1"></i> Pending review
+                        </span>
+                        <span class="badge bg-success" id="reviewedBadge" style="display: none;">
+                            <i class="bi bi-check-circle me-1"></i> Reviewed
+                        </span>
+                    </div>
+                    
+              
+               
+
+                    <!-- Default Accordion -->
+                    <div class="accordion" id="accordionExample">
+                    
+
+
+
+                            <!-- Accordion Item #3 -->
+                  <div class="accordion-item">
+                    <h2 class="accordion-header" id="heading3">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse3" aria-expanded="false" aria-controls="collapse3">
+                            <strong>1:  Sample Inventory Received</strong>
+                        </button>
+                    </h2>
+                    <div id="collapse3" class="accordion-collapse collapse" aria-labelledby="heading3" data-bs-parent="#accordionExample">
+                        <div class="accordion-body">
+                            <!-- Table for item #3 -->
+                            {% load crispy_forms_tags %}
+                            <form  method="POST" >
+                              {% csrf_token %}
+                            <p> <button id="submitDash_This_week_Rec_Samples" name="submitDash_This_week_Rec_Samples" type="button" style="opacity: 0.5;">
+                                Save  Inventory Received  Data</button></p>
+
+                        <div class="table-wrapper">
+                            <table id="Dash_This_week_Rec_Samples" class="displayx" style="width:100%" > 
+                           <thead>
+                              <tr>
+                                <tr>
+                                    <th colspan="6"></th>  
+                                    <th colspan="3" style="background-color: #55ae55;">RECEIVED</th> 
+                                    <th colspan="2"> CARRYOVER</th>                                               
+                                    <th colspan="9" style="background-color: #88e0ea;">REJECTIONS</th>
+                                    <th colspan="4" style="background-color: #909090;"></th>                                            
+                                </tr>
+                                <thead>
+                                    <tr>
+                                      <th></th>
+                                      <th></th>
+                                      <th>Name_of_Lab</th>
+                                      <th>Sample_Type</th>
+                                      <th>Test_Type</th>
+                                      <th>comment</th>
+
+                                      <th>Total number of samples received </th>
+                                      <th>Number of urgent samples received</th>
+                                      <th>Number of samples that are rebleeds </th>
+
+                                      <th>Samples in the lab (Carryover)</th>
+                                      <th>Samples in backlog (Intra lab TAT >7 days)</th>
+
+                                      <th>Number of samples rejected </th>
+                                      <th>Number of samples rejected: too old to test (60 days plasma & 90 days DBS)</th>
+                                      <th>Number of samples rejected: sample quality compromised</th>
+                                      <th>Number of samples rejected: sample quantity insufficient</th>
+                                      <th>Number of samples rejected: sample quality/quantity compromised in transit </th>
+                                      <th>Number of samples rejected: patient and sample information inconsistent</th>
+                                      <th>Number of samples rejected: request form missing</th>
+                                      <th>Number of samples rejected: sample missing</th>
+                                      <th>Number of samples rejected: other reasons</th>
+
+                                      <th>Number of samples logged into LIMS at hub prior to arrival</th>
+                                      <th>Number of samples logged into LIMS during week of arrival</th>
+                                      <th>LIMS Backlog (number of samples to be logged in)</th>
+                                      <th>LIMS Backlog (number of shipments to be received)</th>
+                                      
+                                  
+                                    </tr>
+                                </thead>
+                                
+                     
+                            </tr>
+                                    </thead>
+                                        <tbody>  
+
+                                        </tbody>                  
+                            </table>
+                        </div>
+
+
+                        </form>
+                        </div>
+                    </div>
+                </div><!-- /.end of accordion -->
+
+                                  <!-- Accordion Item #5 -->
+                                  <div class="accordion-item">
+                                    <h2 class="accordion-header" id="heading5">
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse5" aria-expanded="false" aria-controls="collapse5">
+                                          <strong> 2:  Referred Samples</strong>
+                                        </button>
+                                    </h2>
+                                    <div id="collapse5" class="accordion-collapse collapse" aria-labelledby="heading5" data-bs-parent="#accordionExample">
+                                        <div class="accordion-body">
+                                            <!-- Table for item #5 -->
+                                            {% load crispy_forms_tags %}
+                            <form  method="POST" >
+                              {% csrf_token %}
+                            <p><button id="submitDash_Referred_Samples" name="submitDash_Referred_Samples" type="button" class="btn btn-primary" >Save Refered Samples Changes</button></p>
+                                    <table id="Dash_Referred_Samples" class="displayx  " style="width:100%" >                     
+                                        <thead>
+                                            <tr>
+                                                <th colspan="7"></th>  
+                                                <th colspan="3" style="background-color: #909090;">REFERRED</th> 
+                                                <th colspan="1"></th>                                               
+                                                <th colspan="5" style="background-color: #88e0ea;"></th>
+                                                <th colspan="2" style="background-color: #909090;">RECEIVED</th>                                            
+                                                <th colspan="4" style="background-color: #cdcd83;"></th>
+                                            </tr>
+
+                                    <tr>  
+                                        <th></th>                                          
+                                    <th></th>
+                                    <th> </th>
+                                    <th>Name_of_Lab</th>
+                                    <th>Sample_Type</th>
+                                    <th>Test_Type</th>
+                                    <th>Comments</th>
+
+                                    <th>Total number of samples referred out</th>
+                                    <th>Lab Samples Referred to</th>
+                                    <th>Swift consignment</th>
+
+                                    <th>Number of samples referred through LIMS referral module </th>
+
+                                    <th>Number of samples referred due to reagent/kit stockout </th>
+                                    <th>Number of samples referred due to instrument failure</th>
+                                    <th>Number of samples referred due to insufficient HR capacity</th>
+                                    <th>Number of samples referred due to insufficient instrument capacity </th>
+                                    <th>Number of samples referred due to other reasons</th>
+
+                                    <th>Total number of referred samples received</th>
+                                    <th>Referred from</th>
+
+                                    <th>Number of referred samples received that were carry-overs</th>
+                                    <th>Number of referred samples marked as urgent</th>
+                                    <th>Total number of referred samples that are rebleeds</th>
+                                    <th>Total number of referred samples ultimately rejected</th>                   
+                                    
+                                   
+                                        </tr>
+                                    </thead>
+                                        <tbody>  
+                
+                                         </tbody>                  
+                                        </table>
+                                    </form>
+
+
+
+                                        </div>
+                                    </div>
+                                </div><!----end-->
+
+
+                                    <!-- Accordion Item #6 -->
+                  <div class="accordion-item">
+                    <h2 class="accordion-header" id="heading6">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse6" aria-expanded="false" aria-controls="collapse6">
+                          <strong> 3: Sample Testing </strong>
+                        </button>
+                    </h2>
+                    <div id="collapse6" class="accordion-collapse collapse" aria-labelledby="heading6" data-bs-parent="#accordionExample">
+                        <div class="accordion-body">
+                            <!-- Table for item #6 -->
+                            {% load crispy_forms_tags %}
+                            <form  method="POST" >
+                              {% csrf_token %}
+                            <p><button id="submitDash_Sample_Run" name="submitDash_Sample_Run" type="button" class="btn btn-primary" >Save Sample Run Changes</button></p>
+                                    <table id="Dash_Sample_Run" class="displayx  " style="width:100%" >                     
+                                        <thead>
+
+                                            <tr>
+                                                <th colspan="7"></th> 
+                                                <th colspan="2" style="background-color: #3bcb51;">TESTS DONE</th>
+                                                <th colspan="1"></th>                                               
+                                                <th colspan="4" style="background-color: #a95f0b;">REPEATS</th>
+                                                <th colspan="8" style="background-color: #d5f4e6;">FAILURES</th>
+                                                <th colspan="3" style="background-color: #cdcd83;"></th>
+
+                                            </tr>
+
+
+                                        <tr>                                                                                        
+                                            <th></th>
+                                            <th></th>
+                                            <th>Name_of_Lab</th>
+                                            <th>Sample_Type</th>
+                                            <th>Test_Type</th>
+                                            <th>Platform</th>
+                                            <th>Comments</th>         
+
+                                            <th>Total number of tests done</th>
+                                            <th>Total number of urgent samples tested</th>
+
+                                            <th>Number of controls that failed</th>
+
+                                            <th>Total number of failed tests not eligible for retesting</th>
+                                            <th>Total number of failed tests eligible for retesting</th>
+                                            <th>Total number of retests run</th>
+                                            <th>Total number of failed tests after final retesting</th>
+
+                                            <th>Number of failed tests: sample handling error at lab</th>
+                                            <th>Number of failed tests: reagent quality issues</th>
+                                            <th>Number of failed tests: QC failure</th>
+                                            <th>Number of failed tests: power failure</th>
+                                            <th>Number of failed tests: mechanical failure</th>
+                                            <th>Number of failed tests: processing error</th>
+                                            <th>Number of failed tests: sample quality/quantity</th>
+                                            <th>Number failed tests: other reasons</th>
+
+                                            <th>Total number of samples with a valid test result</th>
+                                            <th>Total number of samples with a failed test result</th>
+                                            <th>Total number of test results dispatched by lab</th>                              
+                                            
+                                            
+                                        </tr>
+                                    </thead>
+                                        <tbody>  
+                
+                                         </tbody>                  
+                                        </table>
+                                    </form>
+
+
+                        </div>
+                    </div>
+                </div><!---end-->
+
+
+                                  <!-- Accordion Item #7 -->
+                                  <div class="accordion-item">
+                                    <h2 class="accordion-header" id="heading7">
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse7" aria-expanded="false" aria-controls="collapse7">
+                                           <strong>4:  Stock Inventory</strong> 
+                                        </button>
+                                    </h2>
+                                    <div id="collapse7" class="accordion-collapse collapse" aria-labelledby="heading7" data-bs-parent="#accordionExample">
+                                        <div class="accordion-body">
+                                            <!-- Table for item #7 -->
+                                            {% load crispy_forms_tags %}
+                                            <form  method="POST" >
+                                              {% csrf_token %}
+                                            <p><button id="submitDash_Testing_Capacity" name="submitDash_Testing_Capacity" type="button" class="btn btn-primary" >Save Testing_Capacity Changes</button></p>
+                                                    <table id="Dash_Testing_Capacity" class="displayx  " style="width:100%" >                     
+                                                        <thead>  
+                                                            
+                                                            <tr>
+                                                                <th colspan="6"></th>  
+                                                                <th colspan="2" style="background-color: #55ae55;">Natpharm</th> 
+                                                                <th colspan="2">REAGENTS LOANED</th>                                               
+                                                                <th colspan="2" style="background-color: #41b095;">REAGENTS RECEIVED</th>
+                                                                <th colspan="3" style="background-color: #88e0ea;">STOCK AT HAND</th>
+                                                                <th colspan="2" style="background-color: #909090;">CONTROLS LOANED TO</th> 
+                                                                <th colspan="2" style="background-color: #7aaed6;">CONTROLS LOANED FROM</th>    
+                                                                <th colspan="2" style="background-color: #3b9047;">CONTROLS AVAILABLE</th>   
+                                                                <th colspan="3" style="background-color: #f694f5;">BOTTLENECKS</th>                                     
+                                                            </tr>
+
+                                                            <tr>
+                                                                <th></th>
+                                                                <th></th>
+                                                                <th>Name_of_Lab</th>
+                                                                <th>Test_Type</th>
+                                                                <th>Platform</th>
+                                                                <th>Comments</th>
+
+                                                                <th>Number of reagents received from NATPHAM</th>
+                                                                <th>Date reagents received from NATPHAM</th>
+
+                                                                <th>Reagent kits loaned out to other labs</th>
+                                                                <th>Loaned to</th>
+
+                                                                <th>Reagents kits received on loan from other labs</th>
+                                                                <th>Loaned from</th>
+
+                                                                <th>Reagents kits on hand</th>
+                                                                <th>Expiry Date of Reagent</th>
+                                                                <th>Reagent kits expired before use</th>
+
+                                                                <th>Controls  loaned out to other labs</th>
+                                                                <th>Lab_name_receiving_controls</th>
+
+                                                                <th>Controls received on loan from other labs</th>
+                                                                <th>Lab_name_where_controls_from</th>
+
+                                                                <th>Stocks of Controls Available</th>
+                                                                <th>Expiry Date of Controls</th>
+
+                                                                <th>Stocks of bottleneck consumable available (tests)</th>
+                                                                <th>Name of bottleneck consumable</th>
+                                                                <th>Months of stock of bottleneck consumable</th>
+                                                                
+                                                            </tr>
+                                                        </thead>
+                                                            <tbody>  
+                                    
+                                                             </tbody>                  
+                                                            </table>
+                                                        </form>
+                                        </div>
+                                    </div>
+                                </div> <!---edn-->
+
+
+                                  <!-- Accordion Item #8 -->
+                <div class="accordion-item">
+                  <h2 class="accordion-header" id="heading8">
+                      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse8" aria-expanded="false" aria-controls="collapse8">
+                          <strong> 5: Operational Matrix</strong>
+                      </button>
+                  </h2>
+                  <div id="collapse8" class="accordion-collapse collapse" aria-labelledby="heading8" data-bs-parent="#accordionExample">
+                      <div class="accordion-body">
+                        {% load crispy_forms_tags %}
+                                            <form  method="POST" >
+                                              {% csrf_token %}
+                                            <p><button id="submitDash_Lab_Metrics_Waste_Mgt" name="submitDash_Lab_Metrics_Waste_Mgt" type="button" class="btn btn-primary" >Save Operational Matrix Changes</button></p>
+                                                    <table id="Dash_Lab_Metrics_Waste_Mgt" class="displayx  " style="width:100%" >                     
+                                                        <thead>  
+                                                            
+                                                            <tr>
+                                                                <th colspan="6"></th>  
+                                                                <th colspan="2" style="background-color: #55ae55;">OPERATIONS</th>                                                                                                       
+                                                                <th colspan="7" style="background-color: #88e0ea;">DOWNTIME</th>
+                                                                                                      
+                                                            </tr>
+
+
+                                                            <tr>
+                                                                <th></th>
+                                                                <th></th>
+                                                                <th>Name_of_Lab</th>
+                                                                <th>Test_Type</th>
+                                                                <th>Platform_Roche_Abbott_Hologic_BMX</th>                                                                
+                                                                <th>Comments</th>
+
+                                                                <th>Number of hours in a shift (e.g 8hr, 12hr, 16hr or 24 hr shift)</th>
+                                                                <th>Total actual operational hours</th>
+
+                                                                <th>Downtime (hours lost) due to power outage</th>
+                                                                <th>Downtime (hours lost) due to technical/mechanical failure</th>
+                                                                <th>Downtime (hours lost) due to reagent stock out / expiry</th>
+                                                                <th>Downtime (hours lost) due to controls stock out / expiry </th>
+                                                                <th>Downtime (hours lost) due to controls failure</th>
+                                                                <th>Downtime (hours lost) due to HRH unavailability</th>
+                                                                <th>Downtime (other)</th>
+                                                          
+
+                                                            </tr>
+                                                        </thead>
+                                                            <tbody>  
+                                    
+                                                             </tbody>                  
+                                                            </table>
+                                                        </form>
+                      </div>
+                  </div>
+              </div> <!---end-->
+
+
+                 <!-- Accordion Item #9 -->
+                 <div class="accordion-item">
+                  <h2 class="accordion-header" id="heading9">
+                      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse9" aria-expanded="false" aria-controls="collapse9">
+                          <strong>6: LIMS Functionality</strong>
+                      </button>
+                  </h2>
+                  <div id="collapse9" class="accordion-collapse collapse" aria-labelledby="heading9" data-bs-parent="#accordionExample">
+                      <div class="accordion-body">
+                         
+                        {% load crispy_forms_tags %}
+                        <form  method="POST" >
+                          {% csrf_token %}
+                        <p><button id="submitDash_LIMS_Functionality" name="submitDash_LIMS_Functionality" type="button" class="btn btn-primary" >Save LIMS FXNTY Changes</button></p>
+                                <table id="Dash_LIMS_Functionality" class="displayx  " style="width:100%" >                     
+                                    <thead>  
+                                        
+                                        <tr>
+                                            <th colspan="4"></th>  
+                                            <th colspan="2" style="background-color: #55ae55;"></th> 
+                                            <th colspan="4" style="background-color: #cacc57;">DOWNTIME</th>                                                                                                      
+                                            <th colspan="3" style="background-color: #88e0ea;">RESPONSE</th>
+                                                                                  
+                                        </tr>
+
+                                        <tr>
+                                            <th></th>
+                                            <th>Day</th>
+                                            <th>Name_of_Lab</th>
+                                            <th>Comments</th>
+                                            <th>Total number of hours LIMS was operational</th>
+                                            <th>Total number of hours LIMS was offline</th>
+                                            
+                                           
+                                            <th>Downtime due to hardware problem (hours)</th>
+                                            <th>Downtime due to internet connection interrupted (hours)</th>
+                                            <th>Downtime due to software problem (hours)</th>
+                                            <th>Downtime (Other reasons)':'Downtime_Other_reasons</th>
+
+                                            <th>Time between LIMS going down and the incident being reported in help desk (hours)</th>
+                                            <th>Time between the incident being reported in help desk, and technician responding to issue (hours)</th>
+                                            <th>Time between technician responding to issue and resolution of issue (hours)</th>
+                                           
+                                      
+
+                                        </tr>
+                                    </thead>
+                                        <tbody>  
+                
+                                         </tbody>                  
+                                        </table>
+                                    </form>
+
+
+                      </div>
+                  </div>
+              </div> <!----end-->
+
+
+                  <!-- Accordion Item #10 -->
+                  <div class="accordion-item">
+                    <h2 class="accordion-header" id="heading10">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse10" aria-expanded="false" aria-controls="collapse10">
+                            <strong> 7:  Specimen Transport</strong>
+                        </button>
+                    </h2>
+                    <div id="collapse10" class="accordion-collapse collapse" aria-labelledby="heading10" data-bs-parent="#accordionExample">
+                        <div class="accordion-body">
+                          
+                            {% load crispy_forms_tags %}
+                            <form  method="POST" >
+                              {% csrf_token %}
+                            <p><button id="submitDash_Specimen_Transport" name="submitDash_Specimen_Transport" type="button" class="btn btn-primary" >Save Specimen_Transport Changes</button></p>
+                                    <table id="Dash_Specimen_Transport" class="displayx  " style="width:100%" >                     
+                                        <thead>  
+                                            <tr>
+                                                <th colspan="4"></th>  
+                                                <th colspan="2" style="background-color: #ae7755;"></th> 
+                                                <th colspan="6" style="background-color: #cacc57;"></th>                                                                                                      
+                                       
+                                                                                      
+                                            </tr>  
+    
+                                            <tr>
+                                                <th></th>
+                                                <th>Day</th>
+                                                <th>District</th>
+                                                <th>Comments</th>
+
+                                                <th>Number of rider accidents</th>
+                                                <th>Total number of incomplete bike transport trips</th>                             
+                                               
+                                                <th>Total number of specimens transported by non-IST methods</th>
+                                                <th>Number of specimens transported by ambulance</th>
+                                                <th>Number of specimens transported by alternative IP transport</th>
+                                                <th>Number of specimens transported by MoHCC arranged transport</th>    
+                                                <th>Number of specimens transported by courier</th>
+                                                <th>Number of specimens transported by other non-IST methods</th>                                             
+              
+                                            </tr>
+                                        </thead>
+                                            <tbody>  
+                    
+                                             </tbody>                  
+                                            </table>
+                                        </form>
+
+
+                        </div>
+                    </div>
+                </div><!---end-->
+
+
+                                <!-- Accordion Item #11 -->
+                                <div class="accordion-item">
+                                  <h2 class="accordion-header" id="heading11">
+                                      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse11" aria-expanded="false" aria-controls="collapse11">
+                                          <strong>8: Power Outage</strong>
+                                      </button>
+                                  </h2>
+                                  <div id="collapse11" class="accordion-collapse collapse" aria-labelledby="heading11" data-bs-parent="#accordionExample">
+                                      <div class="accordion-body">
+                                       
+                                        {% load crispy_forms_tags %}
+                                        <form  method="POST" >
+                                          {% csrf_token %}
+                                        <p><button id="submitDash_Power_Outage" name="submitDash_Power_Outage" type="button" class="btn btn-primary" >Save Power Outage Changes</button></p>
+                                                <table id="Dash_Power_Outage" class="displayx  " style="width:100%" >                     
+                                                    <thead>    
+                
+                                                        <tr>
+                                                            <th></th>
+                                                            <th></th>
+                                                            <th>Laboratory</th>
+                                                            <th>Comments</th>
+                                                            <th>Number of hours with no electricity</th>
+                                                            <th>Number of hours generator was on</th>                        
+                                                           
+                                                            <th>Litres of fuel added to generator</th>
+                                                            <th>Number of hours machine/s was not being used due to power cut</th>
+                                                            <th>Total  Tests done using generator</th>
+                                                        </tr>
+                                                    </thead>
+                                                        <tbody>  
+                                
+                                                         </tbody>                  
+                                                        </table>
+                                                    </form>
+            
+
+
+
+                                      </div>
+                                  </div>
+                              </div> <!-- /.end -->
+
+
+                                  <!-- Accordion Item #12 -->
+                <div class="accordion-item">
+                  <h2 class="accordion-header" id="heading12">
+                      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse12" aria-expanded="false" aria-controls="collapse12">
+                          <strong>9:  CLI  </strong>
+                      </button>
+                  </h2>
+                  <div id="collapse12" class="accordion-collapse collapse" aria-labelledby="heading12" data-bs-parent="#accordionExample">
+                      <div class="accordion-body">
+                          
+                         
+                        {% load crispy_forms_tags %}
+                        <form  method="POST" >
+                          {% csrf_token %}
+                        <p><button id="submitDash_CLI" name="submitDash_CLI" type="button" class="btn btn-primary" >Save CLI Changes</button></p>
+                                <table id="Dash_CLI" class="displayx  " style="width:100%" >                     
+                                    <thead>  
+                                        
+                                        <tr>
+                                            <th colspan="4"></th>
+                                            <th colspan="2"style="background-color: #585a5b;"></th>                                                  
+                                            <th colspan="5" style="background-color: #88e0ea;"> Correspondences</th>
+                                            <th colspan="3" style="background-color: #d5f4e6;">Missing Results</th>
+                                            <th colspan="1"></th>
+                                            <th colspan="10" style="background-color: #cdcd83;">Reasons for Missing Results</th>
+                                        </tr>
+
+
+                                        <tr>
+                                            <th></th>
+                                            <th>Date</th>
+                                            <th>Laboratory</th>
+                                            <th>Comments</th>
+
+                                            <th>Number of incidents requiring communication between lab and clinics</th>
+                                            <th>Number of correspondences</th>                        
+                                           
+                                            <th>Number of correspondences for rebleed requests sent for rejected, failed or lost samples</th>
+                                            <th>Number of correspondences for clarifications needed from clinic regarding test requests</th>
+                                            <th>Number of correspondences for clinics to send specimens to different laboratory</th>
+                                            <th>Number of correspondences for clinics to expect delays in testing and result return due to laboratory stock outs or capacity </th>
+                                            <th> Number of correspondences for clinics to halt specimens collection due to laboratory stock outs or capacity</th>
+
+                                            <th>Unresolved missing results from last week</th>
+                                            <th>Number of missing results requested by facilities this week</th>
+                                            <th>Missing results outcomes:<br>Results found and shared with facilities</th>
+
+                                            <th>LIMS Interface Failed</th>
+
+                                            <th>Results not documented at facility</th>
+                                            <th>Results sent to wrong facility</th>
+                                            <th>Results not yet dispatched/printed</th>
+                                            <th>Specimen not received: rebleed sent</th>
+                                            <th>Specimen rejected</th>
+                                            <th>Result transmission to hub failed</th>
+                                            <th>Result pending publishing</th>
+                                            <th>Pending testing</th>
+                                            <th>Referred - awaiting results</th>
+                                            <th>Investigation in progress</th>
+                                       
+                                        </tr>
+                                    </thead>
+                                        <tbody>  
+                
+                                         </tbody>                  
+                                        </table>
+                                    </form>
+
+
+
+                      </div>
+                  </div>
+              </div> <!-- /.end -->
+
+
+
+
+                      </div><!----end of all Accordion-->     
+       
+        </div><!-- End of second tab -->
+
+        <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
+
+            Use this to check if there are duplicate IST files and aswell to delete them 
+
+          <table width="100%" id="dashboard_list" class="display table-responsive ">         
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Action</th>
+                    <th>Date</th>
+                    <th>Sourcefile</th>
+                  
+                    <th>Updated Date</th>
+                    
+                </tr>
+            </thead>
+            <tbody>
+                {% for result in data %}
+                    {% if result.query_name == 'IST_Dash_LIST' %}
+                        {% for row in result.query_data %}
+                            <tr>
+                                <td>{{ forloop.counter }}</td>
+                                <td>
+                                  <!-- Call to action buttons -->
+                                  {% load crispy_forms_tags %}
+                                  <form  method="POST" >
+                                    {% csrf_token %}
+                                  <ul class="list-inline m-0">                
+                                      <li class="list-inline-item">
+                                        <button class="btn btn-danger btn-sm rounded-0 ist_delete" 
+                                        type="button" data-unique-key="{{ row|get_item:'unique_key'|default:'' }}" 
+                                        data-toggle="tooltip" data-placement="top" title="Delete IST">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                    
+                                      </li>                                      
+                                  </ul>
+                                  </form>
+                              </td>
+                              
+
+                                <td>{{ row.Date }}</td>
+                                <td>{{ row.LAB }}</td>
+                                <!-- <td class="hidden-cell">{{ row|get_item:"unique_key"|default:"" }}</td>
+                                <td class="hidden-cell">{{ row|get_item:"SourceFile"|default:"" }}</td> -->
+                                <td>{{ row|get_item:"Update_Date"|default:"" }}</td>
+                                
+
+                            </tr>
+                        {% endfor %}
+                    {% endif %}
+                {% endfor %}
+            </tbody>
+        </table>
+           
+
+        </div>
+      </div><!-- End Default Tabs -->
+
+    </div>
+
+ </div>  <!--  End card -->
+
+  </div> <!-- End column-->
+
+ </div> <!-- End row -->
+    
+
+</section>
+
+
+<script>
+  jQuery_3_6_0(document).ready(function () {
+      jQuery_3_6_0(".display").DataTable({
+          dom: 'Bfrtip',
+          pageLength: 50 , // Display 50 rows by default
+          buttons: [
+              'copy', 'csv', 'excel', 'pdf', 'print'
+          ],
+          scrollX: true, // Enable horizontal scrolling
+          fixedColumns: {
+              leftColumns: 3 // Freeze the first 3 columns
+          }
+
+      });
+
+
+
+      // Add a duplicate scrollbar on top of the DataTable
+    jQuery_3_6_0('.table-wrapper').prepend('<div class="top-scrollbar"></div>');
+
+    function syncScrollBars() {
+        var $originalScrollBar = jQuery_3_6_0('.dataTables_scrollBody');
+        var $topScrollBar = jQuery_3_6_0('.top-scrollbar');
+
+        $topScrollBar.width($originalScrollBar.width());
+        $topScrollBar.scroll(function(){
+            $originalScrollBar.scrollLeft($topScrollBar.scrollLeft());
+        });
+
+        $originalScrollBar.scroll(function(){
+            $topScrollBar.scrollLeft($originalScrollBar.scrollLeft());
+        });
+    }
+
+    // Initialize the top scrollbar
+    syncScrollBars();
+
+    // If the window is resized, adjust the top scrollbar's width
+    jQuery_3_6_0(window).resize(syncScrollBars);
+
+
+  });
+  </script>
+
+ 
+
+
+<script>
+     $(function () {
+    $('[data-toggle="tooltip"]').tooltip();
+});
+
+</script>
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+<script>
+//POPULATING THE TABLES
+
+    $(document).ready(function() {
+        $('#labsubmit').on('click', function(e) {
+            // Prevent the default action (stops the page from refreshing)
+            e.preventDefault(e);
+            // e.stopPropagation();
+
+            // Define the button and disable it
+            var submitButton = $('#labsubmit');
+            submitButton.prop('disabled', true).addClass('loading').html('Loading...');
+
+            var button = "pullDashboards";
+            var labVal = $('#labSelect').val();
+
+            // Logging for debugging
+            // Data that is common to all AJAX requests
+            var commonData = {
+                        lab: labVal,
+                        button: button,
+                        csrfmiddlewaretoken: '{{ csrf_token }}', 
+                    };
+
+
+   
+            $.ajax({
+                type: 'POST',
+                url: '{% url 'admin_manage' %}', 
+                data: commonData,
+                success: function(response) {
+
+                    $.each(response.data_dash, function(index, result) {
+                        if (result.query_name_dash == 'Dash_This_week_Rec_Samples') {
+                            $.each(result.query_data_dash, function(idx, row) {
+                                // Assuming 'row.LAB', 'row.checked', and 'row.unique_key' are the fields you need
+            
+                                // Populate lab name and time
+                                $('#labDiv').html("<strong>Lab:</strong> " + row.Name_of_Lab);
+                                $('#timeDiv').html("<strong>Time:</strong> " + (row.checked ? row.checked : ''));
+            
+                                // Adjust checkbox to hold the unique key
+                                $('#gridCheck2').data('uniqueKey', row.unique_key);
+            
+                                // Show reviewdiv
+                                $('#reviewdiv').show();
+            
+                                // Determine which badge to show
+                                if (row.checked) {
+                                    // If 'checked' is not null (reviewed)
+                                    $('#reviewedBadge').show();
+                                    $('.badge.bg-warning').hide(); // Hide the 'Pending review' badge
+                                } else {
+                                    // If 'checked' is null (not reviewed)
+                                    $('.badge.bg-warning').show(); // Show the 'Pending review' badge
+                                    $('#reviewedBadge').hide();
+                                }
+                            });
+                        }
+                    });
+
+
+
+
+                    $('#msg').html('<div class="alert alert-success alert-dismissible fade show" role="alert">' +
+                                   '<i class="bi bi-check-circle-fill me-1"></i>' + response.message +
+                                   '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' +
+                                   '</div>');
+
+                    
+                    var dataTable = $('#Dashboard_Indicators');
+                    
+                    // Clear previous rows
+                    dataTable.find('tbody').empty();
+                    
+                    // Iterate over the data_dash list
+                    $.each(response.data_dash, function(index, result) {
+                        if (result.query_name_dash == 'Dashboard_Indicators') {
+                            $.each(result.query_data_dash, function(idx, row) {
+                                // Create a new row and populate it with the data
+                                var rowHtml = '<tr>';
+                                rowHtml += '<td><input type="hidden" id="row-' + idx + '-LAB1" name="row-' + idx + '-LAB" value="' + row.unique_key + '"></td>'; 
+                                rowHtml += '<td><input type="hidden" readonly style="background-color: lightgray; border: none;" id="row-' + idx + '-LAB2" name="row-' + idx + '-LAB" value="' + row.Date + '"></td>';                               
+                                rowHtml += '<td><input type="text" readonly style="background-color: lightgray; border: none;" id="row-' + idx + '-LAB3" name="row-' + idx + '-LAB" value="' + row.LAB + '"></td>';
+                                rowHtml += '<td><input type="text" id="row-' + idx + '-LAB4" name="row-' + idx + '-LAB" value="' + row.Number_of_carryover_samples + '"></td>';
+                                rowHtml += '<td><input type="text" id="row-' + idx + '-LAB5" name="row-' + idx + '-LAB" value="' + row.Backlog + '"></td>';
+
+                                rowHtml += '<td><input type="text" id="row-' + idx + '-LAB6" name="row-' + idx + '-LAB" value="' + row.Age_of_oldest_Plasma_sample + '"></td>';
+
+                                rowHtml += '<td><input type="text" id="row-' + idx + '-LAB7" name="row-' + idx + '-LAB" value="' + row.Age_of_oldest_DBS_sample + '"></td>';
+
+                                rowHtml += '<td><input type="text" id="row-' + idx + '-LAB8" name="row-' + idx + '-LAB" value="' +      row.Age_of_oldest_EID_sample + '"></td>';
+
+                                rowHtml += '<td><input type="text" id="row-' + idx + '-LAB9" name="row-' + idx + '-LAB" value="' + row.Number_of_samples_received_this_week + '"></td>';
+
+                                rowHtml += '<td><input type="text" id="row-' + idx + '-LAB10" name="row-' + idx + '-LAB" value="' + row.Total_received_samples_with_Age_Sex_Disaggregation + '"></td>';
+
+                                rowHtml += '<td><input type="text" id="row-' + idx + '-LAB11" name="row-' + idx + '-LAB" value="' + row.Number_of_samples_that_are_rejected + '"></td>';
+
+                                rowHtml += '<td><input type="text" id="row-' + idx + '-LAB12" name="row-' + idx + '-LAB" value="' + row.Total_with_reasons_for_rejection + '"></td>';
+
+                                rowHtml += '<td><input type="text" id="row-' + idx + '-LAB13" name="row-' + idx + '-LAB" value="' + row.Number_of_samples_entered_into_LIMS_on_day_of_arrival + '"></td>';
+
+                                rowHtml += '<td><input type="text" id="row-' + idx + '-LAB14" name="row-' + idx + '-LAB" value="' + row.Total_number_of_referred_samples_received + '"></td>';
+
+                                rowHtml += '<td><input type="text" id="row-' + idx + '-LAB15" name="row-' + idx + '-LAB" value="' + row.Total_referred_with_reason_for_referral + '"></td>';
+
+                                rowHtml += '<td><input type="text" id="row-' + idx + '-LAB16" name="row-' + idx + '-LAB" value="' + row.Total_number_of_samples_run + '"></td>';
+
+                                rowHtml += '<td><input type="text" id="row-' + idx + '-LAB17" name="row-' + idx + '-LAB" value="' + row.Calculated_carryover_at_start_of_week_Plasma_VL + '"></td>';
+
+                                rowHtml += '<td><input type="text" id="row-' + idx + '-LAB18" name="row-' + idx + '-LAB" value="' + row.Calculated_carryover_at_start_of_week_DBS_VL + '"></td>';
+
+                                rowHtml += '<td><input type="text" id="row-' + idx + '-LAB19" name="row-' + idx + '-LAB" value="' + row.Calculated_carryover_at_start_of_week_DBS_EID + '"></td>';
+
+                                rowHtml += '<td><input type="text" id="row-' + idx + '-LAB20" name="row-' + idx + '-LAB" value="' + row.Total_number_failed_eligible_for_repeat + '"></td>';
+
+                                rowHtml += '<td><input type="text" id="row-' + idx + '-LAB21" name="row-' + idx + '-LAB" value="' + row.Total_number_failed_not_eligible_for_repeat + '"></td>';
+
+                                rowHtml += '<td><input type="text" id="row-' + idx + '-LAB22" name="row-' + idx + '-LAB" value="' + row.Number_with_reason_for_failure + '"></td>';
+
+                                rowHtml += '<td><input type="text" id="row-' + idx + '-LAB23" name="row-' + idx + '-LAB" value="' + row.Number_of_results_printed_from_LIMS_by_VL_Lab + '"></td>';
+
+                                rowHtml += '<td><input type="text" id="row-' + idx + '-LAB24" name="row-' + idx + '-LAB" value="' + row.Number_of_results_dispatched_by_lab + '"></td>';
+
+                                rowHtml += '<td><input type="text" id="row-' + idx + '-LAB25" name="row-' + idx + '-LAB" value="' + row.Reagent_test_kits_available + '"></td>';
+
+                                rowHtml += '<td><input type="text" id="row-' + idx + '-LAB26" name="row-' + idx + '-LAB" value="' + row.Total_machine_downtime_hours + '"></td>';
+
+                                rowHtml += '<td><input type="text" id="row-' + idx + '-LAB27" name="row-' + idx + '-LAB" value="' + row.LIMS_Hours_of_functionality + '"></td>';
+
+                                rowHtml += '<td><input type="text" id="row-' + idx + '-LAB28" name="row-' + idx + '-LAB" value="' + row.Number_of_hours_with_no_electricity + '"></td>';
+
+                                rowHtml += '<td><input type="text" id="row-' + idx + '-LAB29" name="row-' + idx + '-LAB" value="' + row.Number_of_hours_generator_was_on + '"></td>';
+                        
+                                var SourceFile = row.SourceFile.length;
+                                rowHtml += '<td><input type="text" readonly style="background-color: lightgray; border: none;" id="row-' + idx + '-LAB30" name="row-' + idx + '-LAB" value="' + row.SourceFile + '" size="' + SourceFile + '"></td>';
+
+
+
+            
+                                rowHtml += '</tr>';
+                                
+                                // Append the row to the table
+                                dataTable.append(rowHtml);
+                            });
+                        }
+                    });
+
+                    // Update the aria-selected attribute
+                    $('#tab1').attr('aria-selected', response.tab_state1);
+
+
+
+                },
+                error: function(error) {
+                    console.log(error);
+                },
+               
+            }); // end of ajax call
+
+//----------------------------------------------------------------now carriover----------------------
+
+ //--------------------------LIMS FUNCTIONALITY---------------------------------------------------------
+
+
+$.ajax({
+    type: 'POST',
+    url: '{% url 'admin_manage' %}', 
+    data:  commonData,
+    success: function(response) {
+                           
+        var dataTable = $('#Dash_LIMS_Functionality');
+        
+        // Clear previous rows
+        dataTable.find('tbody').empty();
+        
+        // Iterate over the data_dash list
+        $.each(response.data_dash, function(index, result) {
+            if (result.query_name_dash == 'Dash_LIMS_Functionality') {
+                $.each(result.query_data_dash, function(idx, row) {
+                    // Create a new row and populate it with the data
+                    var rowHtml = '<tr>';
+                    rowHtml += '<td><input type="hidden" id="row-' + idx + '-LAB1" name="row-' + idx + '-LAB" value="' + row.unique_key + '"></td>'; 
+                    rowHtml += '<td><input type="text" readonly style="background-color: lightgray; border: none;" id="row-' + idx + '-LAB2" name="row-' + idx + '-LAB" value="' + row.Day + '"></td>';                               
+                    rowHtml += '<td><input type="text" readonly style="background-color: lightgray; border: none;" id="row-' + idx + '-LAB3" name="row-' + idx + '-LAB" value="' + row.Name_of_Lab + '"></td>';
+
+                    rowHtml += '<td><textarea rows="1" style="width: 450px;border: none;" id="row-' + idx + '-LAB28" name="row-' + idx + '-LAB">' + (row.Comments == null ? "" :row.Comments) + '</textarea></td>';
+
+                    rowHtml += '<td><input type="text" id="row-' + idx + '-LAB6" name="row-' + idx + '-LAB" value="' + (row.Hours_of_Functionality == null ? "" :row.Hours_of_Functionality  )+ '"></td>';                    
+                    rowHtml += '<td><input type="text" id="row-' + idx + '-LAB7" name="row-' + idx + '-LAB" value="' +  ( row.Hours_of_Downtime == null ? "" :row.Hours_of_Downtime  ) + '"></td>';
+                    rowHtml += '<td><input type="text" id="row-' + idx + '-LAB8" name="row-' + idx + '-LAB" value="' + ( row.Downtime_due_to_hardware_problem == null ? "" :row.Downtime_due_to_hardware_problem ) + '"></td>';                            
+                    rowHtml += '<td><input type="text" id="row-' + idx + '-LAB9" name="row-' + idx + '-LAB" value="' + ( row.Downtime_due_to_internet_connection == null ? "" :row.Downtime_due_to_internet_connection )  + '"></td>';
+
+                    rowHtml += '<td><input type="text" id="row-' + idx + '-LAB10" name="row-' + idx + '-LAB" value="' +  ( row.Downtime_due_to_software_problem == null ? "" :row.Downtime_due_to_software_problem )  + '"></td>';
+                    rowHtml += '<td><input type="text" id="row-' + idx + '-LAB11" name="row-' + idx + '-LAB" value="' +  ( row.Downtime_Other_reasons == null ? "" :row.Downtime_Other_reasons ) + '"></td>';
+                    rowHtml += '<td><input type="text" id="row-' + idx + '-LAB12" name="row-' + idx + '-LAB" value="' +  ( row.TimeLIMS_going_down_HELPDESK == null ? "" :row.TimeLIMS_going_down_HELPDESK )  + '"></td>';
+                    rowHtml += '<td><input type="text" id="row-' + idx + '-LAB13" name="row-' + idx + '-LAB" value="' +  ( row.TimeHELPDESK_TechRESPONSE == null ? "" :row.TimeHELPDESK_TechRESPONSE ) + '"></td>';
+                    rowHtml += '<td><input type="text" id="row-' + idx + '-LAB14" name="row-' + idx + '-LAB" value="' +  ( row.TimeTechRESPONSE_Resolution == null ? "" :row.TimeTechRESPONSE_Resolution )   + '"></td>';
+                 
+                    rowHtml += '</tr>';
+                    
+                    // Append the row to the table
+                    dataTable.append(rowHtml);
+                });
+            }
+        });
+
+        // Update the aria-selected attribute
+        $('#tab1').attr('aria-selected', response.tab_state1);
+
+
+
+    },
+    error: function(error) {
+        console.log(error);
+    },
+    complete: function() {
+        // Revert the button text and appearance after processing is complete
+        submitButton.prop('disabled', false).html('Submit');
+    }
+}); // end of ajax call
+
+//=========================================================================================================================================       
+
+
+
+$.ajax({
+    type: 'POST',
+    url: '{% url 'admin_manage' %}', 
+    data:  commonData,
+    success: function(response) {
+                           
+        var dataTable = $('#Dash_Power_Outage');
+        
+        // Clear previous rows
+        dataTable.find('tbody').empty();
+        
+        // Iterate over the data_dash list
+        $.each(response.data_dash, function(index, result) {
+            if (result.query_name_dash == 'Dash_Power_Outage') {
+                $.each(result.query_data_dash, function(idx, row) {
+                    // Create a new row and populate it with the data
+                    var rowHtml = '<tr>';
+                    rowHtml += '<td><input type="hidden" id="row-' + idx + '-LAB1" name="row-' + idx + '-LAB" value="' + row.unique_key + '"></td>'; 
+                    rowHtml += '<td><input type="hidden" readonly style="background-color: lightgray; border: none;" id="row-' + idx + '-LAB2" name="row-' + idx + '-LAB" value="' + row.Date + '"></td>';                               
+                    rowHtml += '<td><input type="text" readonly style="background-color: lightgray; border: none;" id="row-' + idx + '-LAB3" name="row-' + idx + '-LAB" value="' + row.Laboratory + '"></td>';
+                    rowHtml += '<td><textarea rows="1" style="width: 450px;border: none;" id="row-' + idx + '-LAB28" name="row-' + idx + '-LAB">' + (row.Comments == null ? "" :row.Comments ) + '</textarea></td>';
+
+                    rowHtml += '<td><input type="text" id="row-' + idx + '-LAB6" name="row-' + idx + '-LAB" value="' + ( row.Hours_with_no_electricity == null ? "" : row.Hours_with_no_electricity )+ '"></td>';                    
+                    rowHtml += '<td><input type="text" id="row-' + idx + '-LAB7" name="row-' + idx + '-LAB" value="' + ( row.Hours_generator_was_on == null ? "" : row.Hours_generator_was_on )+ '"></td>';
+                    rowHtml += '<td><input type="text" id="row-' + idx + '-LAB8" name="row-' + idx + '-LAB" value="' + ( row.Fuel_ltrs_added_to_generator  == null ? "" : row.Fuel_ltrs_added_to_generator ) + '"></td>';                            
+                    rowHtml += '<td><input type="text" id="row-' + idx + '-LAB9" name="row-' + idx + '-LAB" value="' + ( row.Hrs_Machine_idle_coz_PowerCuts == null ? "" : row.Hrs_Machine_idle_coz_PowerCuts  ) + '"></td>';
+                    rowHtml += '<td><input type="text" id="row-' + idx + '-LAB10" name="row-' + idx + '-LAB" value="' + ( row.Total_Tests_done_using_generator == null ? "" : row.Total_Tests_done_using_generator  )+ '"></td>';
+                 
+                    rowHtml += '</tr>';
+                    
+                    // Append the row to the table
+                    dataTable.append(rowHtml);
+                });
+            }
+        });
+
+        // Update the aria-selected attribute
+        $('#tab1').attr('aria-selected', response.tab_state1);
+
+
+
+    },
+    error: function(error) {
+        console.log(error);
+    },
+    complete: function() {
+        // Revert the button text and appearance after processing is complete
+        submitButton.prop('disabled', false).html('Submit');
+    }
+}); // end of ajax call
+
+//=========================================================================================================================================       
+
+
+
+ //-------------------------- SPECIMEN---------------------------------------------------------
+
+
+ $.ajax({
+    type: 'POST',
+    url: '{% url 'admin_manage' %}', 
+    data:  commonData,
+    success: function(response) {
+                           
+        var dataTable = $('#Dash_Specimen_Transport');
+        
+        // Clear previous rows
+        dataTable.find('tbody').empty();
+        
+        // Iterate over the data_dash list
+        $.each(response.data_dash, function(index, result) {
+            if (result.query_name_dash == 'Dash_Specimen_Transport') {
+                $.each(result.query_data_dash, function(idx, row) {
+                    // Create a new row and populate it with the data
+                    var rowHtml = '<tr>';
+                    rowHtml += '<td><input type="hidden" id="row-' + idx + '-LAB1" name="row-' + idx + '-LAB" value="' + row.unique_key + '"></td>'; 
+                    rowHtml += '<td><input type="hidden" readonly style="background-color: lightgray; border: none;" id="row-' + idx + '-LAB2" name="row-' + idx + '-LAB" value="' + row.Date + '"></td>';                               
+                    rowHtml += '<td><input type="text" readonly style="background-color: lightgray; border: none;" id="row-' + idx + '-LAB3" name="row-' + idx + '-LAB" value="' + row.District + '"></td>';
+                    rowHtml += '<td><textarea rows="1" style="width: 450px;border: none;" id="row-' + idx + '-LAB28" name="row-' + idx + '-LAB">' + ( row.Comments == null ? "" :row.Comments)  + '</textarea></td>';
+
+                    rowHtml += '<td><input type="text" id="row-' + idx + '-LAB6" name="row-' + idx + '-LAB" value="' + (row.Number_of_rider_accidents == null ? "" :row.Number_of_rider_accidents ) + '"></td>';                    
+                    rowHtml += '<td><input type="text" id="row-' + idx + '-LAB7" name="row-' + idx + '-LAB" value="' + (row.Incomplete_bike_transport_trips == null ? "" :row.Incomplete_bike_transport_trips) + '"></td>';
+                    rowHtml += '<td><input type="text" id="row-' + idx + '-LAB8" name="row-' + idx + '-LAB" value="' + (row.Specimens_transported_by_non_IST_methods == null ? "" :row.Specimens_transported_by_non_IST_methods) + '"></td>';                            
+                    rowHtml += '<td><input type="text" id="row-' + idx + '-LAB9" name="row-' + idx + '-LAB" value="' + (row.Specimens_transported_by_ambulance == null ? "" : row.Specimens_transported_by_ambulance ) + '"></td>';
+                    rowHtml += '<td><input type="text" id="row-' + idx + '-LAB10" name="row-' + idx + '-LAB" value="' + (row.Specimens_transported_by_alternative_IP_transport == null ? "" :row.Specimens_transported_by_alternative_IP_transport ) + '"></td>';
+                    rowHtml += '<td><input type="text" id="row-' + idx + '-LAB11" name="row-' + idx + '-LAB" value="' + (row.Specimens_transported_by_MoHCC_arranged_transport == null ? "" : row.Specimens_transported_by_MoHCC_arranged_transport )  + '"></td>';
+                    rowHtml += '<td><input type="text" id="row-' + idx + '-LAB12" name="row-' + idx + '-LAB" value="' + ( row.Specimens_transported_by_courier == null ? "" : row.Specimens_transported_by_courier  )+ '"></td>';
+                    rowHtml += '<td><input type="text" id="row-' + idx + '-LAB13" name="row-' + idx + '-LAB" value="' + ( row.Specimens_transported_by_other_non_IST_methods == null ? "" : row.Specimens_transported_by_other_non_IST_methods  )+ '"></td>';
+
+                 
+                    rowHtml += '</tr>';
+                    
+                    // Append the row to the table
+                    dataTable.append(rowHtml);
+                });
+            }
+        });
+
+        // Update the aria-selected attribute
+        $('#tab1').attr('aria-selected', response.tab_state1);
+
+
+
+    },
+    error: function(error) {
+        console.log(error);
+    },
+    complete: function() {
+        // Revert the button text and appearance after processing is complete
+        submitButton.prop('disabled', false).html('Submit');
+    }
+}); // end of ajax call
+
+//=========================================================================================================================================   
+
+//---------------------------------CLI LATEST--------------------------------------------------
+
+
+$.ajax({
+    type: 'POST',
+    url: '{% url 'admin_manage' %}', 
+    data:  commonData,
+    success: function(response) {
+
+
+                 
+        var dataTable = $('#Dash_CLI');
+        
+        // Clear previous rows
+        dataTable.find('tbody').empty();
+        
+        // Iterate over the data_dash list
+        $.each(response.data_dash, function(index, result) {
+            if (result.query_name_dash == 'Dash_CLI_populate') {
+                $.each(result.query_data_dash, function(idx, row) {
+                    // Create a new row and populate it with the data
+                    var rowHtml = '<tr>';
+                    rowHtml += '<td><input type="hidden" id="row-' + idx + '-LAB1" name="row-' + idx + '-LAB" value="' + row.unique_key + '"></td>'; 
+                    rowHtml += '<td><input type="hidden" readonly style="background-color: lightgray; border: none;" id="row-' + idx + '-LAB2" name="row-' + idx + '-LAB" value="' + row.Date + '"></td>';                               
+                    rowHtml += '<td><input type="text" readonly style="background-color: lightgray; border: none;" id="row-' + idx + '-LAB3" name="row-' + idx + '-LAB" value="' + row.Name_of_Lab + '"></td>';
+
+                    rowHtml += '<td><textarea rows="1"  class="commnts" style="width: 450px;border: none;" id="row-' + idx + '-LAB28" name="row-' + idx + '-LAB">' + ( row.Comments == null ? "" :row.Comments)  + '</textarea></td>';
+
+                    rowHtml += '<td><input type="text" id="row-' + idx + '-LAB6" name="row-' + idx + '-LAB" value="' + ( row.Incidents_nid_Comms_btwn_LAB_CLINICS == null ? "" :row.Incidents_nid_Comms_btwn_LAB_CLINICS  ) + '"></td>';                    
+                    rowHtml += '<td><input type="text" id="row-' + idx + '-LAB7" name="row-' + idx + '-LAB" value="' + ( row.Number_of_correspondences == null ? "" :row.Number_of_correspondences  )  + '"></td>';
+                    rowHtml += '<td><input type="text" id="row-' + idx + '-LAB8" name="row-' + idx + '-LAB" value="' + ( row.ReBLEEDs_requests_sent == null ? "" :row.ReBLEEDs_requests_sent )  + '"></td>'; 
+
+                    rowHtml += '<td><input type="text" id="row-' + idx + '-LAB9" name="row-' + idx + '-LAB" value="' + ( row.Corrsp_test_requests_clinic_clarificatons == null ? "" :row.Corrsp_test_requests_clinic_clarificatons  ) + '"></td>';
+                    rowHtml += '<td><input type="text" id="row-' + idx + '-LAB10" name="row-' + idx + '-LAB" value="' + ( row.Corrsp_clinic_send_spec_to_diff_lab == null ? "" :row.Corrsp_clinic_send_spec_to_diff_lab ) + '"></td>';
+                    rowHtml += '<td><input type="text" id="row-' + idx + '-LAB11" name="row-' + idx + '-LAB" value="' + ( row.Corrsp_clinic_expect_delay_due_lab_stockouts == null ? "" :row.Corrsp_clinic_expect_delay_due_lab_stockouts )  + '"></td>';
+                    rowHtml += '<td><input type="text" id="row-' + idx + '-LAB12" name="row-' + idx + '-LAB" value="' + ( row.Corrsp_clinic_halt_spec_collection_due_lab_stockouts == null ? "" :row.Corrsp_clinic_halt_spec_collection_due_lab_stockouts ) + '"></td>';
+
+                    rowHtml += '<td><input type="text" id="row-' + idx + '-LAB13" name="row-' + idx + '-LAB" value="' + ( row.LAST_WEEK_Unresolved_missing_results == null ? "" :row.LAST_WEEK_Unresolved_missing_results  ) + '"></td>';
+                    rowHtml += '<td><input type="text" id="row-' + idx + '-LAB14" name="row-' + idx + '-LAB" value="' + ( row.THIS_WEEK_Missing_results_req_by_Facilities == null ? "" :row.THIS_WEEK_Missing_results_req_by_Facilities )   + '"></td>';
+
+                    rowHtml += '<td><input type="text" id="row-' + idx + '-LAB15" name="row-' + idx + '-LAB" value="' + ( row.RESOLVED_Missing_results_outcomes_found_Shared_with_facilities == null ? "" :row.RESOLVED_Missing_results_outcomes_found_Shared_with_facilities )  + '"></td>';
+                    rowHtml += '<td><input type="text" id="row-' + idx + '-LAB16" name="row-' + idx + '-LAB" value="' + (  row.RESOLVED_LIMS_Interface_Failed == null ? "" :row.RESOLVED_LIMS_Interface_Failed ) + '"></td>';
+                    rowHtml += '<td><input type="text" id="row-' + idx + '-LAB17" name="row-' + idx + '-LAB" value="' + ( row.RESOLVED_Results_not_documented_at_facility == null ? "" :row.RESOLVED_Results_not_documented_at_facility ) + '"></td>';                                
+                    rowHtml += '<td><input type="text" id="row-' + idx + '-LAB18" name="row-' + idx + '-LAB" value="' + ( row.RESOLVED_Results_sent_to_wrong_facility == null ? "" :row.RESOLVED_Results_sent_to_wrong_facility )  + '"></td>';
+                    rowHtml += '<td><input type="text" id="row-' + idx + '-LAB19" name="row-' + idx + '-LAB" value="' +  ( row.RESOLVED_Results_not_yet_dispatched_printed == null ? "" :row.RESOLVED_Results_not_yet_dispatched_printed ) + '"></td>';
+                    rowHtml += '<td><input type="text" id="row-' + idx + '-LAB20" name="row-' + idx + '-LAB" value="' + ( row.RESOLVED_Specimens_not_received_rebleed_sent == null ? "" :row.RESOLVED_Specimens_not_received_rebleed_sent )  + '"></td>';
+                    rowHtml += '<td><input type="text" id="row-' + idx + '-LAB21" name="row-' + idx + '-LAB" value="' + ( row.RESOLVED_Specimens_rejected == null ? "" :row.RESOLVED_Specimens_rejected )  + '"></td>';
+
+                    rowHtml += '<td><input type="text" id="row-' + idx + '-LAB22" name="row-' + idx + '-LAB" value="' + ( row.Result_transmission_to_hub_failed == null ? "" :row.Result_transmission_to_hub_failed )  + '"></td>';
+                    rowHtml += '<td><input type="text" id="row-' + idx + '-LAB23" name="row-' + idx + '-LAB" value="' + ( row.RESOLVED_Result_pending_publishing == null ? "" :row.RESOLVED_Result_pending_publishing ) + '"></td>';
+                    rowHtml += '<td><input type="text" id="row-' + idx + '-LAB24" name="row-' + idx + '-LAB" value="' +  ( row.UNRESOLVED_Pending_testing == null ? "" :row.UNRESOLVED_Pending_testing )  + '"></td>';
+
+                    rowHtml += '<td><input type="text" id="row-' + idx + '-LAB25" name="row-' + idx + '-LAB" value="' + (row.UNRESOLVED_Referred_awaiting_results == null ? "" :row.UNRESOLVED_Referred_awaiting_results )  + '"></td>';
+                    rowHtml += '<td><input type="text" id="row-' + idx + '-LAB26" name="row-' + idx + '-LAB" value="' +  ( row.UNRESOLVED_Investigation_in_progress  == null ? "" :row.UNRESOLVED_Investigation_in_progress ) + '"></td>';
+                 
+                    rowHtml += '</tr>';
+                    
+                    // Append the row to the table
+                    dataTable.append(rowHtml);
+                });
+            }
+        });
+
+        // Update the aria-selected attribute
+        $('#tab1').attr('aria-selected', response.tab_state1);
+
+
+
+
+
+    },
+    error: function(error) {
+        console.log(error);
+    },
+    complete: function() {
+        // Revert the button text and appearance after processing is complete
+        submitButton.prop('disabled', false).html('Submit');
+    }
+}); // end of ajax call
+
+//=========================================================================================================================================       
+
+
+
+
+
+
+
+
+
+
+//-----------------------------------------------------------------------------------
+
+
+$.ajax({
+                type: 'POST',
+                url: '{% url 'admin_manage' %}', 
+                data:  commonData,
+                success: function(response) {
+                                       
+                    var dataTable = $('#Dash_This_week_Rec_Samples');
+                    
+                    // Clear previous rows
+                    dataTable.find('tbody').empty();
+                    
+                    // Iterate over the data_dash list
+                    $.each(response.data_dash, function(index, result) {
+                        if (result.query_name_dash == 'Dash_This_week_Rec_Samples') {
+                            $.each(result.query_data_dash, function(idx, row) {
+                                // Create a new row and populate it with the data
+                                var rowHtml = '<tr>';
+                                rowHtml += '<td><input type="hidden" id="row-' + idx + '-LAB1" name="row-' + idx + '-LAB" value="' + row.unique_key + '"></td>'; 
+                                rowHtml += '<td><input type="hidden" readonly style="background-color: lightgray; border: none;" id="row-' + idx + '-LAB2" name="row-' + idx + '-LAB" value="' + row.Date + '"></td>';                               
+                                rowHtml += '<td><input type="text" readonly style="background-color: lightgray; border: none;" id="row-' + idx + '-LAB3" name="row-' + idx + '-LAB" value="' + row.Name_of_Lab + '"></td>';
+                                rowHtml += '<td><input type="text" readonly style="background-color: lightgray; border: none;" id="row-' + idx + '-LAB4" name="row-' + idx + '-LAB" value="' + row.Sample_Type + '"></td>';
+                                rowHtml += '<td><input type="text" readonly style="background-color: lightgray; border: none;" id="row-' + idx + '-LAB5" name="row-' + idx + '-LAB" value="' + row.Test_Type + '"></td>';
+                                rowHtml += '<td><textarea rows="1"  class="commnts" style="width: 450px;border: none;" id="row-' + idx + '-LAB28" name="row-' + idx + '-LAB">' +( row.comments == null ? "" :row.comments  )+ '</textarea></td>';
+
+                                rowHtml += '<td><input type="text" id="row-' + idx + '-LAB6" name="row-' + idx + '-LAB" value="' + (row.Total_samples_received == null ? "" :row.Total_samples_received ) + '"></td>';                    
+                                rowHtml += '<td><input type="text" id="row-' + idx + '-LAB7" name="row-' + idx + '-LAB" value="' + (row.Urgent_Samples_received == null ? "" :row.Urgent_Samples_received  ) + '"></td>';
+                                rowHtml += '<td><input type="text" id="row-' + idx + '-LAB8" name="row-' + idx + '-LAB" value="' + (row.Num_ReBleed_Samples == null ? "" :row.Num_ReBleed_Samples  ) + '"></td>';                            
+                                rowHtml += '<td><input type="text" id="row-' + idx + '-LAB23" name="row-' + idx + '-LAB" value="' + (row.Carryover_Samples_in_the_lab == null ? "" :row.Carryover_Samples_in_the_lab  ) + '"></td>';
+
+                                rowHtml += '<td><input type="text" id="row-' + idx + '-LAB9" name="row-' + idx + '-LAB" value="' + (row.Samples_in_backlog_Intra_lab_TAT_7_days == null ? "" :row.Samples_in_backlog_Intra_lab_TAT_7_days  ) + '"></td>';
+                                rowHtml += '<td><input type="text" id="row-' + idx + '-LAB10" name="row-' + idx + '-LAB" value="' + (row.Num_Rejected_Samples == null ? "" :row.Num_Rejected_Samples  )+ '"></td>';
+                                rowHtml += '<td><input type="text" id="row-' + idx + '-LAB11" name="row-' + idx + '-LAB" value="' + (row.REJECTED_too_old_to_test == null ? "" :row.REJECTED_too_old_to_test  ) + '"></td>';
+                                rowHtml += '<td><input type="text" id="row-' + idx + '-LAB12" name="row-' + idx + '-LAB" value="' + (row.REJECTED_Quality_issue == null ? "" : row.REJECTED_Quality_issue  )+ '"></td>';
+                                rowHtml += '<td><input type="text" id="row-' + idx + '-LAB13" name="row-' + idx + '-LAB" value="' + (row.REJECTED_Quantity_insuff == null ? "" :row.REJECTED_Quantity_insuff  )  + '"></td>';
+                                rowHtml += '<td><input type="text" id="row-' + idx + '-LAB14" name="row-' + idx + '-LAB" value="' + (row.REJECTED_Quanti_Quali_intransit_compromised == null ? "" : row.REJECTED_Quanti_Quali_intransit_compromised  )+ '"></td>';
+                                rowHtml += '<td><input type="text" id="row-' + idx + '-LAB15" name="row-' + idx + '-LAB" value="' + (row.REJECTED_Patient_SampleINFO == null ? "" : row.REJECTED_Patient_SampleINFO  )+ '"></td>';
+                                rowHtml += '<td><input type="text" id="row-' + idx + '-LAB16" name="row-' + idx + '-LAB" value="' + (row.REJECTED_Missing_requestForm == null ? "" : row.REJECTED_Missing_requestForm  ) + '"></td>';                                
+                                rowHtml += '<td><input type="text" id="row-' + idx + '-LAB17" name="row-' + idx + '-LAB" value="' + (row.REJECTED_Sample_Missing == null ? "" :row.REJECTED_Sample_Missing ) + '"></td>';
+                                rowHtml += '<td><input type="text" id="row-' + idx + '-LAB18" name="row-' + idx + '-LAB" value="' + (row.REJECTED_other_reasons  == null ? "" :row.REJECTED_other_reasons  ) + '"></td>';
+                                rowHtml += '<td><input type="text" id="row-' + idx + '-LAB19" name="row-' + idx + '-LAB" value="' + (row.LIMS_hub_logged_prior_to_arrival == null ? "" :row.LIMS_hub_logged_prior_to_arrival ) + '"></td>';
+                                rowHtml += '<td><input type="text" id="row-' + idx + '-LAB20" name="row-' + idx + '-LAB" value="' + (row.LIMS_logged_during_week_of_arrival  == null ? "" :row.LIMS_logged_during_week_of_arrival  ) + '"></td>';
+                                rowHtml += '<td><input type="text" id="row-' + idx + '-LAB21" name="row-' + idx + '-LAB" value="' + ( row.LIMs_Backlog_yetTObeEntered  == null ? "" :row.LIMs_Backlog_yetTObeEntered  ) + '"></td>';
+                                rowHtml += '<td><input type="text" id="row-' + idx + '-LAB22" name="row-' + idx + '-LAB" value="' + (row.LIMS_Backlog_shipments_to_be_received == null ? "" : row.LIMS_Backlog_shipments_to_be_received )  + '"></td>';
+                             
+                                rowHtml += '</tr>';
+                                
+                                // Append the row to the table
+                                dataTable.append(rowHtml);
+                            });
+                        }
+                    });
+
+                    // Update the aria-selected attribute
+                    $('#tab1').attr('aria-selected', response.tab_state1);
+
+
+
+                },
+                error: function(error) {
+                    console.log(error);
+                },
+                complete: function() {
+                    // Revert the button text and appearance after processing is complete
+                    submitButton.prop('disabled', false).html('Submit');
+                }
+            }); // end of ajax call
+
+//=========================================================================================================================================       
+
+  
+
+
+   //=========================Samples Reffererd   
+   $.ajax({
+                type: 'POST',
+                url: '{% url 'admin_manage' %}', 
+                data:  commonData,
+                success: function(response) {
+                                       
+                    var dataTable = $('#Dash_Referred_Samples');                  //creating the variables
+
+                    // Clear previous rows
+                    dataTable.find('tbody').empty();
+                    
+                    // Iterate over the data_dash list
+                    $.each(response.data_dash, function(index, result) {
+                        if (result.query_name_dash == 'Dash_Referred_Samples') {
+                            $.each(result.query_data_dash, function(idx, row) {
+                                // Create a new row and populate it with the data
+
+
+                                var rowHtml = '<tr>';
+                                    rowHtml += '<td><input type="hidden" id="row-' + idx + '-LAB100" name="row-' + idx + '-LAB" value="' + row.id + '"></td>'; 
+                                rowHtml += '<td><input type="hidden" id="row-' + idx + '-LAB1" name="row-' + idx + '-LAB" value="' + row.unique_key + '"></td>'; 
+                                rowHtml += '<td><input type="hidden" readonly style="background-color: lightgray; border: none;" id="row-' + idx + '-LAB2" name="row-' + idx + '-LAB" value="' + row.Date + '"></td>';                               
+                                rowHtml += '<td><input type="text" readonly style="background-color: lightgray; border: none;" id="row-' + idx + '-LAB3" name="row-' + idx + '-LAB" value="' + row.Name_of_Lab + '"></td>';
+                                rowHtml += '<td><input type="text" readonly style="background-color: lightgray; border: none;"  id="row-' + idx + '-LAB4" name="row-' + idx + '-LAB" value="' + row.Sample_Type + '"></td>';
+                                rowHtml += '<td><input type="text" readonly style="background-color: lightgray; border: none;"  id="row-' + idx + '-LAB5" name="row-' + idx + '-LAB" value="' + row.Test_Type + '"></td>';
+                                rowHtml += '<td><textarea rows="2" style="width: 450px;border: none;" id="row-' + idx + '-LAB20" name="row-' + idx + '-LAB">' + ( row.Comments == null ? "" :row.Comments) + '</textarea></td>';
+
+                                rowHtml += '<td><input type="text" id="row-' + idx + '-LAB6" name="row-' + idx + '-LAB" value="' + (row.Samples_reffered_Out == null ? "" :row.Samples_reffered_Out ) + '"></td>';                    
+                                rowHtml += '<td><input type="text" id="row-' + idx + '-LAB7" name="row-' + idx + '-LAB" value="' + (row.Lab_Samples_referred_to == null ? "" :row.Lab_Samples_referred_to ) + '"></td>';
+                                rowHtml += '<td><input type="text" id="row-' + idx + '-LAB22" name="row-' + idx + '-LAB" value="' + (row.Swift_Consignment_Number == null ? "" :row.Swift_Consignment_Number ) + '"></td>';
+                                rowHtml += '<td><input type="text" id="row-' + idx + '-LAB8" name="row-' + idx + '-LAB" value="' + (row.Samples_Captured_thru_LIMS == null ? "" :row.Samples_Captured_thru_LIMS ) + '"></td>';    
+
+                                rowHtml += '<td><input type="text" id="row-' + idx + '-LAB9" name="row-' + idx + '-LAB" value="' + ( row.REFERRED_Reagent_Stockout == null ? "" :row.REFERRED_Reagent_Stockout )+ '"></td>';
+                                rowHtml += '<td><input type="text" id="row-' + idx + '-LAB10" name="row-' + idx + '-LAB" value="' + (row.REFERRED_Instrument_Failure == null ? "" :row.REFERRED_Instrument_Failure ) + '"></td>';
+                                rowHtml += '<td><input type="text" id="row-' + idx + '-LAB11" name="row-' + idx + '-LAB" value="' + ( row.REFERRED_Insuff_HR_Capacity == null ? "" :row.REFERRED_Insuff_HR_Capacity ) + '"></td>';
+                                rowHtml += '<td><input type="text" id="row-' + idx + '-LAB12" name="row-' + idx + '-LAB" value="' + ( row.REFERRED_Insuff_Instrument_Capacity == null ? "" :row.REFERRED_Insuff_Instrument_Capacity )  + '"></td>';
+                                rowHtml += '<td><input type="text" id="row-' + idx + '-LAB13" name="row-' + idx + '-LAB" value="' + ( row.REFERRED_Other_rexns == null ? "" :row.REFERRED_Other_rexns )  + '"></td>';
+                                rowHtml += '<td><input type="text" id="row-' + idx + '-LAB14" name="row-' + idx + '-LAB" value="' + ( row.Referred_Sample_Received == null ? "" :row.Referred_Sample_Received )  + '"></td>';
+                                rowHtml += '<td><input type="text" id="row-' + idx + '-LAB15" name="row-' + idx + '-LAB" value="' + (  row.Referred_From == null ? "" :row.Referred_From ) + '"></td>';
+                                rowHtml += '<td><input type="text" id="row-' + idx + '-LAB16" name="row-' + idx + '-LAB" value="' + ( row.CARRYOVER_Referred_Sample_Received == null ? "" :row.CARRYOVER_Referred_Sample_Received ) + '"></td>';                                
+                                rowHtml += '<td><input type="text" id="row-' + idx + '-LAB17" name="row-' + idx + '-LAB" value="' + ( row.URGENT_Referred_Samples == null ? "" :row.URGENT_Referred_Samples ) + '"></td>';
+                                rowHtml += '<td><input type="text" id="row-' + idx + '-LAB18" name="row-' + idx + '-LAB" value="' + ( row.REBLEED_Referred_Samples == null ? "" :row.REBLEED_Referred_Samples ) + '"></td>';
+                                rowHtml += '<td><input type="text" id="row-' + idx + '-LAB19" name="row-' + idx + '-LAB" value="' + ( row.REJECTED_Referred_Samples == null ? "" :row.REJECTED_Referred_Samples ) + '"></td>';
+                                
+                             
+                                rowHtml += '</tr>';
+                                
+                                // Append the row to the table
+                                dataTable.append(rowHtml);
+                            });
+                        }
+                    });
+
+                    // Update the aria-selected attribute
+                    $('#tab1').attr('aria-selected', response.tab_state1);
+
+                },
+                error: function(error) {
+                    console.log(error);
+                },
+                complete: function() {
+                    // Revert the button text and appearance after processing is complete
+                    submitButton.prop('disabled', false).html('Submit');
+                }
+            }); // end of ajax call
+
+//=========================================================================================================================================
+                   
+
+
+
+   //=========================Dash_Sample_Run  
+   $.ajax({
+                type: 'POST',
+                url: '{% url 'admin_manage' %}', 
+                data:  commonData,
+                success: function(response) {
+                                       
+                    var dataTable = $('#Dash_Sample_Run');
+
+                    //creating the variables
+
+
+
+
+
+                    
+                    // Clear previous rows
+                    dataTable.find('tbody').empty();
+                    
+                    // Iterate over the data_dash list
+                    $.each(response.data_dash, function(index, result) {
+                        if (result.query_name_dash == 'Dash_Sample_Run') {
+                            $.each(result.query_data_dash, function(idx, row) {
+                                // Create a new row and populate it with the data
+
+
+                                var rowHtml = '<tr>';
+                                rowHtml += '<td><input type="hidden" id="row-' + idx + '-LAB1" name="row-' + idx + '-LAB" value="' + row.unique_key + '"></td>'; 
+                                rowHtml += '<td><input type="hidden" readonly style="background-color: lightgray; border: none;" id="row-' + idx + '-LAB2" name="row-' + idx + '-LAB" value="' + row.Date + '"></td>';                               
+                                rowHtml += '<td><input type="text" readonly style="background-color: lightgray; border: none;" id="row-' + idx + '-LAB3" name="row-' + idx + '-LAB" value="' + row.Name_of_Lab + '"></td>';
+                                rowHtml += '<td><input type="text" readonly style="background-color: lightgray; border: none;"  id="row-' + idx + '-LAB4" name="row-' + idx + '-LAB" value="' + row.Sample_Type + '"></td>';
+                                rowHtml += '<td><input type="text" readonly style="background-color: lightgray; border: none;"  id="row-' + idx + '-LAB5" name="row-' + idx + '-LAB" value="' + row.Test_Type + '"></td>';
+                                rowHtml += '<td><input type="text" readonly style="background-color: lightgray; border: none;" id="row-' + idx + '-LAB6" name="row-' + idx + '-LAB" value="' + row.Platform_Roche_Abbott_Hologic_BMX + '"></td>';  
+                                rowHtml += '<td><textarea rows="1" style="width: 450px;border: none;" id="row-' + idx + '-LAB25" name="row-' + idx + '-LAB">' + (row.Comments == null ? "" :row.Comments) + '</textarea></td>';     
+
+                                rowHtml += '<td><input type="text" id="row-' + idx + '-LAB7" name="row-' + idx + '-LAB" value="' + (row.RECEIVED_TOTAL_Sample_RUN == null ? "" :row.RECEIVED_TOTAL_Sample_RUN   ) + '"></td>';
+                                rowHtml += '<td><input type="text" id="row-' + idx + '-LAB8" name="row-' + idx + '-LAB" value="' + (row.RECEIVED_URGENT_Sample_RUN == null ? "" :row.RECEIVED_URGENT_Sample_RUN  )+ '"></td>';                            
+                                rowHtml += '<td><input type="text" id="row-' + idx + '-LAB9" name="row-' + idx + '-LAB" value="' + (row.Controls_that_failed == null ? "" :row.Controls_that_failed  )+ '"></td>';
+                                rowHtml += '<td><input type="text" id="row-' + idx + '-LAB10" name="row-' + idx + '-LAB" value="' + (row.RECEIVED_FAILED_bt_NOT_Elig_REPEAT == null ? "" :row.RECEIVED_FAILED_bt_NOT_Elig_REPEAT  ) + '"></td>';
+                                rowHtml += '<td><input type="text" id="row-' + idx + '-LAB11" name="row-' + idx + '-LAB" value="' + (row.RECEIVED_FAILED_bt_Elig_REPEAT == null ? "" :row.RECEIVED_FAILED_bt_Elig_REPEAT  )+ '"></td>';
+                                rowHtml += '<td><input type="text" id="row-' + idx + '-LAB12" name="row-' + idx + '-LAB" value="' + (row.RECEIVED_REPEATS_RUN == null ? "" :row.RECEIVED_REPEATS_RUN   )+ '"></td>';
+                                rowHtml += '<td><input type="text" id="row-' + idx + '-LAB13" name="row-' + idx + '-LAB" value="' + (row.RECEIVED_FAILED_after_FINAL_repeat_testing == null ? "" :row.RECEIVED_FAILED_after_FINAL_repeat_testing  )+ '"></td>';
+
+                                rowHtml += '<td><input type="text" id="row-' + idx + '-LAB14" name="row-' + idx + '-LAB" value="' + (row.RECEIVED_FAILED_sample_handling_error_lab == null ? "" :row.RECEIVED_FAILED_sample_handling_error_lab  )+ '"></td>';
+                                rowHtml += '<td><input type="text" id="row-' + idx + '-LAB15" name="row-' + idx + '-LAB" value="' + (row.RECEIVED_FAILED_reagent_quality_issues == null ? "" :row.RECEIVED_FAILED_reagent_quality_issues  )+ '"></td>';
+                                rowHtml += '<td><input type="text" id="row-' + idx + '-LAB16" name="row-' + idx + '-LAB" value="' + (row.RECEIVED_FAILED_QC_failure == null ? "" :row.RECEIVED_FAILED_QC_failure  )+ '"></td>';                                
+                                rowHtml += '<td><input type="text" id="row-' + idx + '-LAB17" name="row-' + idx + '-LAB" value="' + ( row.RECEIVED_FAILED_power_failure == null ? "" :row.RECEIVED_FAILED_power_failure    )+ '"></td>';
+                                rowHtml += '<td><input type="text" id="row-' + idx + '-LAB18" name="row-' + idx + '-LAB" value="' + (row.RECEIVED_FAILED_mechanical_failure == null ? "" :row.RECEIVED_FAILED_mechanical_failure   )+ '"></td>';
+                                rowHtml += '<td><input type="text" id="row-' + idx + '-LAB19" name="row-' + idx + '-LAB" value="' + (row.FAILED_RECEIVED_sample_processing_error == null ? "" :row.FAILED_RECEIVED_sample_processing_error  ) + '"></td>';
+                                rowHtml += '<td><input type="text" id="row-' + idx + '-LAB20" name="row-' + idx + '-LAB" value="' + (row.RECEIVED_FAILED_quality_quantity_issues == null ? "" :row.RECEIVED_FAILED_quality_quantity_issues  )+ '"></td>';                    
+                                rowHtml += '<td><input type="text" id="row-' + idx + '-LAB21" name="row-' + idx + '-LAB" value="' + (row.RECEIVED_OTHER == null ? "" :row.RECEIVED_OTHER  )+ '"></td>';
+
+                                rowHtml += '<td><input type="text" id="row-' + idx + '-LAB22" name="row-' + idx + '-LAB" value="' + (row.Sample_with_Valid_test_result == null ? "" :row.Sample_with_Valid_test_result  )+ '"></td>'; 
+                                rowHtml += '<td><input type="text" id="row-' + idx + '-LAB23" name="row-' + idx + '-LAB" value="' + (row.Sample_with_FAILED_test_result == null ? "" :row.Sample_with_FAILED_test_result  )+ '"></td>';
+                                rowHtml += '<td><input type="text" id="row-' + idx + '-LAB24" name="row-' + idx + '-LAB" value="' + (row.RECEIVED_Results_dispatched_by_lab == null ? "" :row.RECEIVED_Results_dispatched_by_lab   )+ '"></td>';
+
+                                
+                             
+                                rowHtml += '</tr>';
+                                
+                                // Append the row to the table
+                                dataTable.append(rowHtml);
+                            });
+                        }
+                    });
+
+                    // Update the aria-selected attribute
+                    $('#tab1').attr('aria-selected', response.tab_state1);
+
+
+
+                },
+                error: function(error) {
+                    console.log(error);
+                },
+                complete: function() {
+                    // Revert the button text and appearance after processing is complete
+                    submitButton.prop('disabled', false).html('Submit');
+                }
+            }); // end of ajax call
+
+//=========================================================================================================================================
+
+                   
+
+
+
+   //=========================Dash_Testing_Capacity  
+   $.ajax({
+    type: 'POST',
+    url: '{% url 'admin_manage' %}', 
+    data:  commonData,
+    success: function(response) {
+                           
+        var dataTable = $('#Dash_Testing_Capacity');
+
+        //creating the variables
+
+
+
+
+
+        
+        // Clear previous rows
+        dataTable.find('tbody').empty();
+        
+        // Iterate over the data_dash list
+        $.each(response.data_dash, function(index, result) {
+            if (result.query_name_dash == 'Dash_Testing_Capacity') {
+                $.each(result.query_data_dash, function(idx, row) {
+                    // Create a new row and populate it with the data
+
+
+                    var rowHtml = '<tr>';
+                    rowHtml += '<td><input type="hidden" id="row-' + idx + '-LAB1" name="row-' + idx + '-LAB" value="' + row.unique_key + '"></td>'; 
+                    rowHtml += '<td><input type="hidden" readonly style="background-color: lightgray;border: none;" id="row-' + idx + '-LAB2" name="row-' + idx + '-LAB" value="' + row.Date + '"></td>';                               
+                    rowHtml += '<td><input type="text" readonly style="background-color: lightgray;border: none;" id="row-' + idx + '-LAB3" name="row-' + idx + '-LAB" value="' + row.Name_of_Lab + '"></td>';
+
+                    rowHtml += '<td><input type="text" readonly style="background-color: lightgray;border: none;"  id="row-' + idx + '-LAB5" name="row-' + idx + '-LAB" value="' + row.Test_Type + '"></td>';
+                    rowHtml += '<td><input type="text" readonly style="background-color: lightgray;border: none;" id="row-' + idx + '-LAB6" name="row-' + idx + '-LAB" value="' + row.Platform_Roche_Abbott_Hologic_BMX + '"></td>'; 
+                    rowHtml += '<td><textarea rows="3" style="width: 300px;border: none;" id="row-' + idx + '-LAB25" name="row-' + idx + '-LAB">' + (row.Comments_Reagent_Stock_Status== null ? "" :row.Comments_Reagent_Stock_Status) + '</textarea></td>';
+
+
+                    rowHtml += '<td><input type="text" id="row-' + idx + '-LAB7" name="row-' + idx + '-LAB" value="' + (row.NatPharm_Kits_Received_inThisWK== null ? "" :row.NatPharm_Kits_Received_inThisWK ) + '"></td>';
+                    rowHtml += '<td><input type="text" id="row-' + idx + '-LAB8" name="row-' + idx + '-LAB" value="' + (row.Date_Received_at_Lab == null ? "" :row.Date_Received_at_Lab  )+ '"></td>';                            
+                    rowHtml += '<td><input type="text" id="row-' + idx + '-LAB9" name="row-' + idx + '-LAB" value="' + ( row.Reagent_kits_to_OTHER_Labs == null ? "" :row.Reagent_kits_to_OTHER_Labs ) + '"></td>';
+                    rowHtml += '<td><input type="text" id="row-' + idx + '-LAB10" name="row-' + idx + '-LAB" value="' + ( row.Lab_Name_Loaned_to == null ? "" : row.Lab_Name_Loaned_to ) + '"></td>';
+                    rowHtml += '<td><input type="text" id="row-' + idx + '-LAB11" name="row-' + idx + '-LAB" value="' + ( row.Reagent_kits_RECEIVED_from_OTHER_Labs == null ? "" :row.Reagent_kits_RECEIVED_from_OTHER_Labs )+ '"></td>';
+                    rowHtml += '<td><input type="text" id="row-' + idx + '-LAB12" name="row-' + idx + '-LAB" value="' + (row.Lab_Name_Received_from == null ? "" :row.Lab_Name_Received_from  )+ '"></td>';
+                    rowHtml += '<td><input type="text" id="row-' + idx + '-LAB13" name="row-' + idx + '-LAB" value="' + (row.Reagent_tests_kits_Stock_on_hand == null ? "" :row.Reagent_tests_kits_Stock_on_hand ) + '"></td>';
+                    rowHtml += '<td><input type="text" id="row-' + idx + '-LAB14" name="row-' + idx + '-LAB" value="' + (row.Reagent_tests_kits_available_Expiry_Date == null ? "" :row.Reagent_tests_kits_available_Expiry_Date) + '"></td>';
+                    rowHtml += '<td><input type="text" id="row-' + idx + '-LAB15" name="row-' + idx + '-LAB" value="' + (row.Tests_expired_this_month_before_use == null ? "" : row.Tests_expired_this_month_before_use) + '"></td>';
+                    rowHtml += '<td><input type="text" id="row-' + idx + '-LAB16" name="row-' + idx + '-LAB" value="' + (row.Control_loaned_to_other_labs == null ? "" :row.Control_loaned_to_other_labs ) + '"></td>';                                
+                    rowHtml += '<td><input type="text" id="row-' + idx + '-LAB17" name="row-' + idx + '-LAB" value="' + (row.Lab_name_receiving_controls == null ? "" :row.Lab_name_receiving_controls ) + '"></td>';
+                    rowHtml += '<td><input type="text" id="row-' + idx + '-LAB18" name="row-' + idx + '-LAB" value="' + (row.Controls_received_from_other_labs == null ? "" :row.Controls_received_from_other_labs ) + '"></td>';
+                    rowHtml += '<td><input type="text" id="row-' + idx + '-LAB19" name="row-' + idx + '-LAB" value="' + (row.Lab_name_where_controls_from == null ? "" :row.Lab_name_where_controls_from )+ '"></td>';
+                    rowHtml += '<td><input type="text" id="row-' + idx + '-LAB20" name="row-' + idx + '-LAB" value="' + (row.stock_of_control_available == null ? "" : row.stock_of_control_available)  + '"></td>';                    
+                    rowHtml += '<td><input type="text" id="row-' + idx + '-LAB21" name="row-' + idx + '-LAB" value="' + ( row.Expiry_Date_of_Controls == null ? "" :row.Expiry_Date_of_Controls ) + '"></td>';
+                    rowHtml += '<td><input type="text" id="row-' + idx + '-LAB22" name="row-' + idx + '-LAB" value="' + ( row.Stocks_of_bottleneck_consumable_available == null ? "" :row.Stocks_of_bottleneck_consumable_available )  + '"></td>'; 
+                    rowHtml += '<td><input type="text" id="row-' + idx + '-LAB23" name="row-' + idx + '-LAB" value="' + ( row.Name_of_bottleneck_consumable == null ? "" : row.Name_of_bottleneck_consumable )  + '"></td>';
+                    rowHtml += '<td><input type="text" id="row-' + idx + '-LAB24" name="row-' + idx + '-LAB" value="' + ( row.Months_of_stock_of_bottleneck_consumable == null ? "" :row.Months_of_stock_of_bottleneck_consumable )  + '"></td>';
+                   
+                 
+                    rowHtml += '</tr>';
+                    
+                    // Append the row to the table
+                    dataTable.append(rowHtml);
+                });
+            }
+        });
+
+        // Update the aria-selected attribute
+        $('#tab1').attr('aria-selected', response.tab_state1);
+
+
+
+    },
+    error: function(error) {
+        console.log(error);
+    },
+    complete: function() {
+        // Revert the button text and appearance after processing is complete
+        submitButton.prop('disabled', false).html('Submit');
+    }
+}); // end of ajax call
+
+//=========================================================================================================================================
+                   
+
+
+
+   //=========================Dash_Lab_Metrics_Waste_Mgt  
+   $.ajax({
+    type: 'POST',
+    url: '{% url 'admin_manage' %}', 
+    data:  commonData,
+    success: function(response) {
+                           
+        var dataTable = $('#Dash_Lab_Metrics_Waste_Mgt');
+
+        //creating the variables
+
+
+
+
+
+        
+        // Clear previous rows
+        dataTable.find('tbody').empty();
+        
+        // Iterate over the data_dash list
+        $.each(response.data_dash, function(index, result) {
+            if (result.query_name_dash == 'Dash_Lab_Metrics_Waste_Mgt') {
+                $.each(result.query_data_dash, function(idx, row) {
+                    // Create a new row and populate it with the data
+
+                    var rowHtml = '<tr>';
+                    rowHtml += '<td><input type="hidden" id="row-' + idx + '-LAB1" name="row-' + idx + '-LAB" value="' + row.unique_key + '"></td>'; 
+                    rowHtml += '<td><input type="hidden" readonly style="background-color: lightgray;border: none;" id="row-' + idx + '-LAB2" name="row-' + idx + '-LAB" value="' + row.Date + '"></td>';                               
+                    rowHtml += '<td><input type="text" readonly style="background-color: lightgray;border: none;" id="row-' + idx + '-LAB3" name="row-' + idx + '-LAB" value="' + row.Name_of_Lab + '"></td>';         
+                    rowHtml += '<td><input type="text" readonly style="background-color: lightgray;border: none;" id="row-' + idx + '-LAB4" name="row-' + idx + '-LAB" value="' + row.Test_Type + '"></td>';
+                    rowHtml += '<td><input type="text" readonly style="background-color: lightgray;border: none;" id="row-' + idx + '-LAB5" name="row-' + idx + '-LAB" value="' + row.Platform_Roche_Abbott_Hologic_BMX + '"></td>'; 
+                    rowHtml += '<td><textarea rows="3" style="width: 300px;border: none;" id="row-' + idx + '-LAB6" name="row-' + idx + '-LAB">' + (row.Comments_on_ErrorCodes_for_Mach_failure == null ? "" :row.Comments_on_ErrorCodes_for_Mach_failure) + '</textarea></td>';
+
+                    rowHtml += '<td><input type="text" id="row-' + idx + '-LAB7" name="row-' + idx + '-LAB" value="' + (row.Hrs_in_Shift == null ? "" :row.Hrs_in_Shift  )+ '"></td>';
+                    rowHtml += '<td><input type="text" id="row-' + idx + '-LAB8" name="row-' + idx + '-LAB" value="' + (row.Actual_number_of_days_platform_used == null ? "" :row.Actual_number_of_days_platform_used ) + '"></td>';                            
+                    rowHtml += '<td><input type="text" id="row-' + idx + '-LAB9" name="row-' + idx + '-LAB" value="' + (row.Downtime_Power_Outage == null ? "" :row.Downtime_Power_Outage  ) + '"></td>';
+                    rowHtml += '<td><input type="text" id="row-' + idx + '-LAB10" name="row-' + idx + '-LAB" value="' + (row.Downtime_Mechanical_Failure == null ? "" :row.Downtime_Mechanical_Failure ) + '"></td>';
+                    rowHtml += '<td><input type="text" id="row-' + idx + '-LAB11" name="row-' + idx + '-LAB" value="' + ( row.Downtime_Reagent_Stockout_Expiry == null ? "" :row.Downtime_Reagent_Stockout_Expiry ) +'"></td>';
+                    rowHtml += '<td><input type="text" id="row-' + idx + '-LAB12" name="row-' + idx + '-LAB" value="' + (row.Downtime_Controls_Stockout_Expiry == null ? "" :row.Downtime_Controls_Stockout_Expiry ) +'"></td>';
+                    rowHtml += '<td><input type="text" id="row-' + idx + '-LAB13" name="row-' + idx + '-LAB" value="' + ( row.Downtime_Controls_Failure == null ? "" :row.Downtime_Controls_Failure  )+'"></td>';
+                    rowHtml += '<td><input type="text" id="row-' + idx + '-LAB14" name="row-' + idx + '-LAB" value="' + ( row.Downtime_Staff_Unavailability == null ? "" :row.Downtime_Staff_Unavailability ) +'"></td>';
+                    rowHtml += '<td><input type="text" id="row-' + idx + '-LAB15" name="row-' + idx + '-LAB" value="' + ( row.Downtime_coz_other_reasons == null ? "" :row.Downtime_coz_other_reasons ) +'"></td>';
+               
+                     
+                    rowHtml += '</tr>';
+                    
+                    // Append the row to the table
+                    dataTable.append(rowHtml);
+                });
+            }
+        });
+
+        // Update the aria-selected attribute
+        $('#tab1').attr('aria-selected', response.tab_state1);
+
+
+
+    },
+    error: function(error) {
+        console.log(error);
+    },
+    complete: function() {
+        // Revert the button text and appearance after processing is complete
+        submitButton.prop('disabled', false).html('Submit');
+    }
+}); // end of ajax call
+
+//=========================================================================================================================================
+
+
+
+
+
+
+
+
+
+        }); // end of click event listener
+    }); 
+
+</script>
+
+
+
+
+
+
+
+
+<script>
+    //==================== this is to upload This Week's Samples Received  to the server =================
+    
+    $(document).ready(function() {
+        $('#submitDash_This_week_Rec_Samples').on('click', function(e) {
+          e.preventDefault(); // Prevent form from submitting the traditional way
+    
+    var submitButton = $('#submitDash_This_week_Rec_Samples'); // Get the submit button        
+    // Change button color to blue to indicate it's active
+    submitButton.css({'background-color': 'lightblue', 'color': 'black'});
+    // Disable the button and show a bootstrap spinner
+    submitButton.prop('disabled', true).html('<span class="spinner-border spinner-border-sm"   style="opacity: 0.5;" role="status" aria-hidden="true"></span> Saving...');
+
+
+          var dataToSubmit = [];
+    
+          // Loop through the table rows
+          $('#Dash_This_week_Rec_Samples tbody tr').each(function() {
+              var rowData = {};      
+                        // Loop through the columns of each row to get data from <input> elements
+                    $(this).find('td input').each(function() {
+                        var inputName = $(this).attr('id');
+                        rowData[inputName] = $(this).val();
+                    });
+    
+                    // Loop through the columns of each row to get data from <textarea> elements
+                    $(this).find('td textarea').each(function() {
+                        var textareaName = $(this).attr('id');
+                        rowData[textareaName] = $(this).val();
+                    });
+    
+                    dataToSubmit.push(rowData);    
+                    
+                    });
+    
+    
+          console.log(dataToSubmit);
+     
+          // Now, send the data via AJAX to y our server
+          $.ajax({
+              type: 'POST',
+             
+              url: "{% url 'update_dashboard_thisweek_sample' %}", 
+    
+              data: {
+                  tableData: JSON.stringify(dataToSubmit), 
+                  csrfmiddlewaretoken: '{{ csrf_token }}'  // Include the CSRF token if you're using Django
+              },
+              
+              success: function(response) {
+                  if (response.status === "success") {
+
+                    submitButton.removeClass('active').find('.bi-arrow-repeat').removeClass('rotate-icon');
+                    submitButton.prop('disabled', false).html('Data Saved Successfully');
+                      // Display the success message from the server in the #msg div
+                      $('#msg').html('<div class="alert alert-success alert-dismissible fade show" role="alert">' +
+                                     '<i class="bi bi-check-circle-fill me-1"></i>' + response.message +
+                                     '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' +
+                                     '</div>');
+                  } else if (response.status === "error") {
+                      // Display the error message from the server in the #msg div
+                      $('#msg').html('<div class="alert alert-danger alert-dismissible fade show" role="alert">' +
+                                     '<i class="bi bi-exclamation-triangle-fill me-1"></i>' + response.message +
+                                     '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' +
+                                     '</div>');
+                  }
+              },
+              error: function(error) {
+                  // Display a generic error message in the #msg div
+                  $('#msg').html('<div class="alert alert-danger alert-dismissible fade show" role="alert">' +
+                                 '<i class="bi bi-exclamation-triangle-fill me-1"></i>There was a network or server error. Please try again.' +
+                                 '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' +
+                                 '</div>');
+                  console.error("AJAX error: ", error);
+              }
+              
+    
+    
+    
+          });
+      });
+    
+      // ... [rest of your existing code]
+    });
+    
+    ///===================================================================================
+    
+    </script>
+
+
+    <script>
+        //==================== this is to upload REFFERED SAMPLES  to the server =================        
+        $(document).ready(function() {
+            $('#submitDash_Referred_Samples').on('click', function(e) {
+              e.preventDefault(); // Prevent form from submitting the traditional way
+        
+        var submitButton = $('#submitDash_Referred_Samples'); // Get the submit button        
+        // Change button color to blue to indicate it's active
+        submitButton.css({'background-color': 'lightblue', 'color': 'black'});
+        // Disable the button and show a bootstrap spinner
+        submitButton.prop('disabled', true).html('<span class="spinner-border spinner-border-sm"   style="opacity: 0.5;" role="status" aria-hidden="true"></span> Saving...');
+    
+    
+              var dataToSubmit = [];
+        
+              // Loop through the table rows
+              $('#Dash_Referred_Samples tbody tr').each(function() {
+                  var rowData = {};      
+                            // Loop through the columns of each row to get data from <input> elements
+                        $(this).find('td input').each(function() {
+                            var inputName = $(this).attr('id');
+                            rowData[inputName] = $(this).val();
+                        });
+        
+                        // Loop through the columns of each row to get data from <textarea> elements
+                        $(this).find('td textarea').each(function() {
+                            var textareaName = $(this).attr('id');
+                            rowData[textareaName] = $(this).val();
+                        });
+        
+                        dataToSubmit.push(rowData);    
+                        
+                        });
+        
+        
+              console.log(dataToSubmit);
+         
+              // Now, send the data via AJAX to y our server
+              $.ajax({
+                  type: 'POST',
+                 
+                  url: "{% url 'update_dashboard_referred_samples' %}", 
+        
+                  data: {
+                      tableData: JSON.stringify(dataToSubmit), 
+                      csrfmiddlewaretoken: '{{ csrf_token }}'  // Include the CSRF token if you're using Django
+                  },
+                  
+                  success: function(response) {
+                      if (response.status === "success") {
+    
+                        submitButton.removeClass('active').find('.bi-arrow-repeat').removeClass('rotate-icon');
+                        submitButton.prop('disabled', false).html('Data Saved Successfully');
+                          // Display the success message from the server in the #msg div
+                          $('#msg').html('<div class="alert alert-success alert-dismissible fade show" role="alert">' +
+                                         '<i class="bi bi-check-circle-fill me-1"></i>' + response.message +
+                                         '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' +
+                                         '</div>');
+                      } else if (response.status === "error") {
+                          // Display the error message from the server in the #msg div
+                          $('#msg').html('<div class="alert alert-danger alert-dismissible fade show" role="alert">' +
+                                         '<i class="bi bi-exclamation-triangle-fill me-1"></i>' + response.message +
+                                         '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' +
+                                         '</div>');
+                      }
+                  },
+                  error: function(error) {
+                      // Display a generic error message in the #msg div
+                      $('#msg').html('<div class="alert alert-danger alert-dismissible fade show" role="alert">' +
+                                     '<i class="bi bi-exclamation-triangle-fill me-1"></i>There was a network or server error. Please try again.' +
+                                     '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' +
+                                     '</div>');
+                      console.error("AJAX error: ", error);
+                  }
+                  
+        
+        
+        
+              });
+          });
+        
+          // ... [rest of your existing code]
+        });
+        
+        ///===================================================================================
+
+             
+        </script>
+
+
+
+
+        
+    <script>
+        //==================== this is to upload REFFERED SAMPLES  to the server =================        
+        $(document).ready(function() {
+            $('#submitDash_Sample_Run').on('click', function(e) {
+              e.preventDefault(); // Prevent form from submitting the traditional way
+        
+        var submitButton = $('#submitDash_Sample_Run'); // Get the submit button        
+        // Change button color to blue to indicate it's active
+        submitButton.css({'background-color': 'lightblue', 'color': 'black'});
+        // Disable the button and show a bootstrap spinner
+        submitButton.prop('disabled', true).html('<span class="spinner-border spinner-border-sm"   style="opacity: 0.5;" role="status" aria-hidden="true"></span> Saving...');
+    
+    
+              var dataToSubmit = [];
+        
+              // Loop through the table rows
+              $('#Dash_Sample_Run tbody tr').each(function() {
+                  var rowData = {};      
+                            // Loop through the columns of each row to get data from <input> elements
+                        $(this).find('td input').each(function() {
+                            var inputName = $(this).attr('id');
+                            rowData[inputName] = $(this).val();
+                        });
+        
+                        // Loop through the columns of each row to get data from <textarea> elements
+                        $(this).find('td textarea').each(function() {
+                            var textareaName = $(this).attr('id');
+                            rowData[textareaName] = $(this).val();
+                        });
+        
+                        dataToSubmit.push(rowData);    
+                        
+                        });
+        
+        
+              console.log(dataToSubmit);
+         
+              // Now, send the data via AJAX to y our server
+              $.ajax({
+                  type: 'POST',
+                 
+                  url: "{% url 'update_dashboard_sample_run' %}", 
+        
+                  data: {
+                      tableData: JSON.stringify(dataToSubmit), 
+                      csrfmiddlewaretoken: '{{ csrf_token }}'  // Include the CSRF token if you're using Django
+                  },
+                  
+                  success: function(response) {
+                      if (response.status === "success") {
+    
+                        submitButton.removeClass('active').find('.bi-arrow-repeat').removeClass('rotate-icon');
+                        submitButton.prop('disabled', false).html('Data Saved Successfully');
+                          // Display the success message from the server in the #msg div
+                          $('#msg').html('<div class="alert alert-success alert-dismissible fade show" role="alert">' +
+                                         '<i class="bi bi-check-circle-fill me-1"></i>' + response.message +
+                                         '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' +
+                                         '</div>');
+                      } else if (response.status === "error") {
+                          // Display the error message from the server in the #msg div
+                          $('#msg').html('<div class="alert alert-danger alert-dismissible fade show" role="alert">' +
+                                         '<i class="bi bi-exclamation-triangle-fill me-1"></i>' + response.message +
+                                         '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' +
+                                         '</div>');
+                      }
+                  },
+                  error: function(error) {
+                      // Display a generic error message in the #msg div
+                      $('#msg').html('<div class="alert alert-danger alert-dismissible fade show" role="alert">' +
+                                     '<i class="bi bi-exclamation-triangle-fill me-1"></i>There was a network or server error. Please try again.' +
+                                     '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' +
+                                     '</div>');
+                      console.error("AJAX error: ", error);
+                  }
+                  
+        
+        
+        
+              });
+          });
+        
+          // ... [rest of your existing code]
+        });
+        
+        ///===================================================================================
+
+             
+        </script>
+
+   
+        <script>
+            //==================== this is to upload testing  SAMPLES  to the server =================        
+            $(document).ready(function() {
+                $('#submitDash_Testing_Capacity').on('click', function(e) {
+                  e.preventDefault(); // Prevent form from submitting the traditional way
+            
+            var submitButton = $('#submitDash_Testing_Capacity'); // Get the submit button        
+            // Change button color to blue to indicate it's active
+            submitButton.css({'background-color': 'lightblue', 'color': 'black'});
+            // Disable the button and show a bootstrap spinner
+            submitButton.prop('disabled', true).html('<span class="spinner-border spinner-border-sm"   style="opacity: 0.5;" role="status" aria-hidden="true"></span> Saving...');
+        
+        
+                  var dataToSubmit = [];
+            
+                  // Loop through the table rows
+                  $('#Dash_Testing_Capacity tbody tr').each(function() {
+                      var rowData = {};      
+                                // Loop through the columns of each row to get data from <input> elements
+                            $(this).find('td input').each(function() {
+                                var inputName = $(this).attr('id');
+                                rowData[inputName] = $(this).val();
+                            });
+            
+                            // Loop through the columns of each row to get data from <textarea> elements
+                            $(this).find('td textarea').each(function() {
+                                var textareaName = $(this).attr('id');
+                                rowData[textareaName] = $(this).val();
+                            });
+            
+                            dataToSubmit.push(rowData);    
+                            
+                            });
+            
+            
+                  console.log(dataToSubmit);
+             
+                  // Now, send the data via AJAX to y our server
+                  $.ajax({
+                      type: 'POST',
+                     
+                      url: "{% url 'update_dashboard_testing_capasity' %}", 
+            
+                      data: {
+                          tableData: JSON.stringify(dataToSubmit), 
+                          csrfmiddlewaretoken: '{{ csrf_token }}'  // Include the CSRF token if you're using Django
+                      },
+                      
+                      success: function(response) {
+                          if (response.status === "success") {
+        
+                            submitButton.removeClass('active').find('.bi-arrow-repeat').removeClass('rotate-icon');
+                            submitButton.prop('disabled', false).html('Data Saved Successfully');
+                              // Display the success message from the server in the #msg div
+                              $('#msg').html('<div class="alert alert-success alert-dismissible fade show" role="alert">' +
+                                             '<i class="bi bi-check-circle-fill me-1"></i>' + response.message +
+                                             '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' +
+                                             '</div>');
+                          } else if (response.status === "error") {
+                              // Display the error message from the server in the #msg div
+                              $('#msg').html('<div class="alert alert-danger alert-dismissible fade show" role="alert">' +
+                                             '<i class="bi bi-exclamation-triangle-fill me-1"></i>' + response.message +
+                                             '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' +
+                                             '</div>');
+                          }
+                      },
+                      error: function(error) {
+                          // Display a generic error message in the #msg div
+                          $('#msg').html('<div class="alert alert-danger alert-dismissible fade show" role="alert">' +
+                                         '<i class="bi bi-exclamation-triangle-fill me-1"></i>There was a network or server error. Please try again.' +
+                                         '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' +
+                                         '</div>');
+                          console.error("AJAX error: ", error);
+                      }
+                      
+            
+            
+            
+                  });
+              });
+            
+              // ... [rest of your existing code]
+            });
+            
+            ///===================================================================================
+    
+                 
+            </script>
+
+
+
+            
+        <script>
+            //==================== this is to upload testing  SAMPLES  to the server =================        
+            $(document).ready(function() {
+                $('#submitDash_Lab_Metrics_Waste_Mgt').on('click', function(e) {
+                  e.preventDefault(); // Prevent form from submitting the traditional way
+            
+            var submitButton = $('#submitDash_Lab_Metrics_Waste_Mgt'); // Get the submit button        
+            // Change button color to blue to indicate it's active
+            submitButton.css({'background-color': 'lightblue', 'color': 'black'});
+            // Disable the button and show a bootstrap spinner
+            submitButton.prop('disabled', true).html('<span class="spinner-border spinner-border-sm"   style="opacity: 0.5;" role="status" aria-hidden="true"></span> Saving...');
+        
+        
+                  var dataToSubmit = [];
+            
+                  // Loop through the table rows
+                  $('#Dash_Lab_Metrics_Waste_Mgt tbody tr').each(function() {
+                      var rowData = {};      
+                                // Loop through the columns of each row to get data from <input> elements
+                            $(this).find('td input').each(function() {
+                                var inputName = $(this).attr('id');
+                                rowData[inputName] = $(this).val();
+                            });
+            
+                            // Loop through the columns of each row to get data from <textarea> elements
+                            $(this).find('td textarea').each(function() {
+                                var textareaName = $(this).attr('id');
+                                rowData[textareaName] = $(this).val();
+                            });
+            
+                            dataToSubmit.push(rowData);    
+                            
+                            });
+            
+            
+                  console.log(dataToSubmit);
+             
+                  // Now, send the data via AJAX to y our server
+                  $.ajax({
+                      type: 'POST',
+                     
+                      url: "{% url 'update_dashboard_operational_matrix' %}", 
+            
+                      data: {
+                          tableData: JSON.stringify(dataToSubmit), 
+                          csrfmiddlewaretoken: '{{ csrf_token }}'  // Include the CSRF token if you're using Django
+                      },
+                      
+                      success: function(response) {
+                          if (response.status === "success") {
+        
+                            submitButton.removeClass('active').find('.bi-arrow-repeat').removeClass('rotate-icon');
+                            submitButton.prop('disabled', false).html('Data Saved Successfully');
+                              // Display the success message from the server in the #msg div
+                              $('#msg').html('<div class="alert alert-success alert-dismissible fade show" role="alert">' +
+                                             '<i class="bi bi-check-circle-fill me-1"></i>' + response.message +
+                                             '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' +
+                                             '</div>');
+                          } else if (response.status === "error") {
+                              // Display the error message from the server in the #msg div
+                              $('#msg').html('<div class="alert alert-danger alert-dismissible fade show" role="alert">' +
+                                             '<i class="bi bi-exclamation-triangle-fill me-1"></i>' + response.message +
+                                             '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' +
+                                             '</div>');
+                          }
+                      },
+                      error: function(error) {
+                          // Display a generic error message in the #msg div
+                          $('#msg').html('<div class="alert alert-danger alert-dismissible fade show" role="alert">' +
+                                         '<i class="bi bi-exclamation-triangle-fill me-1"></i>There was a network or server error. Please try again.' +
+                                         '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' +
+                                         '</div>');
+                          console.error("AJAX error: ", error);
+                      }
+                      
+            
+            
+            
+                  });
+              });
+            
+              // ... [rest of your existing code]
+            });
+            
+            ///===================================================================================
+    
+                 
+            </script>
+
+
+            
+            
+        <script>
+            //==================== this is to uploadPOWER OUTAGE  to the server =================        
+            $(document).ready(function() {
+                $('#submitDash_Power_Outage').on('click', function(e) {
+                  e.preventDefault(); // Prevent form from submitting the traditional way
+            
+            var submitButton = $('#submitDash_Power_Outage'); // Get the submit button        
+            // Change button color to blue to indicate it's active
+            submitButton.css({'background-color': 'lightblue', 'color': 'black'});
+            // Disable the button and show a bootstrap spinner
+            submitButton.prop('disabled', true).html('<span class="spinner-border spinner-border-sm"   style="opacity: 0.5;" role="status" aria-hidden="true"></span> Saving...');
+        
+        
+                  var dataToSubmit = [];
+            
+                  // Loop through the table rows
+                  $('#Dash_Power_Outage tbody tr').each(function() {
+                      var rowData = {};      
+                                // Loop through the columns of each row to get data from <input> elements
+                            $(this).find('td input').each(function() {
+                                var inputName = $(this).attr('id');
+                                rowData[inputName] = $(this).val();
+                            });
+            
+                            // Loop through the columns of each row to get data from <textarea> elements
+                            $(this).find('td textarea').each(function() {
+                                var textareaName = $(this).attr('id');
+                                rowData[textareaName] = $(this).val();
+                            });
+            
+                            dataToSubmit.push(rowData);    
+                            
+                            });
+            
+            
+                  console.log(dataToSubmit);
+             
+                  // Now, send the data via AJAX to y our server
+                  $.ajax({
+                      type: 'POST',
+                     
+                      url: "{% url 'update_dashboard_power_outage' %}", 
+            
+                      data: {
+                          tableData: JSON.stringify(dataToSubmit), 
+                          csrfmiddlewaretoken: '{{ csrf_token }}'  // Include the CSRF token if you're using Django
+                      },
+                      
+                      success: function(response) {
+                          if (response.status === "success") {
+        
+                            submitButton.removeClass('active').find('.bi-arrow-repeat').removeClass('rotate-icon');
+                            submitButton.prop('disabled', false).html('Data Saved Successfully');
+                              // Display the success message from the server in the #msg div
+                              $('#msg').html('<div class="alert alert-success alert-dismissible fade show" role="alert">' +
+                                             '<i class="bi bi-check-circle-fill me-1"></i>' + response.message +
+                                             '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' +
+                                             '</div>');
+                          } else if (response.status === "error") {
+                              // Display the error message from the server in the #msg div
+                              $('#msg').html('<div class="alert alert-danger alert-dismissible fade show" role="alert">' +
+                                             '<i class="bi bi-exclamation-triangle-fill me-1"></i>' + response.message +
+                                             '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' +
+                                             '</div>');
+                          }
+                      },
+                      error: function(error) {
+                          // Display a generic error message in the #msg div
+                          $('#msg').html('<div class="alert alert-danger alert-dismissible fade show" role="alert">' +
+                                         '<i class="bi bi-exclamation-triangle-fill me-1"></i>There was a network or server error. Please try again.' +
+                                         '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' +
+                                         '</div>');
+                          console.error("AJAX error: ", error);
+                      }
+                      
+            
+            
+            
+                  });
+              });
+            
+              // ... [rest of your existing code]
+            });
+            
+            ///===================================================================================
+    
+                 
+            </script>
+    
+    
+            
+            <script>
+                //==================== this is to upload testing  SAMPLES  to the server =================        
+                $(document).ready(function() {
+                    $('#submitDash_Specimen_Transport').on('click', function(e) {
+                      e.preventDefault(); // Prevent form from submitting the traditional way
+                
+                var submitButton = $('#submitDash_Specimen_Transport'); // Get the submit button        
+                // Change button color to blue to indicate it's active
+                submitButton.css({'background-color': 'lightblue', 'color': 'black'});
+                // Disable the button and show a bootstrap spinner
+                submitButton.prop('disabled', true).html('<span class="spinner-border spinner-border-sm"   style="opacity: 0.5;" role="status" aria-hidden="true"></span> Saving...');
+            
+            
+                      var dataToSubmit = [];
+                
+                      // Loop through the table rows
+                      $('#Dash_Specimen_Transport tbody tr').each(function() {
+                          var rowData = {};      
+                                    // Loop through the columns of each row to get data from <input> elements
+                                $(this).find('td input').each(function() {
+                                    var inputName = $(this).attr('id');
+                                    rowData[inputName] = $(this).val();
+                                });
+                
+                                // Loop through the columns of each row to get data from <textarea> elements
+                                $(this).find('td textarea').each(function() {
+                                    var textareaName = $(this).attr('id');
+                                    rowData[textareaName] = $(this).val();
+                                });
+                
+                                dataToSubmit.push(rowData);    
+                                
+                                });
+                
+                
+                      console.log(dataToSubmit);
+                 
+                      // Now, send the data via AJAX to y our server
+                      $.ajax({
+                          type: 'POST',
+                         
+                          url: "{% url 'update_dashboard_Specimen_Transport' %}", 
+                
+                          data: {
+                              tableData: JSON.stringify(dataToSubmit), 
+                              csrfmiddlewaretoken: '{{ csrf_token }}'  // Include the CSRF token if you're using Django
+                          },
+                          
+                          success: function(response) {
+                              if (response.status === "success") {
+            
+                                submitButton.removeClass('active').find('.bi-arrow-repeat').removeClass('rotate-icon');
+                                submitButton.prop('disabled', false).html('Data Saved Successfully');
+                                  // Display the success message from the server in the #msg div
+                                  $('#msg').html('<div class="alert alert-success alert-dismissible fade show" role="alert">' +
+                                                 '<i class="bi bi-check-circle-fill me-1"></i>' + response.message +
+                                                 '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' +
+                                                 '</div>');
+                              } else if (response.status === "error") {
+                                  // Display the error message from the server in the #msg div
+                                  $('#msg').html('<div class="alert alert-danger alert-dismissible fade show" role="alert">' +
+                                                 '<i class="bi bi-exclamation-triangle-fill me-1"></i>' + response.message +
+                                                 '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' +
+                                                 '</div>');
+                              }
+                          },
+                          error: function(error) {
+                              // Display a generic error message in the #msg div
+                              $('#msg').html('<div class="alert alert-danger alert-dismissible fade show" role="alert">' +
+                                             '<i class="bi bi-exclamation-triangle-fill me-1"></i>There was a network or server error. Please try again.' +
+                                             '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' +
+                                             '</div>');
+                              console.error("AJAX error: ", error);
+                          }
+                          
+                
+                
+                
+                      });
+                  });
+                
+                  // ... [rest of your existing code]
+                });
+                
+                ///===================================================================================
+        
+                     
+                </script>
+        
+
+
+                 
+        <script>
+            //==================== this is to upload testing  SAMPLES  to the server =================        
+            $(document).ready(function() {
+                $('#submitDash_LIMS_Functionality').on('click', function(e) {
+                  e.preventDefault(); // Prevent form from submitting the traditional way
+            
+            var submitButton = $('#submitDash_LIMS_Functionality'); // Get the submit button        
+            // Change button color to blue to indicate it's active
+            submitButton.css({'background-color': 'lightblue', 'color': 'black'});
+            // Disable the button and show a bootstrap spinner
+            submitButton.prop('disabled', true).html('<span class="spinner-border spinner-border-sm"   style="opacity: 0.5;" role="status" aria-hidden="true"></span> Saving...');
+        
+        
+                  var dataToSubmit = [];
+            
+                  // Loop through the table rows
+                  $('#Dash_LIMS_Functionality tbody tr').each(function() {
+                      var rowData = {};      
+                                // Loop through the columns of each row to get data from <input> elements
+                            $(this).find('td input').each(function() {
+                                var inputName = $(this).attr('id');
+                                rowData[inputName] = $(this).val();
+                            });
+            
+                            // Loop through the columns of each row to get data from <textarea> elements
+                            $(this).find('td textarea').each(function() {
+                                var textareaName = $(this).attr('id');
+                                rowData[textareaName] = $(this).val();
+                            });
+            
+                            dataToSubmit.push(rowData);    
+                            
+                            });
+            
+            
+                  console.log(dataToSubmit);
+             
+                  // Now, send the data via AJAX to y our server
+                  $.ajax({
+                      type: 'POST',
+                     
+                      url: "{% url 'update_dashboard_lims' %}", 
+            
+                      data: {
+                          tableData: JSON.stringify(dataToSubmit), 
+                          csrfmiddlewaretoken: '{{ csrf_token }}'  // Include the CSRF token if you're using Django
+                      },
+                      
+                      success: function(response) {
+                          if (response.status === "success") {
+        
+                            submitButton.removeClass('active').find('.bi-arrow-repeat').removeClass('rotate-icon');
+                            submitButton.prop('disabled', false).html('Data Saved Successfully');
+                              // Display the success message from the server in the #msg div
+                              $('#msg').html('<div class="alert alert-success alert-dismissible fade show" role="alert">' +
+                                             '<i class="bi bi-check-circle-fill me-1"></i>' + response.message +
+                                             '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' +
+                                             '</div>');
+                          } else if (response.status === "error") {
+                              // Display the error message from the server in the #msg div
+                              $('#msg').html('<div class="alert alert-danger alert-dismissible fade show" role="alert">' +
+                                             '<i class="bi bi-exclamation-triangle-fill me-1"></i>' + response.message +
+                                             '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' +
+                                             '</div>');
+                          }
+                      },
+                      error: function(error) {
+                          // Display a generic error message in the #msg div
+                          $('#msg').html('<div class="alert alert-danger alert-dismissible fade show" role="alert">' +
+                                         '<i class="bi bi-exclamation-triangle-fill me-1"></i>There was a network or server error. Please try again.' +
+                                         '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' +
+                                         '</div>');
+                          console.error("AJAX error: ", error);
+                      }
+                      
+            
+            
+            
+                  });
+              });
+            
+              // ... [rest of your existing code]
+            });
+            
+            ///===================================================================================
+    
+                 
+            </script>
+    
+        
+    
+
+
+                       
+        <script>
+            //==================== this is to upload testing  SAMPLES  to the server =================        
+            $(document).ready(function() {
+                $('#submitDash_CLI').on('click', function(e) {
+                  e.preventDefault(); // Prevent form from submitting the traditional way
+            
+            var submitButton = $('#submitDash_CLI'); // Get the submit button        
+            // Change button color to blue to indicate it's active
+            submitButton.css({'background-color': 'lightblue', 'color': 'black'});
+            // Disable the button and show a bootstrap spinner
+            submitButton.prop('disabled', true).html('<span class="spinner-border spinner-border-sm"   style="opacity: 0.5;" role="status" aria-hidden="true"></span> Saving...');
+        
+        
+                  var dataToSubmit = [];
+            
+                  // Loop through the table rows
+                  $('#Dash_CLI tbody tr').each(function() {
+                      var rowData = {};      
+                                // Loop through the columns of each row to get data from <input> elements
+                            $(this).find('td input').each(function() {
+                                var inputName = $(this).attr('id');
+                                rowData[inputName] = $(this).val();
+                            });
+            
+                            // Loop through the columns of each row to get data from <textarea> elements
+                            $(this).find('td textarea').each(function() {
+                                var textareaName = $(this).attr('id');
+                                rowData[textareaName] = $(this).val();
+                            });
+            
+                            dataToSubmit.push(rowData);    
+                            
+                            });
+            
+            
+                  console.log(dataToSubmit);
+             
+                  // Now, send the data via AJAX to y our server
+                  $.ajax({
+                      type: 'POST',
+                     
+                      url: "{% url 'update_dashboard_CLI' %}", 
+            
+                      data: {
+                          tableData: JSON.stringify(dataToSubmit), 
+                          csrfmiddlewaretoken: '{{ csrf_token }}'  // Include the CSRF token if you're using Django
+                      },
+                      
+                      success: function(response) {
+                          if (response.status === "success") {
+        
+                            submitButton.removeClass('active').find('.bi-arrow-repeat').removeClass('rotate-icon');
+                            submitButton.prop('disabled', false).html('Data Saved Successfully');
+                              // Display the success message from the server in the #msg div
+                              $('#msg').html('<div class="alert alert-success alert-dismissible fade show" role="alert">' +
+                                             '<i class="bi bi-check-circle-fill me-1"></i>' + response.message +
+                                             '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' +
+                                             '</div>');
+                          } else if (response.status === "error") {
+                              // Display the error message from the server in the #msg div
+                              $('#msg').html('<div class="alert alert-danger alert-dismissible fade show" role="alert">' +
+                                             '<i class="bi bi-exclamation-triangle-fill me-1"></i>' + response.message +
+                                             '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' +
+                                             '</div>');
+                          }
+                      },
+                      error: function(error) {
+                          // Display a generic error message in the #msg div
+                          $('#msg').html('<div class="alert alert-danger alert-dismissible fade show" role="alert">' +
+                                         '<i class="bi bi-exclamation-triangle-fill me-1"></i>There was a network or server error. Please try again.' +
+                                         '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' +
+                                         '</div>');
+                          console.error("AJAX error: ", error);
+                      }
+                      
+            
+            
+            
+                  });
+              });
+            
+              // ... [rest of your existing code]
+            });
+            
+            ///===================================================================================
+    
+                 
+            </script>
+    
+
+
+<script>
+  tinymce.init({
+            selector: 'textarea.commnts',
+            menubar: 'edit view'
+          });  
+</script>
+
+
+
+<script>   
+$(document).ready(function() {
+    // Add event listener to delete buttons with class 'ist_delete'
+    $('.ist_delete').on('click', function() {
+        var uniqueKey = $(this).data('unique-key');
+        console.log(uniqueKey);
+        
+        if (confirm('Are you sure you want to delete IST entry?')) {
+            $.ajax({
+                url: '/delete_ist_Entry/',
+                method: 'POST',
+                data: {
+                    'unique_key': uniqueKey,
+                    'csrfmiddlewaretoken': $('input[name=csrfmiddlewaretoken]').val()
+                },
+
+                success: function(response) {
+                    if (response.status === "success") {
+                        // Display the success message from the server in the #msg div
+                        $('#msg').html('<div class="alert alert-success alert-dismissible fade show" role="alert">' +
+                                       '<i class="bi bi-check-circle-fill me-1"></i>' + response.message +
+                                       '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' +
+                                       '</div>');
+
+                        // Delay the page reload by 3 seconds (3000 milliseconds)
+                        setTimeout(function() {
+                            location.reload();
+                        }, 3000);
+
+                    } else if (response.status === "error") {
+                        // Display the error message from the server in the #msg div
+                        $('#msg').html('<div class="alert alert-danger alert-dismissible fade show" role="alert">' +
+                                       '<i class="bi bi-exclamation-triangle-fill me-1"></i>' + response.message +
+                                       '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' +
+                                       '</div>');
+                    }
+                },
+                error: function(error) {
+                    // Display a generic error message in the #msg div
+                    $('#msg').html('<div class="alert alert-danger alert-dismissible fade show" role="alert">' +
+                                   '<i class="bi bi-exclamation-triangle-fill me-1"></i>There was a network or server error. Please try again.' +
+                                   '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' +
+                                   '</div>');
+                    console.error("AJAX error: ", error);
+                }
+
+
+
+
+            });
+        }
+    }); //endcall
+
+});
+
+
+</script>
+
+{% endblock content %}

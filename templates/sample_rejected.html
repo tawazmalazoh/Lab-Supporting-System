@@ -1,0 +1,921 @@
+{% extends "base.html" %} 
+{% load static %} 
+{% load crispy_forms_tags %} 
+{% load custom_filters %}
+{% block content %}
+
+  <!-- SECTION FOR THE CONTENT SCRIPTS -->
+
+  <!--  -- E Charts-->
+  <script src="https://cdn.jsdelivr.net/npm/echarts@5.2.1/dist/echarts.min.js"></script>
+
+<!-- start Data Table libraries  -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/jquery.dataTables.min.css"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.datatables.net/v/bs4-4.6.0/jq-3.7.0/jszip-3.10.1/dt-1.13.5/af-2.6.0/b-2.4.1/b-colvis-2.4.1/b-html5-2.4.1/b-print-2.4.1/cr-1.7.0/date-1.5.1/fc-4.3.0/fh-3.4.0/kt-2.10.0/r-2.5.0/rg-1.4.0/rr-1.4.1/sc-2.2.0/sb-1.5.0/sp-2.2.0/sl-1.7.0/sr-1.3.0/datatables.min.css" rel="stylesheet">
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+<script src="https://cdn.datatables.net/v/bs4-4.6.0/jq-3.7.0/jszip-3.10.1/dt-1.13.5/af-2.6.0/b-2.4.1/b-colvis-2.4.1/b-html5-2.4.1/b-print-2.4.1/cr-1.7.0/date-1.5.1/fc-4.3.0/fh-3.4.0/kt-2.10.0/r-2.5.0/rg-1.4.0/rr-1.4.1/sc-2.2.0/sb-1.5.0/sp-2.2.0/sl-1.7.0/sr-1.3.0/datatables.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/js/bootstrap.min.js"></script>
+<!-- end Datatable -->
+ 
+<script>
+  var jQuery_3_6_0 = $.noConflict(true);
+  </script>
+  
+
+<!-- these are libraries for MULTIPLE SELECT -->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.css" />
+<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script> -->
+<script src="{% static 'assets/js/jquery.min.js'%}"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.bundle.min.js"></script>
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script>
+ <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+<!-- end of libraries for multiple select -->
+<script>
+  var jQuery_2_1_1 = $.noConflict(true);
+  </script>
+
+<!-- SweetAlert2 stylesheet -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
+
+
+<script type="text/javascript">
+  window.onload = function() {
+      document.body.style.zoom = "90%";
+  }
+</script>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+<script src=" {% static 'assets/js/echarts.min.js'%}"></script>
+<!-- Highcharts -->
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
+<script src="https://code.highcharts.com/modules/export-data.js"></script>
+<script src="https://code.highcharts.com/modules/accessibility.js"></script>
+<!--  -->
+
+
+<style>
+
+    /* Common properties for td and th */
+    .disp td, .disp th {
+        border-right: 1px solid #ddd; /* Right border for each cell */
+        font-size: 0.8em; /* Reduced font size for all cells */
+        text-align: center; /* Horizontally center the content */
+        vertical-align: middle; /* Vertically center the content */
+    }
+    
+    .disp th, .disp td {
+        border-bottom: 1px solid #ddd; /* Bottom border for each cell */
+    }
+    
+    /* Specific properties for th */
+    .disp th {
+        font-weight: normal; /* Headers are not bold */
+        padding: 10px; /* Space around headers */
+        /* border-right and font-size are already defined above, no need to repeat */
+    }
+    
+    /* Adjusting for the last-child specifics */
+    .disp tr:last-child td {
+        border-bottom: none; /* Remove bottom border for the last row */
+    }
+    
+    .disp thead th:last-child, .disp tbody td:last-child {
+        border-right: none; /* Remove right border for the last column */
+    }
+    
+    
+
+
+
+
+    
+    .display td, .display th {
+        border-right: 1px solid #ddd; /* Right border for each cell */
+        font-size: 0.9em; /* Reduced font size for all cells */
+    }
+    .display th, .display td {
+        border-bottom: 1px solid #ddd; /* Bottom border for each cell */
+    }
+    .display tr:last-child td {
+        border-bottom: none; /* Remove bottom border for the last row */
+    }
+    .display thead th:last-child, .display tbody td:last-child {
+        border-right: none; /* Remove right border for the last column */
+    }
+
+    .wrap-comments {
+    word-wrap: break-word; 
+    max-width: 1600px; /* or whatever maximum width you want */
+     }
+
+        .hide-element {
+        display: none;
+    }
+
+      .bg-none {
+          background-color: #f3f3f3; /* or any color you'd like */
+      }
+
+
+          /* Targeting the 2nd, 3rd, and 4th columns of the table */
+    #AgeOldestsample td:nth-child(2),
+    #AgeOldestsample td:nth-child(3),
+    #AgeOldestsample td:nth-child(4) {
+        width: 100px; /* Or whatever width you prefer */
+    }
+
+
+          /* Define the rotation animation */
+      @keyframes rotate {
+          from { transform: rotate(0deg); }
+          to { transform: rotate(360deg); }
+      }
+
+      /* Apply the animation to the loading element */
+      .loading {
+          animation: rotate 1.5s linear infinite;
+      }
+
+ /* Style for the button */
+ button {
+            background-color: #e0e0e0; /* Light gray background */
+            color: #a0a0a0; /* Faint text color */
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: 0.3s; /* Transition effect for hover */
+        }
+
+        button:hover {
+            background-color: #c0c0c0; /* Slightly darker gray for hover */
+        }
+
+        i.bi {
+            margin-right: 5px; /* Spacing between the icon and the text */
+        }
+
+        @keyframes rotate {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .rotate-icon {
+            animation: rotate 2s linear infinite;
+        }
+
+
+        #submitsync.active {
+        background-color: rgb(147, 147, 245) !important;
+        border-color: rgb(147, 147, 245) !important;
+        font-weight: bold;
+        color: black;
+        }
+
+/* loader for spinning */
+    .loader {
+    border: 16px solid #f3f3f3;
+    /* Light grey */
+    border-top: 16px solid #3498db;
+    /* Blue */
+    border-radius: 50%;
+    width: 120px;
+    height: 120px;
+    animation: spin 2s linear infinite;
+  }
+
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+
+
+  .province-cell {
+    cursor: pointer;
+    text-decoration: underline;
+    color: blue;  // or any other color to indicate it's a link
+}
+
+.province-cell:hover {
+    background-color: #f5f5f5;  // light gray background on hover
+}
+
+.highcharts-figure,
+.highcharts-data-table table {
+    min-width: 310px;
+    max-width: 800px;
+    margin: 1em auto;
+}
+
+#container {
+    height: 400px;
+}
+
+.highcharts-data-table table {
+    font-family: Verdana, sans-serif;
+    border-collapse: collapse;
+    border: 1px solid #ebebeb;
+    margin: 10px auto;
+    text-align: center;
+    width: 100%;
+    max-width: 500px;
+}
+
+.highcharts-data-table caption {
+    padding: 1em 0;
+    font-size: 1.2em;
+    color: #555;
+}
+
+.highcharts-data-table th {
+    font-weight: 600;
+    padding: 0.5em;
+}
+
+.highcharts-data-table td,
+.highcharts-data-table th,
+.highcharts-data-table caption {
+    padding: 0.5em;
+}
+
+.highcharts-data-table thead tr,
+.highcharts-data-table tr:nth-child(even) {
+    background: #f8f8f8;
+}
+
+.highcharts-data-table tr:hover {
+    background: #f1f7ff;
+}
+
+
+
+</style>
+
+
+
+<div class="modal fade" id="provinceModal" tabindex="-1" role="dialog" aria-labelledby="provinceModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="provinceModalLabel">Province Details</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- Data will be populated here dynamically -->
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- This is the section we are to put the spinning -->
+
+<div id="spinner" class="loader" style="display:none;"></div>
+<!-- end of spinning code -->
+
+
+
+
+<form method="post" enctype="multipart/form-data" id="sync-form"></form>
+{% csrf_token %}  
+<div class="row">  
+    <div class="col-lg-6">       
+         
+               <!-- <button class="btn btn-primary" type="button" disabled>
+                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                Loading...
+              </button> -->
+
+
+    </div>
+    <!-- style="font-size: 2rem;" -->
+    <div class="col-lg-6">
+        <nav>
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item"><i class="bi bi-pc-display-horizontal"  ></i></li>
+              <li class="breadcrumb-item"><a href="#">Last uploaded  date: </a></li>
+              <li class="breadcrumb-item ">{{last_Uploaded_date}}</li>
+            </ol>
+        </nav>
+         
+    </div>
+   
+
+
+    {% for message in messages %}
+    <div class="alert {{ message.tags }} alert-dismissible fade show" role="alert">
+    <i class="bi bi-exclamation-octagon me-1"></i>
+    {{ message|safe }} <br>      
+     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% endfor %}    
+</div>
+</form>
+
+
+<!-- lets put the filters -->
+{% load crispy_forms_tags %}
+<form method="POST">
+    {% csrf_token %}
+
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="alert border-primary alert-dismissible fade show" role="alert">
+                    <div class="row">
+
+                        <div class="col-lg-3" style="display: flex; align-items: center;">
+                            <i class="bi bi-book-" style="font-size: 4em;"></i>
+                            <span style="margin-left: 2em;">
+                                <strong>Apply the filter<br> <i>By default analysis is for this week</i></strong>
+                            </span>
+                        </div>
+
+
+                        <div class="col-lg-3">
+                            <label for="inputDate" style="font-weight: bold; font-family: Arial, sans-serif;">Start
+                                Date</label>
+                            <input type="date" id="startdate" name="startdate" class="form-control" required>
+                        </div>
+
+                        <div class="col-lg-3">
+                            <label for="inputDate" style="font-weight: bold; font-family: Arial, sans-serif;">End
+                                Date</label>
+                            <input type="date" id="enddate" name="enddate" class="form-control" required>
+                        </div>
+
+                        <div class="col-lg-3">
+                            <label for="inputDate"
+                                style="font-weight: bold; font-family: Arial, sans-serif;">.</label><br>
+                            <button  id="submitfilterx" name="submitfilterx" class="btn btn-primary"
+                                style="font-size: 20px; ">Submit</button>
+
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<!-- end of filters -->
+
+<figure>
+    <blockquote class="blockquote">
+      <p>Specimens Rejected ANALYSIS -.</p>
+    </blockquote>
+    <figcaption class="blockquote-footer">
+      We are going to analyse the rejected samples    <cite title="Source Title"> BY REASON </cite> in detail.
+    </figcaption>
+  </figure>
+
+
+
+
+
+    
+          
+         <div class="col-lg-12">
+            <div class="card">
+                <hr>
+            </div>
+        </div>
+
+
+
+
+      
+        <!-- Column Chart -->       
+
+        <table width="100%" id="specimes" class="display table-responsive">
+            <thead>
+                <tr>
+                    <th colspan="1"></th>                                                
+                    <th colspan="2" style="background-color: #c9eef3;text-align: center;">IST RELATED</th>
+                    <th colspan="1"></th>  
+                    <th colspan="4" style="background-color: #d5f4e6;text-align: center;"></th>                 
+        
+                </tr>
+
+              <tr>
+                <th>Month</th>
+                <th> Rejected: Request Form</th>
+                <th>Rejected : Missing Form </th>
+                <th>Total Rejected</th>
+                <th>Rejected: Quality Issue  </th>
+                <th>Rejected: Quantity insufficient</th>
+                <th>Rejected: Patient Sample Info </th>              
+              </tr>
+            </thead>
+            <tbody>
+               {% for result in data %}
+                  {% if result.query_name == 'specimen_rejection' %}
+                      {% for row in result.query_data %}
+                          <tr>
+                              <td>{{ row|get_item:"month"|default:0 }} </td>
+                              <td>{{ row|get_item:"REJECTED_Missing_requestForm"|default:0 }}</td>
+                              <td> {{ row|get_item:"REJECTED_Sample_Missing"|default:0 }}   </td>
+                              <td >{{ row|get_item:"total_rejected"|default:0 }}    </td>
+                              <td > {{ row|get_item:"REJECTED_Quality_issue"|default:0 }}  </td>
+                              <td > {{ row|get_item:"REJECTED_Quantity_insuff"|default:0 }}  </td>
+                              <td > {{ row|get_item:"REJECTED_Patient_SampleINFO"|default:0 }}  </td>
+
+                          </tr>
+                      {% endfor %}
+                  {% endif %}
+              {% endfor %} 
+              </tbody>
+          </table>
+                         
+
+            <!-- End Column Chart -->
+        <div class="col-lg-12">
+            <div class="card"><br>
+                <figure>                   
+                    <figcaption class="blockquote-footer">
+                      Rejections BY lab
+                    </figcaption>
+                  </figure>
+            </div>
+        </div>
+
+
+
+          <table width="100%" id="specimes" class="display table-responsive">
+            <thead>
+                <tr>
+                    <th colspan="1"></th>                                                
+                    <th colspan="2" style="background-color: #c9eef3;text-align: center;">IST RELATED</th>
+                    <th colspan="1"></th>  
+                    <th colspan="4" style="background-color: #d5f4e6;text-align: center;"></th>                 
+        
+                </tr>
+
+              <tr>
+                <th>Lab</th>
+                <th>Rejected: Request Form</th>
+                <th>Rejected : Missing Form </th>
+                <th>Total Rejected</th>
+                <th>Rejected: Quality Issue  </th>
+                <th>Rejected: Quantity insufficient</th>
+                <th>Rejected: Patient Sample Info </th>              
+              </tr>
+            </thead>
+            <tbody>
+               {% for result in data %}
+                  {% if result.query_name == 'specimen_rejection_bylab' %}
+                      {% for row in result.query_data %}
+                          <tr>
+                              <td>{{ row|get_item:"lab"|default:0 }} </td>
+                              <td>{{ row|get_item:"REJECTED_Missing_requestForm"|default:0 }}</td>
+                              <td> {{ row|get_item:"REJECTED_Sample_Missing"|default:0 }}   </td>
+                              <td >{{ row|get_item:"total_rejected"|default:0 }}    </td>
+                              <td > {{ row|get_item:"REJECTED_Quality_issue"|default:0 }}  </td>
+                              <td > {{ row|get_item:"REJECTED_Quantity_insuff"|default:0 }}  </td>
+                              <td > {{ row|get_item:"REJECTED_Patient_SampleINFO"|default:0 }}  </td>
+
+                          </tr>
+                      {% endfor %}
+                  {% endif %}
+              {% endfor %} 
+              </tbody>
+          </table>
+
+
+
+
+
+
+
+
+
+
+
+        <!-- End Column Chart -->
+        <div class="col-lg-12">
+            <div class="card"><br>
+                <figure>                   
+                    <figcaption class="blockquote-footer">
+                      Rejections Weekly
+                    </figcaption>
+                  </figure>
+            </div>
+        </div>
+
+
+
+
+
+
+        <table width="100%" id="specimes_weekly" class="display table-responsive">
+    <thead>
+        <tr>
+            <th colspan="1"></th>                                                
+            <th colspan="2" style="background-color: #c9eef3;text-align: center;">WEEKLY IST RELATED</th>
+            <th colspan="1"></th>  
+            <th colspan="4" style="background-color: #d5f4e6;text-align: center;"></th>                 
+
+        </tr>
+
+      <tr>
+        <th>week</th>
+        <th> Rejected: Request Form</th>
+        <th>Rejected : Missing Form </th>
+        <th>Total Rejected</th>
+        <th>Rejected: Quality Issue  </th>
+        <th>Rejected: Quantity insufficient</th>
+        <th>Rejected: Patient Sample Info </th>              
+      </tr>
+    </thead>
+    <tbody>
+       {% for result in data %}
+          {% if result.query_name == 'specimen_rejection_weekly' %}
+              {% for row in result.query_data %}
+                  <tr>
+                      <td>{{ row|get_item:"week"|default:0 }} </td>
+                      <td>{{ row|get_item:"REJECTED_Missing_requestForm"|default:0 }}</td>
+                      <td> {{ row|get_item:"REJECTED_Sample_Missing"|default:0 }}   </td>
+                      <td >{{ row|get_item:"total_rejected"|default:0 }}    </td>
+                      <td > {{ row|get_item:"REJECTED_Quality_issue"|default:0 }}  </td>
+                      <td > {{ row|get_item:"REJECTED_Quantity_insuff"|default:0 }}  </td>
+                      <td > {{ row|get_item:"REJECTED_Patient_SampleINFO"|default:0 }}  </td>
+
+                  </tr>
+              {% endfor %}
+          {% endif %}
+      {% endfor %} 
+      </tbody>
+  </table>
+
+        <br><br>
+
+
+        <div class="col-lg-12">
+            <div class="card"><br>
+                <figure>     
+                    <p>REASONS FOR MISSED PICKUPS -.</p>              
+                    <figcaption class="blockquote-footer">
+                      This is the line list of those riders who missed Pickups so some reasons - this will help analyse why
+                    </figcaption>
+                  </figure>
+            </div>
+        </div>
+         <!-- Column Chart -->       
+
+         <table width="100%" id="miss" class="display table-responsive">
+            <thead>          
+
+              <tr>
+                <th> Date</th>
+                <th> Rider</th>
+                <th>Bike Reg </th>
+                <th>Province</th>
+                <th>District  </th>
+                <th>Support</th>
+                <th>Bike functionality</th> 
+                <th>Bike Breakdown</th>   
+                <th>Bike Maintanance</th>          
+                <th>Bike No Fuel</th>          
+                <th>Rider on  Sick Leave</th>          
+                <th>Rider on Annual Leave Functionality</th>          
+                <th>Inclement Weather</th>          
+                <th>Accident</th>          
+                <th>Clinical IP Related </th>          
+                <th>Other reasons</th>          
+                <th>Mitigation Measures</th>          
+                <th>Comments</th>          
+                               
+              </tr>
+            </thead>
+            <tbody>
+               {% for result in data %}
+                  {% if result.query_name == 'missed_pickupLinelist' %}
+                      {% for row in result.query_data %}
+                          <tr>
+                              <td>{{ row|get_item:"date"|default:0 }} </td>
+                              <td>{{ row|get_item:"Name_of_Rider_"|default:0 }}</td>
+                              <td> {{ row|get_item:"Bike_Registration_Number"|default:0 }}   </td>
+                              <td >{{ row|get_item:"Province_"|default:0 }}    </td>
+                              <td > {{ row|get_item:"District_"|default:0 }}  </td>
+                              <td > {{ row|get_item:"Type_of_PEPFAR_Support"|default:0 }}  </td>
+                              <td > {{ row|get_item:"Bike_Functionality"|default:0 }}  </td>
+
+                              <td > {{ row|get_item:"Bike_breakdown_"|default:0 }}  </td>
+                              <td > {{ row|get_item:"Bike_on_routine_service_and_mainte0nce"|default:0 }}  </td>
+                              <td > {{ row|get_item:"Bike_had_no_fuel"|default:0 }}  </td>
+                              <td > {{ row|get_item:"Rider_on_Sick_Leave"|default:0 }}  </td>
+                              <td > {{ row|get_item:"Rider_on_Leave"|default:0 }}  </td>
+                              <td > {{ row|get_item:"Inclement_weather"|default:0 }}  </td>
+                              <td > {{ row|get_item:"Accident_damaged_bike_vehicle"|default:0 }}  </td>                   
+                              <td > {{ row|get_item:"Clinical_IPs_related_issues"|default:0 }}  </td>
+                              <td > {{ row|get_item:"Other_Reasons__Specify_"|default:0 }}  </td>
+                              <td > {{ row|get_item:"Mitigation_measures_"|default:0 }}  </td>
+
+                              <td > {{ row|get_item:"Comments"|default:0 }}  </td>
+                   
+
+                          </tr>
+                      {% endfor %}
+                  {% endif %}
+              {% endfor %} 
+              </tbody>
+          </table>
+
+
+       
+
+
+<br><hr><br>
+<div class="col-lg-12">
+    <div class="card">
+        <hr>
+    </div>
+</div>
+
+<figure>
+  <blockquote class="blockquote">
+    <p>LINE LIST IST REPORT .</p>
+  </blockquote>
+  <figcaption class="blockquote-footer">
+    USE FILTER TO INCREASE THE TIME SPAN <br>
+    These are specimens and results transported by   <cite title="Source Title">PERMANANT  RIDERS, RELIEF RIDERS and DRIVERS</cite>. On the Driver we just take those transported for the 1st time.
+  </figcaption>
+</figure>
+<!----------------Table for districts ----------------------->
+<table width="100%" id="linelist" class="display table-responsive">
+    <thead>
+
+        <tr>
+            <th colspan="8"></th>                                                
+            <th colspan="2" style="background-color: #c9eef3;text-align: center;">Bike Fuctionality</th>
+            <th colspan="18" style="background-color: #d5f4e6;text-align: center;">Samples and Results transported </th>
+            <th colspan="17" style="background-color: #f3f3d4;text-align: center;"></th>
+            <th colspan="1" style="background-color: #dbfae0;text-align: center;"></th>
+
+
+        </tr>
+
+
+      <tr>
+      <th>Date</th>            
+      <th>status</th>
+      <th>Name_of_Rider_</th>
+      
+      <th>Bike_Registration_Number</th>
+      <th>Province_</th>
+      <th>District_</th>
+      <th>Type_of_PEPFAR_Support</th>
+
+      <th>Bike_Functionality</th>
+      <th>Number_of_days_bike_was_functional</th>
+
+      <th>VL Blood/Plasma </th>
+      <th>Results VL Blood/Plasma </th>
+
+      <th>VL DBS </th>
+      <th>Results VL DBS </th>
+
+      <th>EID DBS</th> 
+      <th>Results EID DBS</th>
+
+      <th>EID Blood</th>
+      <th>Results EID Blood </th>
+
+      <th>Sputum</th>
+      <th>Results Sputum</th>
+
+      <th>Sputum_Culture_DR_NTBRL</th>
+      <th>Sputum_Culture_DR_NTBRL_res</th>
+
+         <th>HPV</th>
+      <th>HPV_res</th>
+
+      <th>urine_sam</th>
+      <th>urine_res</th>
+
+      <th>Other [Specify e.g: 3 CD4, 17 COVID-19, 10 FBC, 15 Measles, 20 Cholera, 30 Stool]</th>
+      <th>Results Other [Specify e.g: 3 CD4, 17 COVID-19, 10 FBC, 15 Measles, 20 Cholera, 30 Stool]</th>
+
+    
+      <th>Number of scheduled visits</th>
+      <th>Number of actual visits</th>
+      
+      <th>Fuel used by rider this  week</th>
+      <th>Fuel allocated to rider this week</th>
+      <th>Distance_travelled_by_rider_per_week</th>
+      <th>Bike_breakdown_</th>
+      <th>Bike_on_routine_service_and_mainte0nce</th>
+      <th>Bike_had_no_fuel</th>
+
+      <th>Rider_on_Sick_Leave</th>
+      <th>Rider_on_Leave</th>
+      <th>Rider_sticking_to_sample_pick_up_schedule</th>
+      <th>Inclement_weather</th>
+      <th>Accident_damaged_bike_vehicle</th>
+      <th>Clinical_IPs_related_issues</th>
+      <th>Other_Reasons__Specify_</th>
+      <th>Mitigation_measures_</th>
+      <th>Comments</th>  
+      <th>Driver_Sample_Status</th>
+
+              
+      </tr>
+    </thead>
+    <tbody>
+      {% for result in data %}
+          {% if result.query_name == 'IST_line_list' %}
+              {% for row in result.query_data %}
+                  <tr>
+
+    <td>{{ row|get_item:"Date"|default:"" }}</td>            
+     <td>{{ row|get_item:"status"|default:"" }}</td>
+     <td>{{ row|get_item:"Name_of_Rider_"|default:"" }}</td>
+     
+     <td>{{ row|get_item:"Bike_Registration_Number"|default:"" }}</td>
+     <td>{{ row|get_item:"Province_"|default:"" }}</td>
+     <td>{{ row|get_item:"District_"|default:"" }}</td>
+     <td>{{ row|get_item:"Type_of_PEPFAR_Support"|default:"" }}</td>
+
+     <td>{{ row|get_item:"Bike_Functionality"|default:0 }}</td>
+     <td>{{ row|get_item:"Number_of_days_bike_was_functional"|default:0 }}</td>
+
+     <td>{{ row|get_item:"vl_plasma_sam"|default:0 }}</td>
+     <td>{{ row|get_item:"vl_plasma_res"|default:0 }}</td>
+
+     <td>{{ row|get_item:"vl_dbs_sam"|default:0 }}</td>
+     <td>{{ row|get_item:"vl_dbs_res"|default:0 }}</td>
+
+     <td>{{ row|get_item:"eid_dbs"|default:0 }}</td> 
+     <td>{{ row|get_item:"eid_dbs_res"|default:0 }}</td>
+
+     <td>{{ row|get_item:"eid_sam"|default:0 }}</td>
+     <td>{{ row|get_item:"eid_res"|default:0 }}</td>
+
+     <td>{{ row|get_item:"sputum_sam"|default:0 }}</td>
+     <td>{{ row|get_item:"sputum_res"|default:0 }}</td>
+
+     <td>{{ row|get_item:"Sputum_Culture_DR_NTBRL"|default:0 }}</td>
+     <td>{{ row|get_item:"Sputum_Culture_DR_NTBRL_res"|default:0 }}</td>
+
+        <td>{{ row|get_item:"HPV"|default:0 }}</td>
+     <td>{{ row|get_item:"HPV_res"|default:0 }}</td>
+
+     <td>{{ row|get_item:"urine_sam"|default:0 }}</td>
+     <td>{{ row|get_item:"urine_res"|default:0 }}</td>
+
+     <td>{{ row|get_item:"other_sam"|default:0 }}</td>
+     <td>{{ row|get_item:"other_res"|default:0 }}</td>
+
+    
+     <td>{{ row|get_item:"Number_of__Scheduled_Visits_to_Clinic_per__Week"|default:0 }}</td>
+     <td>{{ row|get_item:"Number_of_Visits_to_Clinic_per_week"|default:0 }}</td>
+     <td>{{ row|get_item:"Fuel_used_by_rider_per_week"|default:0 }}</td>
+     <td>{{ row|get_item:"Fuel_allocated_to_rider_per_week"|default:0 }}</td>
+     <td>{{ row|get_item:"Distance_travelled_by_rider_per_week"|default:0 }}</td>
+     <td>{{ row|get_item:"Bike_breakdown_"|default:0 }}</td>
+     <td>{{ row|get_item:"Bike_on_routine_service_and_mainte0nce"|default:0 }}</td>
+     <td>{{ row|get_item:"Bike_had_no_fuel"|default:0 }}</td>
+
+     <td>{{ row|get_item:"Rider_on_Sick_Leave"|default:0 }}</td>
+     <td>{{ row|get_item:"Rider_on_Leave"|default:0 }}</td>
+     <td>{{ row|get_item:"Rider_sticking_to_sample_pick_up_schedule"|default:0 }}</td>
+     <td>{{ row|get_item:"Inclement_weather"|default:0 }}</td>
+     <td>{{ row|get_item:"Accident_damaged_bike_vehicle"|default:0 }}</td>
+     <td>{{ row|get_item:"Clinical_IPs_related_issues"|default:0 }}</td>
+     <td>{{ row|get_item:"Other_Reasons__Specify_"|default:"" }}</td>
+     <td>{{ row|get_item:"Mitigation_measures_"|default:"" }}</td>
+     <td>{{ row|get_item:"Comments"|default:"" }}</td>  
+     <td>{{ row|get_item:"Driver_Sample_Status"|default:"" }}</td> 
+    
+
+  
+          
+                  </tr>
+              {% endfor %}
+          {% endif %}
+      {% endfor %}
+      </tbody>
+  </table>
+
+
+        
+
+
+
+
+
+
+<script>
+jQuery_3_6_0(document).ready(function () {
+    jQuery_3_6_0(".display").DataTable({
+        dom: 'Bfrtip',
+        pageLength: 5 , // Display 50 rows by default
+        buttons: [
+            'copy', 'csv', 'excel', 'pdf', 'print'
+        ]
+    });
+});
+</script>
+              
+
+
+
+
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('#submitfilterx').on('click', function(e) {
+          // Add loading class and update button text
+            submitButton.prop('disabled', true).addClass('loading').html('Loading...');
+            var submitButton = $('#submitfilterx'); 
+            var startdateVal = $('#startdate').val();
+            var enddateVal = $('#enddate').val();
+    
+            var starting = new Date(startdateVal);
+            var ending = new Date(enddateVal);
+            var today = new Date();
+            today.setHours(0, 0, 0, 0);
+    
+            if (startdateVal == '' || enddateVal == '') {
+                $("#response-msg-container").html(`
+                    ...
+                `);
+                $("#startdate").focus();
+                return;
+            } else if (starting > today || ending > today) {
+                $("#response-msg-container").html(`
+                    ...
+                `);
+                $("#startdate").focus();
+                return;
+            } else if (starting > ending) {
+                $("#response-msg-container").html(`
+                Start date should not be greater than end date 
+                `);
+                $("#startdate").focus();
+                return;
+            } else if ((ending.getTime() - starting.getTime()) / (1000 * 3600 * 24) != 7) {
+                $("#response-msg-container").html(`
+                    ...
+                `);
+                $("#startdate").focus();
+                return;
+            } else if (starting.getDay() != 1 || ending.getDay() != 0) {
+                $("#response-msg-container").html(`
+                    ...
+                `);
+                $("#startdate").focus();
+                return;
+            } else {
+    
+              
+                $.ajax({
+                     type: 'POST', 
+                     type: "POST",
+                        url: '{% url 'relief_spec_and_res' %}', 
+                        data: {
+                          startdate: startdate,
+                          enddate: enddate,
+                          csrfmiddlewaretoken: '{{ csrf_token }}', // Include the CSRF token in the data
+                        },
+                        success: function (response) {
+                        $('#response-msg-container').html('<div class="alert alert-error" role="alert">' + responsd + '</div>');
+    
+                        },
+                        error: function(error) {
+                              console.log(error);
+                            }
+    
+               
+    
+    
+                }); // end of ajax 
+            }
+        });
+    });
+    
+    
+      </script>
+
+{% endblock content %}

@@ -1,0 +1,1113 @@
+{% extends "base.html" %} 
+{% load static %} 
+{% load crispy_forms_tags %} 
+{% load custom_filters %}
+{% block content %}
+
+  <!-- SECTION FOR THE CONTENT SCRIPTS -->
+
+  <!--  -- E Charts-->
+  <script src="https://cdn.jsdelivr.net/npm/echarts@5.2.1/dist/echarts.min.js"></script>
+
+<!-- start Data Table libraries  -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/jquery.dataTables.min.css"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.datatables.net/v/bs4-4.6.0/jq-3.7.0/jszip-3.10.1/dt-1.13.5/af-2.6.0/b-2.4.1/b-colvis-2.4.1/b-html5-2.4.1/b-print-2.4.1/cr-1.7.0/date-1.5.1/fc-4.3.0/fh-3.4.0/kt-2.10.0/r-2.5.0/rg-1.4.0/rr-1.4.1/sc-2.2.0/sb-1.5.0/sp-2.2.0/sl-1.7.0/sr-1.3.0/datatables.min.css" rel="stylesheet">
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+<script src="https://cdn.datatables.net/v/bs4-4.6.0/jq-3.7.0/jszip-3.10.1/dt-1.13.5/af-2.6.0/b-2.4.1/b-colvis-2.4.1/b-html5-2.4.1/b-print-2.4.1/cr-1.7.0/date-1.5.1/fc-4.3.0/fh-3.4.0/kt-2.10.0/r-2.5.0/rg-1.4.0/rr-1.4.1/sc-2.2.0/sb-1.5.0/sp-2.2.0/sl-1.7.0/sr-1.3.0/datatables.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/js/bootstrap.min.js"></script>
+<!-- end Datatable -->
+ 
+<script>
+  var jQuery_3_6_0 = $.noConflict(true);
+  </script>
+  
+
+<!-- these are libraries for MULTIPLE SELECT -->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.css" />
+<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script> -->
+<script src="{% static 'assets/js/jquery.min.js'%}"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.bundle.min.js"></script>
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script>
+ <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+<!-- end of libraries for multiple select -->
+<script>
+  var jQuery_2_1_1 = $.noConflict(true);
+  </script>
+
+<!-- SweetAlert2 stylesheet -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
+
+
+<script type="text/javascript">
+  window.onload = function() {
+      document.body.style.zoom = "90%";
+  }
+</script>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+<script src=" {% static 'assets/js/echarts.min.js'%}"></script>
+<!-- Highcharts -->
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
+<script src="https://code.highcharts.com/modules/export-data.js"></script>
+<script src="https://code.highcharts.com/modules/accessibility.js"></script>
+<!--  -->
+
+
+<style>
+
+    /* Common properties for td and th */
+    .disp td, .disp th {
+        border-right: 1px solid #ddd; /* Right border for each cell */
+        font-size: 0.8em; /* Reduced font size for all cells */
+        text-align: center; /* Horizontally center the content */
+        vertical-align: middle; /* Vertically center the content */
+    }
+    
+    .disp th, .disp td {
+        border-bottom: 1px solid #ddd; /* Bottom border for each cell */
+    }
+    
+    /* Specific properties for th */
+    .disp th {
+        font-weight: normal; /* Headers are not bold */
+        padding: 10px; /* Space around headers */
+        /* border-right and font-size are already defined above, no need to repeat */
+    }
+    
+    /* Adjusting for the last-child specifics */
+    .disp tr:last-child td {
+        border-bottom: none; /* Remove bottom border for the last row */
+    }
+    
+    .disp thead th:last-child, .disp tbody td:last-child {
+        border-right: none; /* Remove right border for the last column */
+    }
+    
+    
+
+
+
+
+    
+    .display td, .display th {
+        border-right: 1px solid #ddd; /* Right border for each cell */
+        font-size: 0.9em; /* Reduced font size for all cells */
+    }
+    .display th, .display td {
+        border-bottom: 1px solid #ddd; /* Bottom border for each cell */
+    }
+    .display tr:last-child td {
+        border-bottom: none; /* Remove bottom border for the last row */
+    }
+    .display thead th:last-child, .display tbody td:last-child {
+        border-right: none; /* Remove right border for the last column */
+    }
+
+    .wrap-comments {
+    word-wrap: break-word; 
+    max-width: 1600px; /* or whatever maximum width you want */
+     }
+
+        .hide-element {
+        display: none;
+    }
+
+      .bg-none {
+          background-color: #f3f3f3; /* or any color you'd like */
+      }
+
+
+
+
+      /* Apply the animation to the loading element */
+      .loading {
+          animation: rotate 1.5s linear infinite;
+      }
+
+ /* Style for the button */
+ button {
+            background-color: #e0e0e0; /* Light gray background */
+            color: #a0a0a0; /* Faint text color */
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: 0.3s; /* Transition effect for hover */
+        }
+
+        button:hover {
+            background-color: #c0c0c0; /* Slightly darker gray for hover */
+        }
+
+        i.bi {
+            margin-right: 5px; /* Spacing between the icon and the text */
+        }
+
+        @keyframes rotate {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .rotate-icon {
+            animation: rotate 2s linear infinite;
+        }
+
+
+        #submitsync.active {
+        background-color: rgb(147, 147, 245) !important;
+        border-color: rgb(147, 147, 245) !important;
+        font-weight: bold;
+        color: black;
+        }
+
+/* loader for spinning */
+    .loader {
+    border: 16px solid #f3f3f3;
+    /* Light grey */
+    border-top: 16px solid #3498db;
+    /* Blue */
+    border-radius: 50%;
+    width: 120px;
+    height: 120px;
+    animation: spin 2s linear infinite;
+  }
+
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+
+
+  .province-cell {
+    cursor: pointer;
+    text-decoration: underline;
+    color: blue;  // or any other color to indicate it's a link
+}
+
+.province-cell:hover {
+    background-color: #f5f5f5;  // light gray background on hover
+}
+
+.highcharts-figure,
+.highcharts-data-table table {
+    min-width: 310px;
+    max-width: 800px;
+    margin: 1em auto;
+}
+
+#container {
+    height: 400px;
+}
+
+.highcharts-data-table table {
+    font-family: Verdana, sans-serif;
+    border-collapse: collapse;
+    border: 1px solid #ebebeb;
+    margin: 10px auto;
+    text-align: center;
+    width: 100%;
+    max-width: 500px;
+}
+
+.highcharts-data-table caption {
+    padding: 1em 0;
+    font-size: 1.2em;
+    color: #555;
+}
+
+.highcharts-data-table th {
+    font-weight: 600;
+    padding: 0.5em;
+}
+
+.highcharts-data-table td,
+.highcharts-data-table th,
+.highcharts-data-table caption {
+    padding: 0.5em;
+}
+
+.highcharts-data-table thead tr,
+.highcharts-data-table tr:nth-child(even) {
+    background: #f8f8f8;
+}
+
+.highcharts-data-table tr:hover {
+    background: #f1f7ff;
+}
+
+
+
+</style>
+
+
+
+<div class="modal fade" id="provinceModal" tabindex="-1" role="dialog" aria-labelledby="provinceModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="provinceModalLabel">Province Details</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- Data will be populated here dynamically -->
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- This is the section we are to put the spinning -->
+
+<div id="spinner" class="loader" style="display:none;"></div>
+<!-- end of spinning code -->
+
+
+
+
+<form method="post" enctype="multipart/form-data" id="sync-form"></form>
+{% csrf_token %}  
+<div class="row">  
+    <div class="col-lg-6">       
+         
+               <!-- <button class="btn btn-primary" type="button" disabled>
+                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                Loading...
+              </button> -->
+
+
+    </div>
+    <!-- style="font-size: 2rem;" -->
+    <div class="col-lg-6">
+        <nav>
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item"><i class="bi bi-pc-display-horizontal"  ></i></li>
+              <li class="breadcrumb-item"><a href="#"> </a></li>
+              <li class="breadcrumb-item "></li>
+            </ol>
+        </nav>
+         
+    </div>
+   
+
+
+    {% for message in messages %}
+    <div class="alert {{ message.tags }} alert-dismissible fade show" role="alert">
+    <i class="bi bi-exclamation-octagon me-1"></i>
+    {{ message|safe }} <br>      
+     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% endfor %}    
+</div>
+</form>
+
+
+
+
+
+
+<!-- lets put the filters -->
+ {% load crispy_forms_tags %}
+ <form method="POST" enctype="multipart/form-data" action="{% url 'shipments' %}">
+    {% csrf_token %}
+
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="alert border-primary alert-dismissible fade show" role="alert">
+                    <div class="row">
+
+                        <div class="col-lg-3" style="display: flex; align-items: center;">
+                            <i class="bi bi-book-" style="font-size: 4em;"></i>
+                            <span style="margin-left: 2em;">
+                                <strong>Upload the Excel with shipment data</strong>
+                            </span>
+                        </div>
+
+
+                        <div class="col-lg-6">
+                            <label for="formFileMultiple" class="form-label">Upload other file</label>
+                            <input class="form-control" type="file" id="multiFiles" name="files[]" multiple required />  
+                        </div>
+
+                        
+
+                        <div class="col-lg-3">
+                            <label for="inputDate"
+                                style="font-weight: bold; font-family: Arial, sans-serif;">.</label><br>
+
+                        <button type="submit" class="btn btn-primary"  style="font-size: 20px;" id="upload" name="upload"    >Submit Form</button>
+                            
+
+                        </div>   
+
+
+                    </div>
+                    <br><br><br>
+                        
+<figure>
+    
+    <figcaption class="blockquote-footer">
+      The Excel file  document to be uploaded must have <strong>2 sheets</strong> - | local Reg |Shipments | <br> The <strong>Shipment sheet</strong> must have columns as  
+      | Lab | Sample ID |	Creator | Registration location	| Date Registered |	Shipment
+
+    </figcaption>
+  </figure>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</form> 
+<!-- end of filters -->
+
+<figure>
+    <blockquote class="blockquote">
+      <p>SHIPMENTS ANALYSIS -.</p>
+    </blockquote>
+    <figcaption class="blockquote-footer">
+      The Excel file with the shipment data is uploaded and  the system will analyse 
+    </figcaption>
+  </figure>
+
+
+<div class="row">  
+    <div class="col-lg-12">  
+        <div class="card">
+            <div class="card-body">
+               
+                <div id="conta"  style="width: 100%; height: 500px"></div>   
+                <script>
+                    document.addEventListener('DOMContentLoaded', function () {
+                        var dataByLab = JSON.parse('{{ data_by_lab_json | escapejs | safe }}');
+                        
+                            // Parse the JSON representation of your data into a JavaScript object
+                        var maxValuesByLab = JSON.parse('{{ max_values_by_lab_json|escapejs }}');
+
+                        // Check if the 'Masvingo' lab data is available
+                        if (maxValuesByLab.hasOwnProperty('Masvingo')) {
+                            var masvingoData = maxValuesByLab['Masvingo'];
+
+                            // Extract the specific values
+                            var maxTime = masvingoData['max_time'];
+                            var countForMaxTime = masvingoData['count_for_max_time'];
+
+     
+                        }
+
+                    
+                        // Assuming 'Masvingo' is one of your labs, and it contains an array of numbers or [x,y] points.
+                        var chartData = dataByLab['Masvingo'];
+                        //console.log(maxValuesByLab);
+                    
+                        Highcharts.chart('conta', {
+                            chart: {
+                                type: 'area',
+                                // other chart settings...
+                            },
+                            title: {
+                                text: 'Shipment for Masvingo', // Adjust based on your context
+                                align: 'left'
+                            },
+                         
+
+                            xAxis: {
+                                labels: {
+                                    format: '{value} '
+                                },
+                               
+                                title: {
+                                    text: 'Number of samples per shipment (Shipment Size)'
+                                },
+                             
+                            },
+
+                            credits: {
+                                enabled: false
+                            },
+                        
+
+                            annotations: [
+
+                            {
+                                draggable: '',
+                                labelOptions: {
+                                    backgroundColor: 'rgba(255,255,255,0.5)',
+                                    verticalAlign: 'top',
+                                    y: 15
+                                },
+                                labels: [ {
+                                    point: {
+                                        xAxis: 0,
+                                        yAxis: 0,
+                                        x: countForMaxTime,
+                                        y: maxTime,
+                                    },
+                                    text: 'This is the max'
+                                }]
+                            }, 
+                        
+                            {
+                                draggable: '',
+                                labels: [ {
+                                    point: {
+                                        xAxis: 0,
+                                        yAxis: 0,
+                                        x: countForMaxTime,
+                                        y: maxTime
+                                    },
+                                    text: 'max'
+                                }]
+                            }, 
+                        
+                            {
+                                draggable: '',
+                                labelOptions: {
+                                    shape: 'connector',
+                                    align: 'right',
+                                    justify: false,
+                                    crop: true,
+                                    style: {
+                                        fontSize: '10px',
+                                        textOutline: '1px white'
+                                    }
+                                },
+                                labels: [{
+                                    point: {
+                                        xAxis: 0,
+                                        yAxis: 0,
+                                        x: countForMaxTime,
+                                        y: maxTime
+                                    },
+                                    text: '.'
+                                }
+                        
+                                 ]
+                            }],
+                        
+                        
+                        
+
+                            yAxis: {
+                              
+                                maxPadding: 0.35,
+                                title: {
+                                    text: 'Time Taken (mins)'
+                                },
+                                labels: {
+                                    format: '{value} min'
+                                },
+                               
+                            },
+
+
+
+
+                            tooltip: {
+                                headerFormat: '# of samples: {point.x:.1f} <br>',
+                                pointFormat: '{point.y} minutes',
+                                shared: true
+                            },
+                        
+
+
+                            series: [{
+                                data: chartData,
+                                // other series properties...
+                                name: 'Masvingo',
+                                marker: {
+                                    enabled: false
+                                },
+                                threshold: null
+                            }]
+                        });
+                    });
+                    
+                </script>
+ 
+            </div>
+        </div>
+    </div>
+
+
+
+    
+</div><!-- end of row-->
+
+<div class="col-lg-12">
+              
+    <br>
+    <figure>
+    
+       <figcaption class="blockquote-footer">
+         In this analysis we are analysing the size of the shipment and the time it takes for the shipment to be processed 
+       </figcaption>
+     </figure>
+     <table width="100%" id="specimes" class="display table-responsive">
+         <thead>
+             <tr>
+                 <!-- Assuming 'Lab', 'Shipment', 'count', and 'time_taken' are the keys in each dictionary -->
+                 <th>Lab</th>
+                 <th>Shipment</th>
+                 <th>Count</th>
+                 <th>Time Taken</th>
+             </tr>
+         </thead>
+         <tbody>
+            <!-- Directly iterate over 'result_data' from your context -->
+            {% for row in result_data %}
+                <tr>
+                    <!-- Access each field from the current item in 'result_data' -->
+                    <td><strong>{{ row.Lab|default:"" }} </strong></td>
+                    <td>{{ row.Shipment|default:"" }}</td>
+                    <td>{{ row.count|default:"" }}</td>
+                    <td>{{ row.time_taken|default:"" }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    
+     </table>
+     
+     </div>
+
+<div class="col-lg-12">
+    <div class="card">
+        <hr>
+    </div>
+</div>
+
+
+
+
+
+  
+{% comment %} 
+          comment 
+             {% endcomment %}
+
+
+
+
+            
+               
+<!--Start another chart-->
+<div class="col-lg-12">
+    <div id="gweru"  style="width: 100%; height: 500px"></div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var dataByLab = JSON.parse('{{ data_by_lab_json | escapejs | safe }}');
+            
+                // Parse the JSON representation of your data into a JavaScript object
+            var maxValuesByLab = JSON.parse('{{ max_values_by_lab_json|escapejs }}');
+
+            // Check if the 'Masvingo' lab data is available
+            if (maxValuesByLab.hasOwnProperty('Gweru')) {
+                var masvingoData = maxValuesByLab['Gweru'];
+
+                // Extract the specific values
+                var maxTime = masvingoData['max_time'];
+                var countForMaxTime = masvingoData['count_for_max_time'];
+
+
+            }
+
+        
+            // Assuming 'Masvingo' is one of your labs, and it contains an array of numbers or [x,y] points.
+            var chartData = dataByLab['Gweru'];
+            //console.log(maxValuesByLab);
+        
+            Highcharts.chart('gweru', {
+                chart: {
+                    type: 'area',
+                    // other chart settings...
+                },
+                title: {
+                    text: 'Shipment for Gweru', // Adjust based on your context
+                    align: 'left'
+                },
+             
+
+                xAxis: {
+                    labels: {
+                        format: '{value} '
+                    },
+                   
+                    title: {
+                        text: 'Number of samples per shipment (Shipment Size)'
+                    },
+                 
+                },
+
+                credits: {
+                    enabled: false
+                },
+            
+
+                annotations: [
+
+                {
+                    draggable: '',
+                    labelOptions: {
+                        backgroundColor: 'rgba(255,255,255,0.5)',
+                        verticalAlign: 'top',
+                        y: 15
+                    },
+                    labels: [ {
+                        point: {
+                            xAxis: 0,
+                            yAxis: 0,
+                            x: countForMaxTime,
+                            y: maxTime,
+                        },
+                        text: 'This is the max'
+                    }]
+                }, 
+            
+                {
+                    draggable: '',
+                    labels: [ {
+                        point: {
+                            xAxis: 0,
+                            yAxis: 0,
+                            x: countForMaxTime,
+                            y: maxTime
+                        },
+                        text: 'max'
+                    }]
+                }, 
+            
+                {
+                    draggable: '',
+                    labelOptions: {
+                        shape: 'connector',
+                        align: 'right',
+                        justify: false,
+                        crop: true,
+                        style: {
+                            fontSize: '10px',
+                            textOutline: '1px white'
+                        }
+                    },
+                    labels: [{
+                        point: {
+                            xAxis: 0,
+                            yAxis: 0,
+                            x: countForMaxTime,
+                            y: maxTime
+                        },
+                        text: '.'
+                    }
+            
+                     ]
+                }],
+            
+            
+            
+
+                yAxis: {
+                  
+                    maxPadding: 0.35,
+                    title: {
+                        text: 'Time Taken (mins)'
+                    },
+                    labels: {
+                        format: '{value} min'
+                    },
+                   
+                },
+
+
+
+
+                tooltip: {
+                    headerFormat: '# of samples: {point.x:.1f} <br>',
+                    pointFormat: '{point.y} minutes',
+                    shared: true
+                },
+            
+
+
+                series: [{
+                    data: chartData,
+                    // other series properties...
+                    name: 'Gweru',
+                    marker: {
+                        enabled: false
+                    },
+                    threshold: null
+                }]
+            });
+        });
+        
+    </script>
+        </div>
+
+
+
+
+        <div class="col-lg-12">
+            <div class="card">
+                <hr>
+            </div>
+        </div>
+
+
+
+        <!--Start another chart-->
+        <div class="col-lg-12">
+            <div id="NMRL"  style="width: 100%; height: 500px"></div>
+            <script>
+                document.addEventListener('DOMContentLoaded', function () {
+                    var dataByLab = JSON.parse('{{ data_by_lab_json | escapejs | safe }}');
+                    
+                        // Parse the JSON representation of your data into a JavaScript object
+                    var maxValuesByLab = JSON.parse('{{ max_values_by_lab_json|escapejs }}');
+        
+                    // Check if the 'Masvingo' lab data is available
+                    if (maxValuesByLab.hasOwnProperty('NMRL')) {
+                        var masvingoData = maxValuesByLab['NMRL'];
+        
+                        // Extract the specific values
+                        var maxTime = masvingoData['max_time'];
+                        var countForMaxTime = masvingoData['count_for_max_time'];
+        
+        
+                    }
+        
+                
+                    // Assuming 'Masvingo' is one of your labs, and it contains an array of numbers or [x,y] points.
+                    var chartData = dataByLab['NMRL'];
+                    //console.log(maxValuesByLab);
+                
+                    Highcharts.chart('NMRL', {
+                        chart: {
+                            type: 'area',
+                            // other chart settings...
+                        },
+                        title: {
+                            text: 'Shipment for NMRL', // Adjust based on your context
+                            align: 'left'
+                        },
+                     
+        
+                        xAxis: {
+                            labels: {
+                                format: '{value} '
+                            },
+                           
+                            title: {
+                                text: 'Number of samples per shipment (Shipment Size)'
+                            },
+                         
+                        },
+        
+                        credits: {
+                            enabled: false
+                        },
+                    
+        
+                        annotations: [
+        
+                        {
+                            draggable: '',
+                            labelOptions: {
+                                backgroundColor: 'rgba(255,255,255,0.5)',
+                                verticalAlign: 'top',
+                                y: 15
+                            },
+                            labels: [ {
+                                point: {
+                                    xAxis: 0,
+                                    yAxis: 0,
+                                    x: countForMaxTime,
+                                    y: maxTime,
+                                },
+                                text: 'This is the max'
+                            }]
+                        }, 
+                    
+                        {
+                            draggable: '',
+                            labels: [ {
+                                point: {
+                                    xAxis: 0,
+                                    yAxis: 0,
+                                    x: countForMaxTime,
+                                    y: maxTime
+                                },
+                                text: 'max'
+                            }]
+                        }, 
+                    
+                        {
+                            draggable: '',
+                            labelOptions: {
+                                shape: 'connector',
+                                align: 'right',
+                                justify: false,
+                                crop: true,
+                                style: {
+                                    fontSize: '10px',
+                                    textOutline: '1px white'
+                                }
+                            },
+                            labels: [{
+                                point: {
+                                    xAxis: 0,
+                                    yAxis: 0,
+                                    x: countForMaxTime,
+                                    y: maxTime
+                                },
+                                text: '.'
+                            }
+                    
+                             ]
+                        }],
+                    
+                    
+                    
+        
+                        yAxis: {
+                          
+                            maxPadding: 0.35,
+                            title: {
+                                text: 'Time Taken (mins)'
+                            },
+                            labels: {
+                                format: '{value} min'
+                            },
+                           
+                        },
+        
+        
+        
+        
+                        tooltip: {
+                            headerFormat: '# of samples: {point.x:.1f} <br>',
+                            pointFormat: '{point.y} minutes',
+                            shared: true
+                        },
+                    
+        
+        
+                        series: [{
+                            data: chartData,
+                            // other series properties...
+                            name: 'NMRL',
+                            marker: {
+                                enabled: false
+                            },
+                            threshold: null
+                        }]
+                    });
+                });
+                
+            </script>        
+         
+     
+                </div>
+              
+
+
+
+                <div class="col-lg-12">
+                    <div class="card">
+                        <hr>
+                    </div>
+                </div>
+        
+        
+        
+                <!--Start another chart-->
+                <div class="col-lg-12">
+                    <div id="Mutare"  style="width: 100%; height: 500px"></div>
+                    <script>
+                        document.addEventListener('DOMContentLoaded', function () {
+                            var dataByLab = JSON.parse('{{ data_by_lab_json | escapejs | safe }}');
+                            
+                                // Parse the JSON representation of your data into a JavaScript object
+                            var maxValuesByLab = JSON.parse('{{ max_values_by_lab_json|escapejs }}');
+                
+                            // Check if the 'Masvingo' lab data is available
+                            if (maxValuesByLab.hasOwnProperty('Mutare')) {
+                                var masvingoData = maxValuesByLab['Mutare'];
+                
+                                // Extract the specific values
+                                var maxTime = masvingoData['max_time'];
+                                var countForMaxTime = masvingoData['count_for_max_time'];
+                
+                
+                            }
+                
+                        
+                            // Assuming 'Masvingo' is one of your labs, and it contains an array of numbers or [x,y] points.
+                            var chartData = dataByLab['Mutare'];
+                            //console.log(maxValuesByLab);
+                        
+                            Highcharts.chart('Mutare', {
+                                chart: {
+                                    type: 'area',
+                                    // other chart settings...
+                                },
+                                title: {
+                                    text: 'Shipment for Mutare', // Adjust based on your context
+                                    align: 'left'
+                                },
+                             
+                
+                                xAxis: {
+                                    labels: {
+                                        format: '{value} '
+                                    },
+                                   
+                                    title: {
+                                        text: 'Number of samples per shipment (Shipment Size)'
+                                    },
+                                 
+                                },
+                
+                                credits: {
+                                    enabled: false
+                                },
+                            
+                
+                                annotations: [
+                
+                                {
+                                    draggable: '',
+                                    labelOptions: {
+                                        backgroundColor: 'rgba(255,255,255,0.5)',
+                                        verticalAlign: 'top',
+                                        y: 15
+                                    },
+                                    labels: [ {
+                                        point: {
+                                            xAxis: 0,
+                                            yAxis: 0,
+                                            x: countForMaxTime,
+                                            y: maxTime,
+                                        },
+                                        text: 'This is the max'
+                                    }]
+                                }, 
+                            
+                                {
+                                    draggable: '',
+                                    labels: [ {
+                                        point: {
+                                            xAxis: 0,
+                                            yAxis: 0,
+                                            x: countForMaxTime,
+                                            y: maxTime
+                                        },
+                                        text: 'max'
+                                    }]
+                                }, 
+                            
+                                {
+                                    draggable: '',
+                                    labelOptions: {
+                                        shape: 'connector',
+                                        align: 'right',
+                                        justify: false,
+                                        crop: true,
+                                        style: {
+                                            fontSize: '10px',
+                                            textOutline: '1px white'
+                                        }
+                                    },
+                                    labels: [{
+                                        point: {
+                                            xAxis: 0,
+                                            yAxis: 0,
+                                            x: countForMaxTime,
+                                            y: maxTime
+                                        },
+                                        text: '.'
+                                    }
+                            
+                                     ]
+                                }],
+                            
+                            
+                            
+                
+                                yAxis: {
+                                  
+                                    maxPadding: 0.35,
+                                    title: {
+                                        text: 'Time Taken (mins)'
+                                    },
+                                    labels: {
+                                        format: '{value} min'
+                                    },
+                                   
+                                },
+                
+                
+                
+                
+                                tooltip: {
+                                    headerFormat: '# of samples: {point.x:.1f} <br>',
+                                    pointFormat: '{point.y} minutes',
+                                    shared: true
+                                },
+                            
+                
+                
+                                series: [{
+                                    data: chartData,
+                                    // other series properties...
+                                    name: 'Mutare',
+                                    marker: {
+                                        enabled: false
+                                    },
+                                    threshold: null
+                                }]
+                            });
+                        });
+                        
+                    </script>
+                
+
+
+
+
+
+
+
+
+
+    
+<script>
+    jQuery_3_6_0(document).ready(function () {
+        jQuery_3_6_0(".display").DataTable({
+            dom: 'Bfrtip',
+            pageLength: 10, // Display 50 rows by default
+            buttons: [
+                'copy', 'csv', 'excel', 'pdf', 'print'
+            ]
+        });
+    });
+    </script>
+
+{% endblock content %}

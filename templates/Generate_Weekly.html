@@ -1,0 +1,876 @@
+{% extends "base.html" %} 
+{% load static %} 
+{% load crispy_forms_tags %} 
+{% load custom_filters %}
+{% block content %}
+
+  <!-- SECTION FOR THE CONTENT SCRIPTS -->
+
+
+<!-- Bootstrap CSS (Updated to 4.6.0) -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/css/bootstrap.min.css" rel="stylesheet">
+
+<!-- DataTables CSS -->
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/jquery.dataTables.min.css"/>
+<link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.2/css/buttons.dataTables.min.css"/>
+<link rel="stylesheet" href="https://cdn.datatables.net/select/1.7.0/css/select.dataTables.min.css"/>
+<link rel="stylesheet" href="https://cdn.datatables.net/datetime/1.5.1/css/dataTables.dateTime.min.css"/>
+<link rel="stylesheet" href="https://editor.datatables.net/extensions/Editor/css/editor.dataTables.min.css"/>
+
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- DataTables JS -->
+<script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js"></script>
+<script src="https://cdn.datatables.net/select/1.7.0/js/dataTables.select.min.js"></script>
+<script src="https://cdn.datatables.net/datetime/1.5.1/js/dataTables.dateTime.min.js"></script>
+<script src="https://editor.datatables.net/extensions/Editor/js/dataTables.editor.min.js"></script>
+
+<!-- Bootstrap JS (Updated to 4.6.0) -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/js/bootstrap.min.js"></script>
+
+
+
+
+<!-- end Datatable -->
+
+  
+
+  <!--  -- E Charts-->
+  <script src="https://cdn.jsdelivr.net/npm/echarts@5.2.1/dist/echarts.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.bundle.min.js"></script>
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script>
+ <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+<!-- end of libraries for multiple select -->
+
+
+<!-- SweetAlert2 stylesheet -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
+
+
+
+
+<!--  -->
+
+
+
+
+
+
+<style>
+
+    /* Common properties for td and th */
+    .disp td, .disp th {
+        border-right: 1px solid #ddd; /* Right border for each cell */
+        font-size: 0.8em; /* Reduced font size for all cells */
+        text-align: center; /* Horizontally center the content */
+        vertical-align: middle; /* Vertically center the content */
+    }
+    
+    .disp th, .disp td {
+        border-bottom: 1px solid #ddd; /* Bottom border for each cell */
+    }
+    
+    /* Specific properties for th */
+    .disp th {
+        font-weight: normal; /* Headers are not bold */
+        padding: 10px; /* Space around headers */
+        /* border-right and font-size are already defined above, no need to repeat */
+    }
+    
+    /* Adjusting for the last-child specifics */
+    .disp tr:last-child td {
+        border-bottom: none; /* Remove bottom border for the last row */
+    }
+    
+    .disp thead th:last-child, .disp tbody td:last-child {
+        border-right: none; /* Remove right border for the last column */
+    }
+    
+    
+
+
+
+
+    
+    .display td, .display th {
+        border-right: 1px solid #ddd; /* Right border for each cell */
+        font-size: 0.9em; /* Reduced font size for all cells */
+    }
+    .display th, .display td {
+        border-bottom: 1px solid #ddd; /* Bottom border for each cell */
+    }
+    .display tr:last-child td {
+        border-bottom: none; /* Remove bottom border for the last row */
+    }
+    .display thead th:last-child, .display tbody td:last-child {
+        border-right: none; /* Remove right border for the last column */
+    }
+
+    .wrap-comments {
+    word-wrap: break-word; 
+    max-width: 1600px; /* or whatever maximum width you want */
+     }
+
+        .hide-element {
+        display: none;
+    }
+
+      .bg-none {
+          background-color: #f3f3f3; /* or any color you'd like */
+      }
+
+
+          /* Targeting the 2nd, 3rd, and 4th columns of the table */
+    #AgeOldestsample td:nth-child(2),
+    #AgeOldestsample td:nth-child(3),
+    #AgeOldestsample td:nth-child(4) {
+        width: 100px; /* Or whatever width you prefer */
+    }
+
+
+          /* Define the rotation animation */
+      @keyframes rotate {
+          from { transform: rotate(0deg); }
+          to { transform: rotate(360deg); }
+      }
+
+      /* Apply the animation to the loading element */
+      .loading {
+          animation: rotate 1.5s linear infinite;
+      }
+
+ /* Style for the button */
+ button {
+            background-color: #e0e0e0; /* Light gray background */
+            color: #a0a0a0; /* Faint text color */
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: 0.3s; /* Transition effect for hover */
+        }
+
+        button:hover {
+            background-color: #c0c0c0; /* Slightly darker gray for hover */
+        }
+
+        i.bi {
+            margin-right: 5px; /* Spacing between the icon and the text */
+        }
+
+        @keyframes rotate {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .rotate-icon {
+            animation: rotate 2s linear infinite;
+        }
+
+
+        #submitsync.active {
+        background-color: rgb(147, 147, 245) !important;
+        border-color: rgb(147, 147, 245) !important;
+        font-weight: bold;
+        color: black;
+        }
+
+/* loader for spinning */
+    .loader {
+    border: 16px solid #f3f3f3;
+    /* Light grey */
+    border-top: 16px solid #3498db;
+    /* Blue */
+    border-radius: 50%;
+    width: 120px;
+    height: 120px;
+    animation: spin 2s linear infinite;
+  }
+
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+
+
+  .province-cell {
+    cursor: pointer;
+    text-decoration: underline;
+    color: blue;  // or any other color to indicate it's a link
+}
+
+.province-cell:hover {
+    background-color: #f5f5f5;  // light gray background on hover
+}
+
+.highcharts-figure,
+.highcharts-data-table table {
+    min-width: 310px;
+    max-width: 800px;
+    margin: 1em auto;
+}
+
+#container {
+    height: 400px;
+}
+
+.highcharts-data-table table {
+    font-family: Verdana, sans-serif;
+    border-collapse: collapse;
+    border: 1px solid #ebebeb;
+    margin: 10px auto;
+    text-align: center;
+    width: 100%;
+    max-width: 500px;
+}
+
+.highcharts-data-table caption {
+    padding: 1em 0;
+    font-size: 1.2em;
+    color: #555;
+}
+
+.highcharts-data-table th {
+    font-weight: 600;
+    padding: 0.5em;
+}
+
+.highcharts-data-table td,
+.highcharts-data-table th,
+.highcharts-data-table caption {
+    padding: 0.5em;
+}
+
+.highcharts-data-table thead tr,
+.highcharts-data-table tr:nth-child(even) {
+    background: #f8f8f8;
+}
+
+.highcharts-data-table tr:hover {
+    background: #f1f7ff;
+}
+
+
+
+</style>
+
+
+
+
+
+<!-- This is the section we are to put the spinning -->
+
+<div id="spinner" class="loader" style="display:none;"></div>
+<!-- end of spinning code -->
+
+
+
+
+<form method="post" enctype="multipart/form-data" id="sync-form"></form>
+{% csrf_token %}  
+<div class="row">  
+    <div class="col-lg-6">       
+         
+               <!-- <button class="btn btn-primary" type="button" disabled>
+                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                Loading...
+              </button> -->
+
+
+    </div>
+    <!-- style="font-size: 2rem;" -->
+    <div class="col-lg-6">
+        <nav>
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item"><i class="bi bi-pc-display-horizontal"  ></i></li>
+              <li class="breadcrumb-item"><a href="#">Last uploaded  date: </a></li>
+              <li class="breadcrumb-item ">{{last_Uploaded_date}}</li>
+            </ol>
+        </nav>
+         
+    </div>
+   
+
+
+    {% for message in messages %}
+    <div class="alert {{ message.tags }} alert-dismissible fade show" role="alert">
+    <i class="bi bi-exclamation-octagon me-1"></i>
+    {{ message|safe }} <br>      
+     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% endfor %}    
+</div>
+</form>
+
+
+<!-- lets put the filters -->
+{% load crispy_forms_tags %}
+<form method="POST">
+    {% csrf_token %}
+
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="alert border-primary alert-dismissible fade show" role="alert">
+                    <div class="row">
+
+                        <div class="col-lg-3" style="display: flex; align-items: center;">                    
+      
+                            <label for="inputDate"
+                            style="font-weight: bold; font-family: Arial, sans-serif;">.</label><br>
+                            <button id="download_button"  name="download_button">Generate CDC Excel File</button>
+                        </div>
+
+
+                        <div class="col-lg-3" style="display: flex; align-items: center;">
+                           
+                        </div>
+
+                        <div class="col-lg-3" style="display: flex; align-items: center;">
+                                                    <!-- Add a hidden download link with JavaScript -->
+                        <a id="download-link" href="#" style="display: none;"></a>                     
+                        <label for="gff"
+                        style="font-weight: bold; font-family: Arial, sans-serif;">.</label>
+                        <button id="word_button"  name="word_button">Generate WORD Narrative</button>
+                        
+                        </div>
+
+                        <div class="col-lg-3" style="display: flex; align-items: center;">
+                            <label for="gff"
+                            style="font-weight: bold; font-family: Arial, sans-serif;">.</label>
+                            <button id="ist_button"  name="ist_button">Generate IST Excel File</button>
+
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<!-- end of filters -->
+
+
+<div class="row">  
+    <div class="col-lg-4">  
+        <div class="card">
+            <div class="card-body">        
+
+                <figure>
+                    <blockquote class="blockquote">
+                      <p><span style="color: red;"> <strong> VL/EID </strong> </span>- OF GENERATED REPORTS.</p>                   
+                    </blockquote>
+                    <figcaption class="blockquote-footer">
+                        CDC excel   -Files for {{ current_month }}, {{ current_year }}                  
+                    </figcaption>
+
+                 <ul class="list-group">
+                        {% for file in file_details %}
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <a href="{% url 'download_file' file.name %}" download class="d-flex align-items-center">
+                                    <i class="bi bi-file-earmark-text-fill"></i>
+                                    <span class="ms-2">{{ file.name }}</span>
+                                </a>
+                                <small class="text-muted">{{ file.date_modified }}</small>
+
+                                
+                                <i class="bi bi-download ms-2"></i>
+
+
+                            </li>
+                        {% empty %}
+                            <li class="list-group-item">No files available for this month.</li>
+                        {% endfor %}
+                    </ul>
+                          
+                        
+{% comment %}                  
+                    <ul>
+                        {% for file in file_list %}
+                            <li>
+                                <a href="{{ directory_path }}/{{ file }}" download>{{ file }}</a>
+                            </li>
+                        {% empty %}
+                            <li>No files available for this month.</li>
+                        {% endfor %}
+                    </ul>  {% endcomment %}
+
+                 <br><br><br>
+
+
+                     
+                
+
+
+            </div>
+        </div>
+    </div>   
+    
+    
+
+   
+    <div class="col-lg-8">  
+        <div class="card">
+            <div class="card-body">
+                <div class="row"> <!-- Start of the row -->
+                    {% for processed_lab in processed_labs %}
+                    <div class="col-lg-3"> <!-- Column for each item -->
+                        <div class="activity-item">
+                            <div class="activite-label"></div>
+                            
+                            {% if processed_lab.exists %}
+                                <i class='bi bi-check2-square activity-badge text-success align-self-start' style="font-size: 24px;"></i> {{ processed_lab.alias }}
+                            {% else %}
+                                <i class='bi bi-file-x activity-badge text-secondary align-self-start' style="font-size: 24px;"></i> {{ processed_lab.alias }}
+                            {% endif %}
+                            
+                            <div class="activity-content" style="text-align: left;"></div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div> <!-- End of the row -->
+    
+                <!-- The rest of your code for badges -->
+            </div>
+        </div>
+
+
+
+        
+<div class='row'>
+
+    <div class="col-lg-12">
+        <div class="card">
+          <div class="card-body">
+       
+
+            <!-- Accordion without outline borders -->
+            <div class="accordion accordion-flush" id="accordionFlushExample">
+              <div class="accordion-item">
+                <h2 class="accordion-header" id="flush-headingOne">
+                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+                    Sample Inventory Received #1
+                  </button>
+                </h2>
+                <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
+                  <div class="accordion-body">
+                    <!---------------------------------------------->
+                    
+                    <table id="example" class="display" style="width:100%">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Position</th>
+                                <th>Office</th>
+                                <th>Salary</th>
+                            </tr>
+                        </thead>
+                    </table>
+                    
+                    
+                   <!---------------------------------------------------->
+                </div>
+              </div>
+              <div class="accordion-item">
+                <h2 class="accordion-header" id="flush-headingTwo">
+                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
+                    Referred Sample #2
+                  </button>
+                </h2>
+                <div id="flush-collapseTwo" class="accordion-collapse collapse" aria-labelledby="flush-headingTwo" data-bs-parent="#accordionFlushExample">
+                  <div class="accordion-body">Placeholder content for this accordion, which is intended to demonstrate the <code>.accordion-flush</code> class. This is the second item's accordion body. Let's imagine this being filled with some actual content.</div>
+                </div>
+              </div>
+              <div class="accordion-item">
+                <h2 class="accordion-header" id="flush-headingThree">
+                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree">
+                    Sample Testing #3
+                  </button>
+                </h2>
+                <div id="flush-collapseThree" class="accordion-collapse collapse" aria-labelledby="flush-headingThree" data-bs-parent="#accordionFlushExample">
+                  <div class="accordion-body">Placeholder content for this accordion, which is intended to demonstrate the <code>.accordion-flush</code> class. This is the third item's accordion body. Nothing more exciting happening here in terms of content, but just filling up the space to make it look, at least at first glance, a bit more representative of how this would look in a real-world application.</div>
+                </div>
+              </div>
+            </div><!-- End Accordion without outline borders -->
+
+          </div>
+        </div>
+
+      </div>
+
+
+    </div><!----------end of row-->
+
+
+
+    </div>
+    
+
+
+</div> <!-- end of 1 st row-->
+
+
+
+
+
+
+
+
+
+
+<script>
+    $(document).ready(function () {
+        // Initialize the DataTables Editor
+        const editor = new $.fn.dataTable.Editor({
+            ajax: {
+                create: {
+                    type: 'POST',
+                    url: '/create-user/'
+                },
+                edit: {
+                    type: 'POST',
+                    url: '/edit-user/_id_/'
+                },
+                remove: {
+                    type: 'POST',
+                    url: '/remove-user/_id_/'
+                }
+            },
+            table: '#example',
+            fields: [
+                { label: 'First name:', name: 'first_name' },
+                { label: 'Last name:', name: 'last_name' }
+            ]
+        });
+
+        // Initialize the DataTable
+        const table = $('#example').DataTable({
+            dom: 'Bfrtip',
+            pageLength: 10,
+            buttons: [
+                'copy', 'csv', 'excel', 'pdf', 'print',
+                { extend: 'create', editor: editor },
+                { extend: 'edit', editor: editor },
+                { extend: 'remove', editor: editor }
+            ],
+            columns: [
+                { data: 'first_name' },
+                { data: 'last_name' },
+                { data: 'updated_date' },
+                {
+                    data: null,
+                    render: function (data, type, row) {
+                        return '<button onclick="editUser(' + row.id + ')">Edit</button> ' +
+                               '<button onclick="removeUser(' + row.id + ')">Remove</button>';
+                    }
+                }
+            ],
+            select: true
+        });
+
+        // Edit user function
+        window.editUser = function (userId) {
+            editor.edit(userId, {
+                title: 'Edit User',
+                buttons: 'Update'
+            });
+        };
+
+        // Remove user function
+        window.removeUser = function (userId) {
+            editor.remove(userId, {
+                title: 'Remove User',
+                message: 'Are you sure you want to remove this user?',
+                buttons: 'Delete'
+            });
+        };
+    });
+</script>
+
+              
+
+
+
+
+
+<script type="text/javascript">
+
+$('#download_button').on('click', function () {
+    var form_data = new FormData();
+    var submitButton = $('#download_button'); // Get the submit button
+    var file_name = "{{ file_name }}";
+    var download_link = document.getElementById('download-link');
+    var download_button = document.getElementById('download-button');  
+
+    csrf_token = $('input[name="csrfmiddlewaretoken"]').val();
+    form_data.append("csrfmiddlewaretoken", csrf_token);
+
+
+    // Change button color to blue to indicate it's active
+    submitButton.css({'background-color': 'lightblue', 'color': 'black'});
+    // Disable the button and show a bootstrap spinner
+    submitButton.prop('disabled', true).html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Wait ... I am populating Excel...');
+
+
+    $.ajax({
+      url: '{% url "excel_file_handler" %}', // point to server-side URL
+      dataType: 'json', // what to expect back from server
+      cache: false,
+      contentType: false,
+      processData: false,
+      data: form_data,
+      type: 'post',
+     
+
+      success: function (response) { // display success response
+
+
+        // Handle success - hide spinner and change button text
+        submitButton.html('Success').css('background-color', ''); // Resets to original color
+        
+          // Restore the submit button text after a short delay (1.5 seconds in this case)
+          setTimeout(function () {
+            submitButton.prop('disabled', false).html('Generate Excel File');
+          }, 1500);
+
+          submitButton.removeClass('active').find('.bi-arrow-repeat').removeClass('rotate-icon');
+
+             // Display the Swal toast with the latest_date
+             Swal.fire({
+                title: 'Excel Successfully Generated',
+                text: 'CDC Weekly: ',
+                icon: 'success'
+             
+            }).then((result) => {
+                // Check if the user clicked 'OK'
+                if (result.isConfirmed) {
+                    location.reload(); // Reloads the current page
+                }
+            });
+
+
+      },
+
+      error: function (response) {
+        
+            // Display the Swal toast with the latest_date
+            Swal.fire({
+                title: 'Excel Successfully Generated',
+                text: 'CDC Weekly: ',
+                icon: 'success'
+             
+            }).then((result) => {
+                // Check if the user clicked 'OK'
+                if (result.isConfirmed) {
+                    location.reload(); // Reloads the current page
+                }
+            });
+
+        //submitButton.css({'background-color': 'lightcoral', 'color': 'black'}); // Faint red with black text
+        submitButton.html('Success').css('background-color', ''); // Resets to original color
+        submitButton.prop('disabled', false).html('Generate Excel File');      
+        submitButton.removeClass('active').find('.bi-arrow-repeat').removeClass('rotate-icon');
+
+
+
+      }
+    });
+  });// end
+
+
+
+
+  $('#ist_button').on('click', function () {
+    var form_data = new FormData();
+    var submitButton = $('#ist_button'); // Get the submit button
+    var file_name = "{{ IST_file_name }}";
+    var download_link = document.getElementById('download-link');
+    var download_button = document.getElementById('ist_button');  
+
+    csrf_token = $('input[name="csrfmiddlewaretoken"]').val();
+    form_data.append("csrfmiddlewaretoken", csrf_token);
+
+
+    // Change button color to blue to indicate it's active
+    submitButton.css({'background-color': 'lightblue', 'color': 'black'});
+    // Disable the button and show a bootstrap spinner
+    submitButton.prop('disabled', true).html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Wait ... I am populating Excel...');
+
+
+    $.ajax({
+      url: '{% url "IST_excel_file_view" %}', // point to server-side URL
+      dataType: 'json', // what to expect back from server
+      cache: false,
+      contentType: false,
+      processData: false,
+      data: form_data,
+      type: 'post',
+     
+
+      success: function (response) { // display success response
+
+
+        // Handle success - hide spinner and change button text
+        submitButton.html('Success').css('background-color', ''); // Resets to original color
+        
+          // Restore the submit button text after a short delay (1.5 seconds in this case)
+          setTimeout(function () {
+            submitButton.prop('disabled', false).html('Generate IST Excel File');
+          }, 1500);
+
+          submitButton.removeClass('active').find('.bi-arrow-repeat').removeClass('rotate-icon');
+
+             // Display the Swal toast with the latest_date
+             Swal.fire({
+                title: 'IST Excel Successfully Generated',
+                text: 'CDC IST Weekly: ',
+                icon: 'success'
+             
+            }).then((result) => {
+                // Check if the user clicked 'OK'
+                if (result.isConfirmed) {
+                    location.reload(); // Reloads the current page
+                }
+            });
+
+
+      },
+
+      error: function (response) {
+        
+            // Display the Swal toast with the latest_date
+            Swal.fire({
+                title: 'IST Excel Successfully Generated',
+                text: 'CDC IST Weekly: ',
+                icon: 'success'
+             
+            }).then((result) => {
+                // Check if the user clicked 'OK'
+                if (result.isConfirmed) {
+                    location.reload(); // Reloads the current page
+                }
+            });
+
+        //submitButton.css({'background-color': 'lightcoral', 'color': 'black'}); // Faint red with black text
+        submitButton.html('Success').css('background-color', ''); // Resets to original color
+        submitButton.prop('disabled', false).html('Generate IST Excel File');      
+        submitButton.removeClass('active').find('.bi-arrow-repeat').removeClass('rotate-icon');
+
+
+
+      }
+    });
+  });// end
+
+
+
+
+
+  $('#word_button').on('click', function () {
+    var form_data = new FormData();
+    var submitButton = $('#word_button'); // Get the submit button
+    var file_name = "{{ file_name }}";
+    var download_link = document.getElementById('download-link');
+    var download_button = document.getElementById('word_button-button');  
+
+    csrf_token = $('input[name="csrfmiddlewaretoken"]').val();
+    form_data.append("csrfmiddlewaretoken", csrf_token);
+
+
+    // Change button color to blue to indicate it's active
+    submitButton.css({'background-color': 'lightblue', 'color': 'black'});
+    // Disable the button and show a bootstrap spinner
+    submitButton.prop('disabled', true).html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Wait ... I am writting  Narrative...');
+
+
+    $.ajax({
+      url: '{% url "CDC_narrative_word" %}', // point to server-side URL
+      dataType: 'json', // what to expect back from server
+      cache: false,
+      contentType: false,
+      processData: false,
+      data: form_data,
+      type: 'post',
+     
+
+      success: function (response) { // display success response
+
+
+        // Handle success - hide spinner and change button text
+        submitButton.html('Success').css('background-color', ''); // Resets to original color
+        
+          // Restore the submit button text after a short delay (1.5 seconds in this case)
+          setTimeout(function () {
+            submitButton.prop('disabled', false).html('Generate Excel File');
+          }, 1500);
+
+          submitButton.removeClass('active').find('.bi-arrow-repeat').removeClass('rotate-icon');
+
+             // Display the Swal toast with the latest_date
+             Swal.fire({
+                title: 'WORD Successfully Generated',
+                text: 'CDC NARRATIVE: ',
+                icon: 'success'
+             
+            }).then((result) => {
+                // Check if the user clicked 'OK'
+                if (result.isConfirmed) {
+                    location.reload(); // Reloads the current page
+                }
+            });
+
+
+      },
+
+      error: function (response) {
+        
+            // Display the Swal toast with the latest_date
+            Swal.fire({
+                title: 'WORD Successfully Generated',
+                text: 'CDC NARRATIVE: ',
+                icon: 'success'
+             
+            }).then((result) => {
+                // Check if the user clicked 'OK'
+                if (result.isConfirmed) {
+                    location.reload(); // Reloads the current page
+                }
+            });
+
+        //submitButton.css({'background-color': 'lightcoral', 'color': 'black'}); // Faint red with black text
+        submitButton.html('Success').css('background-color', ''); // Resets to original color
+        submitButton.prop('disabled', false).html('Generate Excel File');      
+        submitButton.removeClass('active').find('.bi-arrow-repeat').removeClass('rotate-icon');
+
+
+
+      }
+    });
+  });// end
+      </script>
+
+
+
+      
+   
+<script type="text/javascript">
+    window.onload = function() {
+        document.body.style.zoom = "90%";
+    }
+  </script>
+     
+
+{% endblock content %}

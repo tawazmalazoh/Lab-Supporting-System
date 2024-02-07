@@ -1,0 +1,1523 @@
+{% extends "base.html" %} 
+{% load static %} 
+{% load crispy_forms_tags %} 
+{% block content %}
+
+
+
+
+
+
+
+
+
+
+  <!--  -- E Charts-->
+  <script src="https://cdn.jsdelivr.net/npm/echarts@5.2.1/dist/echarts.min.js"></script>
+
+
+ 
+
+<!-- start Data Table libraries  -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/jquery.dataTables.min.css"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.datatables.net/v/bs4-4.6.0/jq-3.7.0/jszip-3.10.1/dt-1.13.5/af-2.6.0/b-2.4.1/b-colvis-2.4.1/b-html5-2.4.1/b-print-2.4.1/cr-1.7.0/date-1.5.1/fc-4.3.0/fh-3.4.0/kt-2.10.0/r-2.5.0/rg-1.4.0/rr-1.4.1/sc-2.2.0/sb-1.5.0/sp-2.2.0/sl-1.7.0/sr-1.3.0/datatables.min.css" rel="stylesheet">
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+<script src="https://cdn.datatables.net/v/bs4-4.6.0/jq-3.7.0/jszip-3.10.1/dt-1.13.5/af-2.6.0/b-2.4.1/b-colvis-2.4.1/b-html5-2.4.1/b-print-2.4.1/cr-1.7.0/date-1.5.1/fc-4.3.0/fh-3.4.0/kt-2.10.0/r-2.5.0/rg-1.4.0/rr-1.4.1/sc-2.2.0/sb-1.5.0/sp-2.2.0/sl-1.7.0/sr-1.3.0/datatables.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/js/bootstrap.min.js"></script>
+<!-- end Datatable -->
+ 
+<script>
+  var jQuery_3_6_0 = $.noConflict(true);
+  </script>
+  
+
+<!-- these are libraries for MULTIPLE SELECT -->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.css" />
+<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script> -->
+<script src="{% static 'assets/js/jquery.min.js'%}"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.bundle.min.js"></script>
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script>
+<!-- end of libraries for multiple select -->
+<script>
+  var jQuery_2_1_1 = $.noConflict(true);
+  </script>
+
+<style>
+  #loading {
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    position: fixed;
+    display: block;
+    opacity: 0.7;
+    background-color: #fff;
+    z-index: 99;
+    text-align: center;
+  }
+
+  #loading-image {
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    z-index: 100;
+  }
+
+
+</style>
+
+
+<div id="loading">
+  <img id="loading-image" src="https://cdn.dribbble.com/users/6459/screenshots/1692915/loaders_1x.gif" alt="Loading..." />
+</div>
+
+  
+
+  <script>
+    jQuery_2_1_1(window).on('load', function() {
+        jQuery_2_1_1('#loading').hide();
+    });
+</script>
+
+
+  
+  
+
+    <!---------------filters------------->
+    
+    <div class="alert alert-success" role="alert">
+      <h4 class="alert-heading">Apply Filters</h4>
+     
+      <p class="mb-0">Select the filters to display the charts.</p>
+      <hr />
+      <!-- General Form Elements -->
+      {% load crispy_forms_tags %}
+      <form method="post" id="ist-form">
+        {% csrf_token %}
+        <div class="row justify-content-start">
+          
+          <div class="col-3">
+            <label for="inputDate" style="font-weight: bold; font-family: Arial, sans-serif;">Start Date</label>
+         
+              <input type="date" id="startdate" name="startdate" class="form-control" required>
+            </div>
+
+            <div class="col-4">
+              <label for="inputselectMultiple" style="font-weight: bold; font-family: Arial, sans-serif;">Filter by Province</label><br>
+              <select class="selectpicker " multiple name="province"  required>
+                <option>Mashonaland East</option>
+                <option>Mashonaland West</option>
+                <option>Masvingo</option>
+                <option>Matebeleland North</option>
+                <option>Matebeleland South</option>
+                <option>Mashonaland Central</option>
+                <option>Midlands</option>
+                <option>Harare</option>
+                <option>Manicaland</option>                
+                <option>Bulawayo</option>
+                <option>Mashonaland East</option>
+              </select>         
+              </div>
+
+              <div class="col-4">
+                <label for="inputselectSupport" style="font-weight: bold; font-family: Arial, sans-serif;">Filter by Support</label><br>
+                <div class="form-check form-switch">
+                  <input class="form-check-input" type="checkbox" id="dsdCheckbox" name="dsdCheckbox"  checked >
+                  <label class="form-check-label" for="flexSwitchCheckDefault"> DSD</label>
+                </div>
+                <div class="form-check form-switch">
+                  <input class="form-check-input" type="checkbox" id="taSdiCheckbox" name="taSdiCheckbox"  checked>
+                  <label class="form-check-label" for="flexSwitchCheckChecked"> TA-SDI</label>
+                </div>
+                
+                </div>
+
+
+
+          </div> 
+
+
+          <div class="row justify-content-start">
+          
+            <div class="col-3">
+              <label for="endDate" style="font-weight: bold; font-family: Arial, sans-serif;">End Date</label>        
+                <input type="date" id="enddate" name="enddate" class="form-control" required>
+              </div>
+  
+              <div class="col-4">
+                <br>
+                <button id="submitfilter" name="submitfilter" class="btn btn-primary">Apply Filter</button>
+                </div>
+            </div>     
+
+      </form>
+    </div>
+    
+        <!----------------end filters------------------>
+ 
+<!-- displaying the message alert -->
+<div id="response-msg-container"></div>
+{% for message in messages %}
+<div class="alert {{ message.tags }} alert-dismissible fade show" role="alert">
+<i class="bi bi-exclamation-octagon me-1"></i>
+{{ message|safe }} <br>      
+<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+{% endfor %}    
+
+
+
+
+
+
+<!-- {{data.0.query_data}} -->
+
+<!-------------------------tabs------------------->
+<!-- Default Tabs -->
+<ul class="nav nav-tabs d-flex" id="myTabjustified" role="tablist">
+  <li class="nav-item flex-fill" role="presentation">
+    <button class="nav-link w-100 active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home-justified" type="button" role="tab" aria-controls="home" aria-selected="true">Granular</button>
+  </li>
+  <li class="nav-item flex-fill" role="presentation">
+    <button class="nav-link w-100" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile-justified" type="button" role="tab" aria-controls="profile" aria-selected="false">Overall</button>
+  </li>
+</ul>
+
+<!---------------------end of header tabs----------->
+
+<!---------------1st tab contains-------->
+<div class="tab-content pt-2" id="myTabjustifiedContent">
+  <div class="tab-pane fade show active" id="home-justified" role="tabpanel" aria-labelledby="home-tab">
+
+
+
+  
+    <!--------start-->
+    <section class="section">
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">DSD Aggregation of Specimens Types by Province</h5>
+    
+              <!-- Bar Chart --->
+    
+              <div id="istbar" style="width: 100%; height: 400px"></div>
+             
+            
+              <!-- End Bar CHart -->
+            </div>
+          </div>
+        </div>
+    
+        <div class="col-lg-12">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">
+                #Aggregation Of Specimens Types by province , District and Funding
+              </h5>
+    
+              <table width="100%" id="aggregationtbl" class="display table-responsive">
+                <thead>
+                  <tr>
+                    <th>Province</th>
+                    <th>District</th>
+                    <th>Support</th>
+                    <th>Vl_plasma_sam</th>
+                    <th>Vl_dbs_sam</th>
+                    <th>Eid_sam</th>
+                    <th>Sputum_sam</th>
+                    <th>Urine_sam</th>
+                    <th>Other_specimens</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for row in data.0.query_data %}
+                  <tr>
+                    <td>{{ row.Province_ }}</td>
+                    <td>{{ row.District_ }}</td>
+                    <td>{{ row.Type_of_PEPFAR_Support }}</td>
+                    <td>{{ row.Blood_Plasma }}</td>
+                    <td>{{ row.DBS_Specimen }}</td>
+                    <td>{{ row.EID_Specimen }}</td>
+                    <td>{{ row.sputum_sam }}</td>
+                    <td>{{ row.urine_sam }}</td>
+                    <td>{{ row.Other_samples }}</td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+    
+    
+            </div>
+          </div>
+        </div>
+    
+       <div class="col-lg-9">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">DSD Proportion of facilities visited</h5>
+              <!--  Proportion of facilites visited Chart -->
+    
+               <div id="distpercentages" style="width: 100%; height: 500px"></div>
+               <script>
+    
+                var chartDom = document.getElementById('distpercentages');
+                var myChart = echarts.init(chartDom);
+                window.addEventListener('resize', function() {
+                    myChart.resize();
+                  });
+                
+                var districts = [
+                                  {% for row in data.2.query_data %}
+                                  {% if row.Type_of_PEPFAR_Support == 'DSD' %}
+                                  '{{ row.District_ }}',
+                                  {% endif %}
+                                  {% endfor %}
+                                ];
+                
+                var seriesDSDDict = {};
+                 {% for row in data.2.query_data %}
+                                    {% if row.Type_of_PEPFAR_Support == 'DSD' %}
+                                    seriesDSDDict['{{ row.District_ }}'] = '{{ row.percentag }}';
+                                    {% endif %}
+                                {% endfor %}
+                
+                var seriesDSD = districts.map(function(district) {
+                            return seriesDSDDict[district];
+                        });
+              
+                // Convert seriesDSD to numbers, handling 'None' and other non-numeric values
+                seriesDSD = seriesDSD.map(value => !isNaN(value) ? Number(value) : NaN);
+                
+
+                let maxIndex = 0;
+                let minIndex = 0;
+                let max = seriesDSD[0];
+                let min = seriesDSD[0];
+                
+                for (let i = 1; i < seriesDSD.length; i++) {
+                  if (seriesDSD[i] > max) {
+                    max = seriesDSD[i];
+                    maxIndex = i;
+                  }
+                
+                  if (seriesDSD[i] < min) {
+                    min = seriesDSD[i];
+                    minIndex = i;
+                  }
+                }
+              
+                var option = {
+                
+                  tooltip: {
+                    trigger: 'axis'
+                  },
+                  legend: {
+                    data: ['Districts']
+                  },
+                  toolbox: {
+                    show: true,
+                    feature: {
+                      dataView: { show: true, readOnly: false },
+                      magicType: { show: true, type: ['line', 'bar'] },
+                      restore: { show: true },
+                      saveAsImage: { show: true }
+                    }
+                  },
+                  calculable: true,
+                  xAxis: [
+                    {
+                      type: 'category',
+                      data: districts,
+                      axisLabel: {
+                                    rotate: 90
+                                  }
+                    }
+                  ],
+                  yAxis: [
+                    {
+                      type: 'value'
+                    }
+                  ],
+                  series: [
+                    {
+                      name: 'perc %',
+                      type: 'bar',
+                      data: seriesDSD,
+                      markPoint: {
+                        data: [
+                          { name: 'Max', value: max, xAxis: maxIndex, yAxis: max },
+                          { name: 'Min', value: min, xAxis: minIndex, yAxis: min }
+                        ]
+                      },
+                      markLine: {
+                        data: [{ type: 'average', name: 'Avg' }]
+                      }
+                    }
+                  ]
+                };
+                
+                option && myChart.setOption(option);
+              
+              </script>
+                    
+    
+      
+                </script>
+    
+           <!-- End  CHart -->
+            </div>
+          </div>
+        </div>
+    
+        <div class="col-lg-3">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title"> Download Datasets</h5>
+    
+              <div class="activity-item d-flex">
+                <div class="activite-label">1:</div>
+                <i class='bi bi-circle-fill activity-badge text-warning align-self-start'></i>
+                <div class="activity-content">
+                  
+                  <a href="{% url 'download_query_output' %}?startdate={{ startdate }}&enddate={{ enddate }}&province={{ selected_provinces|join:',' }}&dsd={{ dsd_checked }}&ta_sdi={{ ta_sdi_checked }}">Download CSV</a>
+
+
+                </div>
+              </div><!-- End activity item-->
+              
+              <div class="activity-item d-flex">
+                <div class="activite-label">2:</div>
+                <i class='bi bi-circle-fill activity-badge text-info align-self-start'></i>
+                <div class="activity-content">
+                <a href="#"  >  DSD Visited Proportion</a>
+                </div>
+              </div><!-- End activity item-->
+    
+    
+            </div>
+          </div>
+        </div>
+    
+    
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+          <i class="bi bi-star me-1"></i>
+          TA-SDI!    
+        </div>
+    
+    
+        <!-------TA-SDI BARGRAPH disaggregation by province etc of sample Types-->
+        <div id="ta_sdibar" style="width: 100%; height: 400px"></div>
+    
+    
+      <!-------------------------starst------------------------->
+      
+      <div class="col-lg-9">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">TA-SDI Proportion of facilities visited</h5>
+            <!--  Proportion of facilites visited Chart -->
+    
+             <div id="TA_SDIdistpercentages" style="width: 100%; height: 500px"></div>
+             <script>
+    
+              var chartDom = document.getElementById('TA_SDIdistpercentages');
+              var myChart = echarts.init(chartDom);
+              window.addEventListener('resize', function() {
+                  myChart.resize();
+                });
+              
+              var TA_SDIdistricts = [
+                                {% for row in data.2.query_data %}
+                                {% if row.Type_of_PEPFAR_Support == 'TA-SDI' %}
+                                '{{ row.District_ }}',
+                                {% endif %}
+                                {% endfor %}
+                              ];
+                              
+              var seriesTA_SDIDict = {};
+               {% for row in data.2.query_data %}
+                                  {% if row.Type_of_PEPFAR_Support == 'TA-SDI' %}
+                                  seriesTA_SDIDict['{{ row.District_ }}'] = '{{ row.percentag }}';
+                                  {% endif %}
+                              {% endfor %}
+              
+              var seriesTA_SDI = TA_SDIdistricts.map(function(districti) {
+                          return seriesTA_SDIDict[districti];
+                      });
+            
+              // Convert seriesDSD to numbers, handling 'None' and other non-numeric values
+              seriesTA_SDI = seriesTA_SDI.map(value => !isNaN(value) ? Number(value) : NaN);
+              
+              let TA_SDImaxIndex = 0;
+              let TA_SDIminIndex = 0;
+              let TA_SDImax = seriesTA_SDI[0];
+              let TA_SDImin = seriesTA_SDI[0];
+              
+              for (let i = 1; i < seriesTA_SDI.length; i++) {
+                if (seriesTA_SDI[i] > TA_SDImax) {
+                  TA_SDImax = seriesTA_SDI[i];
+                  TA_SDImaxIndex = i;
+                }
+              
+                if (seriesTA_SDI[i] < TA_SDImin) {
+                  TA_SDImin = seriesTA_SDI[i];
+                  TA_SDIminIndex = i;
+                }
+              }
+            
+          
+    
+              var option = {
+              
+                tooltip: {
+                  trigger: 'axis'
+                },
+                legend: {
+                  data: ['Districts']
+                },
+                toolbox: {
+                  show: true,
+                  feature: {
+                    dataView: { show: true, readOnly: true },
+                    magicType: { show: true, type: ['line', 'bar'] },
+                    restore: { show: true },
+                    saveAsImage: { show: true }
+                  }
+                },
+                calculable: true,
+                xAxis: [
+                  {
+                    type: 'category',
+                    data: TA_SDIdistricts,
+                    axisLabel: {
+                                  rotate: 90
+                                }
+                  }
+                ],
+                yAxis: [
+                  {
+                    type: 'value'
+                  }
+                ],
+                series: [
+                  {
+                    name: 'perc %',
+                    type: 'bar',
+                    data: seriesTA_SDI,
+                    itemStyle: {
+                                color: '#a83232' // put your preferred color here
+                              },
+                    markPoint: {
+                      data: [
+                        { name: 'Max', value: TA_SDImax, xAxis: TA_SDImaxIndex, yAxis: TA_SDImax },
+                        { name: 'Min', value: TA_SDImin, xAxis: TA_SDIminIndex, yAxis: TA_SDImin }
+                      ]
+                    },
+                    markLine: {
+                      data: [{ type: 'average', name: 'Avg' }]
+                    }
+                  }
+                ]
+              };
+              
+              option && myChart.setOption(option);
+            
+            </script>
+                  
+    
+    
+              </script>
+    
+         <!-- End  CHart -->
+          </div>
+        </div>
+      </div>
+    
+      <div class="col-lg-3">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title"> Download Datasets</h5>
+    
+            <div class="activity-item d-flex">
+              <div class="activite-label">1:</div>
+              <i class='bi bi-circle-fill activity-badge text-warning align-self-start'></i>
+              <div class="activity-content">
+                 <a href="#"  >  TA-SDI Specimens Aggregation </a>
+              </div>
+            </div><!-- End activity item-->
+            
+            <div class="activity-item d-flex">
+              <div class="activite-label">2:</div>
+              <i class='bi bi-circle-fill activity-badge text-info align-self-start'></i>
+              <div class="activity-content">
+              <a href="#"  >  TA-SDI Visited Proportion</a>
+              </div>
+            </div><!-- End activity item-->
+    
+            <div class="activity-item d-flex">
+              <div class="activite-label">3:</div>
+              <i class='bi bi-circle-fill activity-badge text-danger align-self-start'></i>
+              <div class="activity-content">
+                <a href="#"  >  Specimens Transported by month</a>
+              </div>
+            </div><!-- End activity item-->
+    
+    
+          </div>
+        </div>
+      </div>
+    <!-------------------------------end-------------------------->
+    
+    
+    
+    <div class="alert alert-secondary alert-dismissible fade show" role="alert">
+      <i class="bi bi-collection me-1"></i>
+     IST Specimens Total transported by Month !
+    
+    </div>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+        <div class="col-lg-12">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">DSD vs TA-SDI Specimens Transported Monthly Trend</h5>
+              <div id="trends_of_SampleTransported" style="width: 100%; height: 500px"></div>
+              <script>
+                
+                        var chartDom = document.getElementById('trends_of_SampleTransported');
+                        window.addEventListener('resize', function() {
+                            myChart.resize();
+                          });
+                        var myChart = echarts.init(chartDom);
+                        var option;
+    
+    
+                        var dating = [
+                                          {% for row in data.3.query_data %}
+                                          {% if row.Type_of_PEPFAR_Support == 'DSD' %}
+                                          '{{ row.formatted_month }}',
+                                          {% endif %}
+                                          {% endfor %}
+                                        ];
+    
+                        var seriesDSDTransDict = {};
+                        {% for row in data.3.query_data %}
+                                            {% if row.Type_of_PEPFAR_Support == 'DSD' %}
+                                            seriesDSDTransDict['{{ row.formatted_month }}'] = '{{ row.total_transported }}';
+                                            {% endif %}
+                                        {% endfor %}
+    
+                        var seriesDSDTrans = dating.map(function(dat) {
+                                    return seriesDSDTransDict[dat];
+                                });
+    
+                        //=====================================
+    
+                        var seriesSDITransDict = {};
+                        {% for row in data.3.query_data %}
+                                            {% if row.Type_of_PEPFAR_Support == 'TA-SDI' %}
+                                            seriesSDITransDict['{{ row.formatted_month }}'] = '{{ row.total_transported }}';
+                                            {% endif %}
+                                        {% endfor %}
+    
+                        var seriesSDITrans = dating.map(function(dati) {
+                                    return seriesSDITransDict[dati];
+                                });
+    
+                        //============================================
+    
+                        // Filter out 'None' and other non-numeric values, and convert to numbers
+                        let MaxnumArray = seriesDSDTrans.filter(value => !isNaN(value)).map(Number);
+    
+                        let maxseriesDSDTrans = Math.max(...MaxnumArray);
+
+    
+                        // prettier-ignore
+                        let timeData = dating;  // date series '2022-01-74'
+                        // timeData = timeData.map(function (str) {
+                        //   return str.replace('2009/', '');
+                        // });
+                        option = {
+    
+                          tooltip: {
+                            trigger: 'axis',
+                            axisPointer: {
+                              animation: false
+                            }
+                          },
+                          legend: {
+                            data: ['DSD', 'TA-SDI'],
+                            left: 10
+                          },
+
+                          
+                          toolbox: {
+                            feature: {
+                              dataZoom: {
+                                yAxisIndex: 'none'
+                              },
+                              magicType: { show: true, type: ['line', 'bar'] },
+                              dataView: { show: true, readOnly: true },
+                              restore: {},
+                              saveAsImage: {show: true}
+                            }
+                          },
+                          axisPointer: {
+                            link: [
+                              {
+                                xAxisIndex: 'all'
+                              }
+                            ]
+                          },
+                          dataZoom: [
+                            {
+                              show: true,
+                              realtime: true,
+                              start: 5,
+                              end: 90,
+                              xAxisIndex: [0, 1]
+                            },
+                            {
+                              type: 'inside',
+                              realtime: true,
+                              start: 5,
+                              end: 90,
+                              xAxisIndex: [0, 1]
+                            }
+                          ],
+                          grid: [
+                            {
+                              left: 60,
+                              right: 50,
+                              height: '35%'
+                            },
+                            {
+                              left: 60,
+                              right: 50,
+                              top: '55%',
+                              height: '35%'
+                            }
+                          ],
+                          xAxis: [
+                            {
+                              type: 'category',
+                              boundaryGap: false,
+                              axisLine: { onZero: true },
+                              data: timeData
+                            },
+                            {
+                              gridIndex: 1,
+                              type: 'category',
+                              boundaryGap: false,
+                              axisLine: { onZero: true },
+                              data: timeData,
+                              position: 'top'
+                            }
+                          ],
+                          yAxis: [
+                            {
+                              name: 'Total',
+                              type: 'value',
+                              max: maxseriesDSDTrans
+                            },
+                            {
+                              gridIndex: 1,
+                              name: 'Total',
+                              type: 'value',
+                              inverse: true
+                            }
+                          ],
+                          series: [
+                            {
+                              name: 'DSD',
+                              type: 'line',
+                              symbolSize: 8,
+                              // prettier-ignore
+                              data: seriesDSDTrans
+                            },
+                            {
+                              name: 'TA-SDI',
+                              type: 'line',
+                              xAxisIndex: 1,
+                              yAxisIndex: 1,
+                              symbolSize: 8,
+                              // prettier-ignore
+                              data:seriesSDITrans
+                            }
+                          ]
+                        };
+    
+                        option && myChart.setOption(option);
+    
+    
+              </script>
+            </div>
+          </div>
+        </div>
+    
+    
+    
+    
+    
+    
+      </div>
+    </section>
+
+    <!---------end------------->
+   
+  </div>
+
+
+
+
+
+
+
+
+
+
+  <!---------------2st tab contains-------->
+  <div class="tab-pane fade" id="profile-justified" role="tabpanel" aria-labelledby="profile-tab">
+
+    <!-- Starting charts -->
+    <div class="row">
+    
+  
+
+          <!-- First Row -->
+          <div class="col-md-3">
+            <div class="card info-card sales-card">
+              <div class="card-body">
+                <h5 class="card-title">-- <span>| --</span></h5>
+    
+                <div class="d-flex align-items-center">
+                  <i class="bi bi-tv" style="font-size: 3em; color: rgb(0, 11, 128);"></i>
+                  <div class="ps-3">
+                    <h6><strong>
+                      {% for row in data.5.query_data %}
+                     
+                      {% endfor %}
+                    </strong>
+                    </h6>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+          </div>
+
+
+              <!-- First Row -->
+        <div class="col-md-3">
+
+          <div class="card-body">
+            <h5 class="card-title">VL /EID <span>| Specimens</span></h5>
+
+            <div class="d-flex align-items-center">
+              <i class="bi bi-truck" style="font-size: 3em; color: green;"></i>
+              <div class="ps-3">
+                <h6><strong>
+                  {% for row in data.5.query_data %}
+                  {{ row.Overal_Transported }}
+                  {% endfor %}
+                </strong>
+                </h6>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+              <!-- First Row -->
+        <div class="col-md-3">
+            
+          <div class="card-body">
+            <h5 class="card-title">Results<span>| transported</span></h5>
+
+            <div class="d-flex align-items-center">
+              <i class="bi bi-upc-scan" style="font-size: 3em; color: rgb(128, 0, 23);"></i>
+              <div class="ps-3">
+                <h6><strong>
+                  {% for row in data.5.query_data %}
+                  {{ row.Other_Results_cleaned_ }}
+                  {% endfor %}
+                </strong>
+                </h6>
+              </div>
+            </div>
+          </div>
+
+
+        </div>
+
+          <!-- First Row -->
+          <div class="col-md-3">
+
+            <div class="card info-card sales-card">
+              <div class="card-body">
+                <h5 class="card-title">-- <span>| --</span></h5>
+    
+                <div class="d-flex align-items-center">
+                  <i class="bi bi-sunrise-fill" style="font-size: 3em; color: rgb(128, 119, 0);"></i>
+                  <div class="ps-3">
+                    <h6><strong>
+                      {% for row in data.5.query_data %}
+                      
+                      {% endfor %}
+                    </strong>
+                    </h6>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+      
+    </div>
+
+
+
+    
+    <div class="row">
+    
+      <!-- Second Row -->
+      <div class="col-md-6">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Overal Speccimens Trasported vs Results by Province</h5>
+  
+            <!-- Radar Chart -->
+            <canvas id="radarChart" style="max-height: 400px;"></canvas>
+            <script>
+              document.addEventListener("DOMContentLoaded", () => {
+  
+              window.addEventListener('resize', function() {
+                          myChart.resize();
+                        });
+  
+                var transprovinces = [
+                    {% for row in data.4.query_data %}
+                    '{{ row.Province_ }}',
+                    {% endfor %}
+                  ];
+  
+                var seriesTransportedDict = {};
+                 {% for row in data.4.query_data %}
+                                    seriesTransportedDict['{{ row.Province_ }}'] = '{{ row.total_transported }}'; 
+                                {% endfor %}
+  
+                var seriesTransported = transprovinces.map(function(p) {
+                            return seriesTransportedDict[p];
+                        });
+  
+  
+                var seriesResultsDict = {};
+                 {% for row in data.4.query_data %}
+                                    seriesResultsDict['{{ row.Province_ }}'] = '{{ row.Total_results }}'; 
+                                {% endfor %}
+  
+                var seriesResults = transprovinces.map(function(p) {
+                            return seriesResultsDict[p];
+                        });
+  
+  
+  
+  
+  
+  
+                new Chart(document.querySelector('#radarChart'), {
+                  type: 'radar',
+                  data: {
+                    labels: transprovinces,
+  
+                    datasets: [{
+                      label: 'Transported',
+                      data: seriesTransported,
+                      fill: true,
+                      backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                      borderColor: 'rgb(255, 99, 132)',
+                      pointBackgroundColor: 'rgb(255, 99, 132)',
+                      pointBorderColor: '#fff',
+                      pointHoverBackgroundColor: '#fff',
+                      pointHoverBorderColor: 'rgb(255, 99, 132)'
+                    }, 
+                    {
+                      label: 'Results',
+                      data: seriesResults,
+                      fill: true,
+                      backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                      borderColor: 'rgb(54, 162, 235)',
+                      pointBackgroundColor: 'rgb(54, 162, 235)',
+                      pointBorderColor: '#fff',
+                      pointHoverBackgroundColor: '#fff',
+                      pointHoverBorderColor: 'rgb(54, 162, 235)'
+                    }]
+                  },
+                  options: {
+                    elements: {
+                      line: {
+                        borderWidth: 3
+                      }
+                    }
+                  }
+                });
+              });
+            </script>
+            <!-- End Radar CHart -->
+  
+          </div>
+      
+        </div>
+      </div>
+      
+      <div class="col-md-6">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Overal Results Transported by Province</h5>
+  
+            <!-- Polar Area Chart -->
+            <canvas id="polarAreaChart" style="max-height: 400px;"></canvas>
+            <script>
+              document.addEventListener("DOMContentLoaded", () => {
+              window.addEventListener('resize', function() {
+                              myChart.resize();
+                            });
+                var transprovinces = [
+                    {% for row in data.4.query_data %}
+                    '{{ row.Province_ }}',
+                    {% endfor %}
+                  ];
+  
+  
+  
+                var seriesResultsDict = {};
+                 {% for row in data.4.query_data %}
+                                    seriesResultsDict['{{ row.Province_ }}'] = '{{ row.Total_results }}'; 
+                                {% endfor %}
+  
+                var seriesResults = transprovinces.map(function(p) {
+                            return seriesResultsDict[p];
+                        });
+  
+  
+  
+  
+                new Chart(document.querySelector('#polarAreaChart'), {
+                  type: 'radar',
+                  data: {
+                    labels: transprovinces,
+  
+                    datasets: [
+                    {
+                      label: 'Results',
+                      data: seriesResults,
+                      fill: true,
+                      backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                      borderColor: 'rgb(54, 162, 235)',
+                      pointBackgroundColor: 'rgb(54, 162, 235)',
+                      pointBorderColor: '#fff',
+                      pointHoverBackgroundColor: '#fff',
+                      pointHoverBorderColor: 'rgb(54, 162, 235)'
+                    }]
+                  },
+                  options: {
+                    elements: {
+                      line: {
+                        borderWidth: 3
+                      }
+                    }
+                  }
+                });
+              });
+            </script>
+            <!-- End Polar Area Chart -->
+  
+          </div>
+  
+      
+        </div>
+  
+      </div>
+      
+    </div><!---end of second row-->
+
+
+    
+    <div class="row">    
+      <!-- Third Row -->
+      <div class="col-md-12">
+
+         
+      </div>     
+    </div><!---end of Third row-->
+
+
+    <div class="row">    
+      <!-- forth Row -->
+      <div class="col-md-12">
+       
+      </div>     
+    </div><!---end of forth row-->
+
+    <div class="row">    
+      <!-- fifth Row -->
+      <div class="col-md-12">
+       
+      </div>     
+    </div><!---end of fifth row-->
+
+
+    
+  </div>
+
+<!-- End Default Tabs -->
+
+
+
+<script
+  src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.4.2/echarts.min.js"
+  integrity="sha512-VdqgeoWrVJcsDXFlQEKqE5MyhaIgB9yXUVaiUa8DR2J4Lr1uWcFm+ZH/YnzV5WqgKf4GPyHQ64vVLgzqGIchyw=="
+  crossorigin="anonymous"
+  referrerpolicy="no-referrer"
+></script>
+
+<script>
+  jQuery_3_6_0(document).ready(function () {
+      jQuery_3_6_0("#aggregationtbl").DataTable({
+          dom: 'Bfrtip',
+          buttons: [
+              'copy', 'csv', 'excel', 'pdf', 'print'
+          ]
+      });
+  });
+  </script>
+  
+
+
+<!-------IST BARGRAPH disaggregation by province etc of sample Types-->
+
+
+
+<script type="text/javascript">
+var app = {};
+
+var chartDom = document.getElementById('istbar');
+window.addEventListener('resize', function() {
+    myChart.resize();
+  });
+var myChart = echarts.init(chartDom);
+var option;
+
+var provinces = [
+  {% for row in data.1.query_data %}
+  {% if row.Type_of_PEPFAR_Support == 'DSD' %}
+  '{{ row.Province_ }}',
+  {% endif %}
+  {% endfor %}
+];
+
+//------------------------------------------------------------------------------------------------
+// create associative arrays for the series data
+var seriesDataBloodPlasmaDict = {};
+var seriesDataDBSSpecimenDict = {};
+var seriesDataEID_SpecimenDict={};
+var seriesDataSputum_samDict={};
+var seriesDataUrine_samDict={}; 
+var seriesDataOther_samplesDict={};
+
+// populate the dictionaries using Django
+{% for row in data.1.query_data %}
+{% if row.Type_of_PEPFAR_Support == 'DSD' %}
+seriesDataBloodPlasmaDict['{{ row.Province_ }}'] = '{{ row.Blood_Plasma }}';
+seriesDataDBSSpecimenDict['{{ row.Province_ }}'] = '{{ row.DBS_Specimen }}';
+seriesDataEID_SpecimenDict['{{ row.Province_ }}'] = '{{ row.EID_Specimen }}';
+seriesDataSputum_samDict['{{ row.Province_ }}'] = '{{ row.sputum_sam }}';
+seriesDataUrine_samDict['{{ row.Province_ }}'] = '{{ row.urine_sam }}';
+seriesDataOther_samplesDict['{{ row.Province_ }}'] = '{{ row.Other_samples }}';
+{% endif %}
+{% endfor %}
+
+// Now create the series arrays in the order of the provinces array
+var seriesDataBloodPlasma = provinces.map(function(province) {
+    return seriesDataBloodPlasmaDict[province];
+});
+var seriesDataDBSSpecimen = provinces.map(function(province) {
+    return seriesDataDBSSpecimenDict[province];
+});
+var seriesDataEID_Specimen = provinces.map(function(province) {
+    return seriesDataEID_SpecimenDict[province];
+});
+var seriesDataSputum_sam = provinces.map(function(province) {
+    return seriesDataSputum_samDict[province];
+});
+var seriesDataUrine_sam = provinces.map(function(province) {
+    return seriesDataUrine_samDict[province];
+});
+var seriesDataOther_samples = provinces.map(function(province) {
+    return seriesDataOther_samplesDict[province];
+});
+
+
+
+
+option = {
+  tooltip: {
+    trigger: 'axis',
+    axisPointer: {
+      // Use axis to trigger tooltip
+      type: 'shadow' // 'shadow' as default; can also be 'line' or 'shadow'
+    }
+  },
+  legend: {},
+  grid: {
+    left: '3%',
+    right: '4%',
+    bottom: '3%',
+    containLabel: true
+  },
+  xAxis: {
+    type: 'value'
+  },
+  yAxis: {
+    type: 'category',
+    data: provinces
+  },
+  series: [
+    {
+      name: 'DSD-Blood Plasma',
+      type: 'bar',
+      stack: 'total',
+      label: {
+        show: false
+      },
+      emphasis: {
+        focus: 'series'
+      },
+      data: seriesDataBloodPlasma
+    },
+    {
+      name: 'DSD-DBS_Specimen',
+      type: 'bar',
+      stack: 'total',
+      label: {
+        show: false
+      },
+      emphasis: {
+        focus: 'series'
+      },
+      data: seriesDataDBSSpecimen
+    },
+    {
+      name: 'DSD-EID_Specimen',
+      type: 'bar',
+      stack: 'total',
+      label: {
+        show: false
+      },
+      emphasis: {
+        focus: 'series'
+      },
+      data: seriesDataEID_Specimen
+    },
+    {
+      name: 'DSD-Sputum_Specimen',
+      type: 'bar',
+      stack: 'total',
+      label: {
+        show: false
+      },
+      emphasis: {
+        focus: 'series'
+      },
+      data: seriesDataSputum_sam
+    },
+    {
+      name: 'DSD-Urine_Specimen',
+      type: 'bar',
+      stack: 'total',
+      label: {
+        show: false
+      },
+      emphasis: {
+        focus: 'series'
+      },
+      data: seriesDataUrine_sam
+    },
+    {
+      name: 'DSD-Other_Specimen',
+      type: 'bar',
+      stack: 'total',
+      label: {
+        show: false
+      },
+      emphasis: {
+        focus: 'series'
+      },
+      data: seriesDataOther_samples
+    }
+
+    
+    
+  ],
+
+  
+};
+
+option && myChart.setOption(option);
+
+</script>
+
+
+<!-------TA_SDI BARGRAPH disaggregation by province etc of sample Types-->
+
+<script type="text/javascript">
+  var app = {};
+  
+  var chartDom = document.getElementById('ta_sdibar');
+  window.addEventListener('resize', function() {
+      myChart.resize();
+    });
+  var myChart = echarts.init(chartDom);
+  var option;
+  
+  var provinces = [
+    {% for row in data.1.query_data %}
+    {% if row.Type_of_PEPFAR_Support == 'TA-SDI' %}
+    '{{ row.Province_ }}',
+    {% endif %}
+    {% endfor %}
+  ];
+  
+  //------------------------------------------------------------------------------------------------
+  // create associative arrays for the series data
+  var seriesDataBloodPlasmaDict = {};
+  var seriesDataDBSSpecimenDict = {};
+  var seriesDataEID_SpecimenDict={};
+  var seriesDataSputum_samDict={};
+  var seriesDataUrine_samDict={}; 
+  var seriesDataOther_samplesDict={};
+  
+  // populate the dictionaries using Django
+  {% for row in data.1.query_data %}
+  {% if row.Type_of_PEPFAR_Support == 'TA-SDI' %}
+  seriesDataBloodPlasmaDict['{{ row.Province_ }}'] = '{{ row.Blood_Plasma }}';
+  seriesDataDBSSpecimenDict['{{ row.Province_ }}'] = '{{ row.DBS_Specimen }}';
+  seriesDataEID_SpecimenDict['{{ row.Province_ }}'] = '{{ row.EID_Specimen }}';
+  seriesDataSputum_samDict['{{ row.Province_ }}'] = '{{ row.sputum_sam }}';
+  seriesDataUrine_samDict['{{ row.Province_ }}'] = '{{ row.urine_sam }}';
+  seriesDataOther_samplesDict['{{ row.Province_ }}'] = '{{ row.Other_samples }}';
+  {% endif %}
+  {% endfor %}
+  
+  // Now create the series arrays in the order of the provinces array
+  var seriesDataBloodPlasma = provinces.map(function(province) {
+      return seriesDataBloodPlasmaDict[province];
+  });
+  var seriesDataDBSSpecimen = provinces.map(function(province) {
+      return seriesDataDBSSpecimenDict[province];
+  });
+  var seriesDataEID_Specimen = provinces.map(function(province) {
+      return seriesDataEID_SpecimenDict[province];
+  });
+  var seriesDataSputum_sam = provinces.map(function(province) {
+      return seriesDataSputum_samDict[province];
+  });
+  var seriesDataUrine_sam = provinces.map(function(province) {
+      return seriesDataUrine_samDict[province];
+  });
+  var seriesDataOther_samples = provinces.map(function(province) {
+      return seriesDataOther_samplesDict[province];
+  });
+  
+  
+  
+
+  
+  
+  option = {
+    tooltip: {
+      trigger: 'axis',
+      axisPointer: {
+        // Use axis to trigger tooltip
+        type: 'shadow' // 'shadow' as default; can also be 'line' or 'shadow'
+      }
+    },
+    legend: {},
+    grid: {
+      left: '3%',
+      right: '4%',
+      bottom: '3%',
+      containLabel: true
+    },
+    xAxis: {
+      type: 'value'
+    },
+    yAxis: {
+      type: 'category',
+      data: provinces
+    },
+    series: [
+      {
+        name: 'TA-SDI-Blood Plasma',
+        type: 'bar',
+        stack: 'total',
+        label: {
+          show: false
+        },
+        emphasis: {
+          focus: 'series'
+        },
+        data: seriesDataBloodPlasma
+      },
+      {
+        name: 'TA-SDI-DBS_Specimen',
+        type: 'bar',
+        stack: 'total',
+        label: {
+          show: false
+        },
+        emphasis: {
+          focus: 'series'
+        },
+        data: seriesDataDBSSpecimen
+      },
+      {
+        name: 'TA-SDI-EID_Specimen',
+        type: 'bar',
+        stack: 'total',
+        label: {
+          show: false
+        },
+        emphasis: {
+          focus: 'series'
+        },
+        data: seriesDataEID_Specimen
+      },
+      {
+        name: 'TA-SDI-Sputum_Specimen',
+        type: 'bar',
+        stack: 'total',
+        label: {
+          show: false
+        },
+        emphasis: {
+          focus: 'series'
+        },
+        data: seriesDataSputum_sam
+      },
+      {
+        name: 'TA-SDI-Urine_Specimen',
+        type: 'bar',
+        stack: 'total',
+        label: {
+          show: false
+        },
+        emphasis: {
+          focus: 'series'
+        },
+        data: seriesDataUrine_sam
+      },
+      {
+        name: 'TA-SDI-Other_Specimen',
+        type: 'bar',
+        stack: 'total',
+        label: {
+          show: false
+        },
+        emphasis: {
+          focus: 'series'
+        },
+        data: seriesDataOther_samples
+      }
+  
+      
+      
+    ],
+  
+    
+  };
+  
+  option && myChart.setOption(option);
+  
+  </script>
+  
+
+<!----------------second tab graph--------------------->
+
+
+
+
+
+<script>
+  jQuery_2_1_1(document).ready(function(){
+      jQuery_2_1_1('select').selectpicker();
+  });
+  </script>
+
+<script type="text/javascript">
+  $(document).ready(function (e) {
+    $('#submitfilter').on('click', function (e) {
+      //e.preventDefault();
+      var submitButton = $('#submitfilter'); // Get the submit button
+      // Get checkbox values
+      var dsdChecked = $('#dsdCheckbox').prop('checked');
+      var taSdiChecked = $('#taSdiCheckbox').prop('checked');
+      var startdate = $('#startdate').val();
+      var enddate = $('#enddate').val();
+      //var province = $('.selectpicker').val();
+      var province = JSON.stringify($('.selectpicker').val());
+  
+      // Log values to the console
+      console.log('Start date: ', startdate);
+      console.log('End date: ', enddate);
+      console.log('Province: ', province);
+      console.log('DSD Checked: ', dsdChecked);
+      console.log('TA-SDI Checked: ', taSdiChecked);
+  
+      $.ajax({
+        type: 'POST', 
+        url: '{% url 'ist' %}', 
+        data: {
+          startdate: startdate,
+          enddate: enddate,
+          province: province,
+          dsd: dsdChecked,
+          ta_sdi: taSdiChecked,
+          csrfmiddlewaretoken: '{{ csrf_token }}', // Include the CSRF token in the data
+        },
+        success: function (response) { // display success response
+         // If the request is successful, handle the response and display the message
+         responsd = 'Sucessfully'
+         $('#response-msg-container').html('<div class="alert alert-error" role="alert">' + responsd + '</div>');
+  //
+          // Restore the submit button text after a short delay (1.5 seconds in this case)
+          setTimeout(function () {
+            submitButton.prop('disabled', false).html('Filters Applied on the charts');
+          }, 1500);
+        },
+        error: function(error) {
+          console.log(error);
+        }
+      });
+    });
+  });
+  </script>
+  
+{% endblock content %}
