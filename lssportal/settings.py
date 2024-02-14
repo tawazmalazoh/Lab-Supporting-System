@@ -79,10 +79,10 @@ WSGI_APPLICATION = "lssportal.wsgi.application"
 DATABASES = {
     'default': {
         'ENGINE': 'mssql',
-        'NAME': 'LSS',
-        'USER': 'admin',
-        'PASSWORD': 'Adm!n123',
-        'HOST': 'mssql-133539-0.cloudclusters.net',
+        'NAME': '#',
+        'USER': '#',
+        'PASSWORD': '#',
+        'HOST': '#',
         "PORT":"17983",
         'OPTIONS': {
             'driver': 'ODBC Driver 17 for SQL Server',
@@ -107,10 +107,10 @@ DATABASES = {
 
 #     "mssql": {
 #         "ENGINE": "sql_server.pyodbc",
-#         "NAME": "LSS",
-#         "USER": "admin",
-#         "PASSWORD": "Adm!n123",
-#         "HOST": "mssql-133539-0.cloudclusters.net",
+#         "NAME": "#",
+#         "USER": "#",
+#         "PASSWORD": "#",
+#         "HOST": "#",
 #         "PORT":"17983",
 
 #         'OPTIONS': {
@@ -131,9 +131,9 @@ DATABASES = {
 
 #     "mssql": {
 #         "ENGINE": "sql_server.pyodbc",
-#         "NAME": "LSS",
-#         "USER": "sa",
-#         "PASSWORD": "Adm!n123",
+#         "NAME": "#",
+#         "USER": "#",
+#         "PASSWORD": "#",
 #         "HOST": ".\SQLEXPRESS",
 #         "PORT":"",
 
