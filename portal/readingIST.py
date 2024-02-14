@@ -54,26 +54,18 @@ pd.set_option('mode.chained_assignment', None)
 
     # Load Data for dashboard in database
 
-server = 'mssql-133539-0.cloudclusters.net,17983'
-database = 'LSS'
-username = 'admin'
-password = 'Adm!n123'
+
+server = '#'
+database = '#'
+username = '#'
+password = '#'
 driver = 'ODBC Driver 17 for SQL Server'
 
 
-# server ='.\SQLEXPRESS'
-# database = 'LSS'
-# username = 'sa'
-# password = 'Adm!n123'
-# driver = 'ODBC Driver 17 for SQL Server'
-
-
-
-
-# server = '.\SQLEXPRESS'
-# database = 'LSS'
-# username = 'sa'
-# password = 'Adm!n123'
+# server = '.\SQLXPRESS'
+# database = '#'
+# username = '#'
+# password = '#'
 # driver = settings.DATABASES['default']['OPTIONS']['driver']
 # engine_insert = create_engine(f'mssql+pyodbc://{username}:{password}@{server}/{database}?driver={driver}', echo=False)
 
