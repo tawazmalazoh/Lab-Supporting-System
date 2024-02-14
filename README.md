@@ -28,7 +28,7 @@
  ### Databases Used 
 <ul>
  <li>  Microsoft SQL Server (Ms SQL) </li>
- <li> SQL Lite  </li>
+ <li> SQLite  </li>
  </ul>
 
 
