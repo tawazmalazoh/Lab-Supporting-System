@@ -11,6 +11,8 @@
  <ul>
  <li> <a href="https://echarts.apache.org/en/index.html"> Echarts </a> </li>
  <li> <a href="https://www.highcharts.com/demo"> Highcharts </a>  </li>
+   <li> <a href="https://datatables.net"> DataTables </a>  </li>
+  
  </ul>
 
 
